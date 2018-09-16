@@ -2,7 +2,7 @@
   "name": "learning-graph",
   "version": "0.1.0",
   "description": "Desktop aplication for learning simple operations with graphs",
-  "main": "main.js",
+  "main": "sources/main.js",
   "scripts": {
     "start": "electron ."
   },
