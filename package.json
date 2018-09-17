@@ -2,7 +2,7 @@
   "name": "learning-graph",
   "version": "0.1.0",
   "description": "Desktop aplication for learning simple operations with graphs",
-  "main": "sources/main.js",
+  "main": "main.js",
   "scripts": {
     "start": "electron ."
   },
@@ -18,5 +18,9 @@
   "homepage": "https://github.com/DaniilPalii/learningGraph#readme",
   "devDependencies": {
     "electron": "^2.0.9"
+  },
+  "dependencies": {
+    "jshint": "^2.9.6",
+    "jslint": "^0.12.0"
   }
 }
