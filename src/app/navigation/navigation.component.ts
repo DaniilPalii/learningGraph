@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./navigation.component.css']
 })
 export class NavigationComponent implements OnInit {
-  public navigationItems = new Array<string>('test', 'test 1', 'test 2');
+  public navigationItems = new Array<string>('Lesson 1', 'Lesson 2', 'Lesson 3', 'Lesson 4');
 
   public constructor() { }
 

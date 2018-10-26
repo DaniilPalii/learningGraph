@@ -1,6 +1,8 @@
 <div>
   <p>Navigation</p>
   <mat-nav-list>
-    <a mat-list-item href="#" *ngFor="let link of links"> {{ link }} </a>
+    <button mat-list-item *ngFor="let item of navigationItems">
+      {{ item }}
+    </button>
   </mat-nav-list>
 </div>
