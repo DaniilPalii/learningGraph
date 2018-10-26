@@ -1,7 +1,7 @@
 {
   "name": "le-graph-app",
   "version": "0.0.0",
-  "main": "main.js",
+  "main": "electron-app.js",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",

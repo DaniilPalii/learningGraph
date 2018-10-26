@@ -4,12 +4,12 @@ let appWindow;
 
 function createWindow () {
   appWindow = new BrowserWindow({
-    width: 600, 
-    height: 600,
+    show: false,
     backgroundColor: '#ffffff',
     icon: `file://${__dirname}/dist/assets/logo.png`
   });
-
+  appWindow.maximize();
+  appWindow.show();
 
   appWindow.loadURL(`file://${__dirname}/dist/leGraphApp/index.html`);
 
