@@ -7,8 +7,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavigationComponent implements OnInit {
   public navigationItems = new Array<string>('Lesson 1', 'Lesson 2', 'Lesson 3', 'Lesson 4');
+  public selectedItem: string;
 
   public constructor() { }
 
   public ngOnInit() { }
+
+  public switchSelection(item: string) {
+    console.log(item);
+    this.selectedItem = item;
+  }
 }

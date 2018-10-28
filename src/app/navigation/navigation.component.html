@@ -1,8 +1,7 @@
 <div>
   <p>Navigation</p>
-  <mat-nav-list>
-    <button mat-list-item *ngFor="let item of navigationItems">
-      {{ item }}
-    </button>
-  </mat-nav-list>
+  <mat-action-list>
+    <!-- TODO: ng update @angular/material to the add ripple to mat-list-item when fix is will implemented -->
+    <button mat-list-item *ngFor='let item of navigationItems' (click)='switchSelection(item)'>{{ item }}</button>
+  </mat-action-list>
 </div>
