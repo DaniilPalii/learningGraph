@@ -1,4 +1,7 @@
 <div id="app">
-  <app-navigation></app-navigation>
-  <app-lesson [currentLesson]='"Test lesson"'></app-lesson>
+  <mat-toolbar [color]="'primary'">
+    <span>LeGraph</span>
+  </mat-toolbar>
+  <app-navigation #navigator></app-navigation>
+  <app-lesson [currentLesson]='navigator.selectedItem'></app-lesson>
 </div>
