@@ -1,4 +1,7 @@
 <mat-toolbar [color]="'primary'">
+  <button mat-button class="menu-button" (click)="sidenav.toggle()">
+    <mat-icon>menu</mat-icon>
+  </button>
   <span>{{ navigator.selectedItem ? navigator.selectedItem : 'Le Graph - Learn graph quick end easy!' }}</span>
 </mat-toolbar>
 <mat-sidenav-container>
@@ -7,6 +10,5 @@
   </mat-sidenav>
   <mat-sidenav-content>
     <app-lesson [currentLesson]="navigator.selectedItem"></app-lesson>
-    <button mat-button (click)="sidenav.toggle()">Toggle</button>
   </mat-sidenav-content>
 </mat-sidenav-container>
