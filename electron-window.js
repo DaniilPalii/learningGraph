@@ -7,8 +7,8 @@ function createWindow () {
     show: false,
     backgroundColor: '#ffffff',
     icon: `file://${__dirname}/dist/assets/logo.png`,
-    // minWidth: 600,
-    // minHeight: 400,
+    minWidth: 600,
+    minHeight: 400
     // frame: false
   });
   appWindow.maximize();
