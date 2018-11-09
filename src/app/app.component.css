@@ -3,14 +3,33 @@ mat-sidenav-container {
 }
 
 mat-toolbar {
-  padding-left: 0px;
-  height: 50px;
+  padding: 0;
+  height: 35px;
+  -webkit-app-region: drag;
+  font-size: 16px;
 }
 
-button.menu-button,
-button.menu-button div {
+mat-toolbar button {
+  -webkit-app-region: no-drag;
+}
+
+button.toolbar-button,
+button.toolbar-button div {
   padding: 0;
-  width: 40px;
-  min-width: 40px;
+  width: 30px;
+  min-width: 30px;
   margin: 0 9px;
+}
+
+span.window-controls-buttons button {
+  margin: 0 5px;
+}
+
+span.window-controls-buttons {
+  margin: 0 9px;
+  float: left;
+}
+
+span.flex-spacer {
+  flex-grow: 1;
 }
