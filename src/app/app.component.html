@@ -1,14 +1,12 @@
-<div id="app">
-  <mat-toolbar [color]="'primary'">
-    <span>{{ navigator.selectedItem ? navigator.selectedItem : 'Le Graph - Learn graph quick end easy!' }}</span>
-  </mat-toolbar>
-  <mat-sidenav-container>
-    <mat-sidenav #sidenav [mode]="'side'">
-      <app-navigation #navigator></app-navigation>
-    </mat-sidenav>
-    <mat-sidenav-content>
-      <app-lesson [currentLesson]='navigator.selectedItem'></app-lesson>
-      <button mat-button (click)='sidenav.toggle()'>Toggle</button>
-    </mat-sidenav-content>
-  </mat-sidenav-container>
-</div>
+<mat-toolbar [color]="'primary'">
+  <span>{{ navigator.selectedItem ? navigator.selectedItem : 'Le Graph - Learn graph quick end easy!' }}</span>
+</mat-toolbar>
+<mat-sidenav-container>
+  <mat-sidenav #sidenav [mode]="'side'">
+    <app-navigation #navigator></app-navigation>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <app-lesson [currentLesson]='navigator.selectedItem'></app-lesson>
+    <button mat-button (click)='sidenav.toggle()'>Toggle</button>
+  </mat-sidenav-content>
+</mat-sidenav-container>

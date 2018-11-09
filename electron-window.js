@@ -6,15 +6,15 @@ function createWindow () {
   appWindow = new BrowserWindow({
     show: false,
     backgroundColor: '#ffffff',
-    icon: `file://${__dirname}/dist/assets/logo.png`
+    icon: `file://${__dirname}/dist/assets/logo.png`,
+    // minWidth: 600,
+    // minHeight: 400,
+    // frame: false
   });
   appWindow.maximize();
-  appWindow.show();
-
+  // appWindow.setMenu(null);
   appWindow.loadURL(`file://${__dirname}/dist/leGraphApp/index.html`);
-
-  //// uncomment below to open the DevTools.
-  // win.webContents.openDevTools()
+  appWindow.show();
 
   appWindow.on('closed', function () {
     appWindow = null;

@@ -1,10 +1,10 @@
 {
   "name": "le-graph-app",
   "version": "0.0.0",
-  "main": "electron-app.js",
+  "main": "electron-window.js",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "electron .",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
