@@ -1,10 +1,12 @@
-<div *ngIf='currentLesson; else noneLesson'>
-  <p>Lesson: {{ currentLesson }}</p>
-  <app-exercise id='actionPanel'></app-exercise>
-</div>
-
-<ng-template #noneLesson>
-  <div>
-    <p>Please, select lesson</p>
+<div class="lesson-wrapper">
+  <div *ngIf='currentLesson; else noneLesson'>
+    <p>Lesson: {{ currentLesson }}</p>
+    <app-exercise id='actionPanel'></app-exercise>
   </div>
-</ng-template>
+  
+  <ng-template #noneLesson>
+    <div>
+      <p>Please, select lesson</p>
+    </div>
+  </ng-template>
+</div>
