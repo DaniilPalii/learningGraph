@@ -11,7 +11,7 @@ export class AppComponent {
     this.getElectronWindow().minimize();
   }
 
-  public toggleMaximizationWindow() {
+  public toggleWindowMaximization() {
     const window = this.getElectronWindow();
     if (!window.isMaximized()) 
       window.maximize();
