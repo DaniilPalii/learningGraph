@@ -5,7 +5,8 @@ let appWindow;
 function createWindow () {
   appWindow = new BrowserWindow({
     show: false,
-    backgroundColor: '#ffffff',
+    backgroundColor: '#303030',
+    darkTheme: true,
     icon: `file://${__dirname}/dist/assets/logo.png`,
     minWidth: 600,
     minHeight: 400,

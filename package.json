@@ -6,11 +6,11 @@
     "ng": "ng",
     "start": "electron .",
     "build": "ng build",
+    "prebuild": "node allow-angular-using-electron-module",
+    "build-watch": "npm run prebuild && ng build --watch",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e",
-    "electron": "electron .",
-    "electron-build": "ng build --prod && electron ."
+    "e2e": "ng e2e"
   },
   "private": true,
   "dependencies": {
@@ -25,7 +25,9 @@
     "@angular/platform-browser": "^7.0.1",
     "@angular/platform-browser-dynamic": "^7.0.1",
     "@angular/router": "^7.0.1",
+    "@types/electron": "^1.6.10",
     "core-js": "^2.5.4",
+    "fs": "0.0.1-security",
     "hammerjs": "^2.0.8",
     "rxjs": "~6.3.3",
     "zone.js": "~0.8.26"
@@ -37,7 +39,7 @@
     "@angular/language-service": "^7.0.1",
     "@types/jasmine": "~2.8.8",
     "@types/jasminewd2": "~2.0.3",
-    "@types/node": "~8.9.4",
+    "@types/node": "^8.9.5",
     "codelyzer": "~4.3.0",
     "electron": "^2.0.9",
     "jasmine-core": "~2.99.1",
