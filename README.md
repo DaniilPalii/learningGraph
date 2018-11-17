@@ -1,8 +1,14 @@
 # LeGraphApp
 
+This is desktop aplication based on Electron and Angular for learning operations on graphs.
+
 ## Build
 
-Run `npm build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+Install npm from https://www.npmjs.com/get-npm
+
+Install Electron via `npm install -g electron`.
+
+Run `npm run build` to build the project.
 
 ## Run
 
