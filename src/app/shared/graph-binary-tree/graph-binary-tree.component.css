@@ -1,7 +1,25 @@
-.graph-node {
+/* .graph-node {
   height: 40px;
   width: 40px;
   background-color: rgb(150, 233, 67);
   border-radius: 50%;
+  display: inline-block;
+} */
+
+button.graph-node {
+  height: 45px;
+  width: 45px;
+}
+
+button.graph-node >>> span.mat-button-wrapper {
+  line-height: 0;
+}
+
+.tree-level {
+  text-align: center;
+}
+
+.child-node {
+  width: 50%;
   display: inline-block;
 }
