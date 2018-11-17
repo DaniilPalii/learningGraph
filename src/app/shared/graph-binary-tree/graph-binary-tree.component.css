@@ -1,7 +1,7 @@
 .graph-node {
-  height: 50px;
-  width: 50px;
-  background-color: rgb(21, 255, 0);
+  height: 40px;
+  width: 40px;
+  background-color: rgb(150, 233, 67);
   border-radius: 50%;
   display: inline-block;
 }
