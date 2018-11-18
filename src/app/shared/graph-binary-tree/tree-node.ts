@@ -3,8 +3,8 @@ export class TreeNode {
   public value: number;
   public children: Array<TreeNode>;
 
-  public constructor(value: number, children?: Array<TreeNode>) {
+  public constructor(value: number, leftChild?: TreeNode, rightNode?: TreeNode) {
     this.value = value;
-    this.children = children;
+    this.children = new Array<TreeNode>(leftChild, rightNode);
   }
 }

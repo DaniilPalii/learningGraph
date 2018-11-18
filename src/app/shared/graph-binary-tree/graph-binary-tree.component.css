@@ -1,11 +1,3 @@
-/* .graph-node {
-  height: 40px;
-  width: 40px;
-  background-color: rgb(150, 233, 67);
-  border-radius: 50%;
-  display: inline-block;
-} */
-
 button.graph-node {
   height: 45px;
   width: 45px;
