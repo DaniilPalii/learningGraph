@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { TreeNode } from 'src/app/shared/graph-binary-tree/tree-node';
 
 @Component({
@@ -8,6 +8,8 @@ import { TreeNode } from 'src/app/shared/graph-binary-tree/tree-node';
 })
 export class ExerciseComponent {
   public graphBinaryTreeData: TreeNode;
+  @ViewChild('drawingPanel') drawingPanel: ElementRef;
+  public circleColor: string = 'yellow';
 
   public constructor() {
     this.graphBinaryTreeData 
@@ -18,5 +20,13 @@ export class ExerciseComponent {
           ),
           new TreeNode(5)
       )
+  }
+
+  public setCircleColor(color: string): void {
+    this.circleColor = color;
+  }
+
+  public createCircle(x: number, y: number): void {
+    this.drawingPanel.nativeElement.innerHTML += 
   }
 }

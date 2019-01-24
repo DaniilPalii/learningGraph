@@ -1,4 +1,17 @@
 <div>
   <p>Exercise</p>
-  <app-graph-binary-tree [data]="graphBinaryTreeData"></app-graph-binary-tree>
+  <!-- <app-graph-binary-tree [data]="graphBinaryTreeData"></app-graph-binary-tree> -->
+  <svg #drawingPanel width="500"
+       height="500"
+       style="border: 1px solid lightgrey"
+       (click)="createCircle($event.offsetX, $event.offsetY)">
+    <circle cx="32"
+            cy="50"
+            r="25"
+            stroke="green"
+            stroke-width="4"
+            [attr.fill]="circleColor"
+            (mousedown)="setCircleColor('red')"
+            (mouseup)="setCircleColor('green')"/>
+  </svg> 
 </div>

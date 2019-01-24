@@ -15,6 +15,7 @@ function createWindow () {
   appWindow.maximize();
   // appWindow.setMenu(null);
   appWindow.loadURL(`file://${__dirname}/dist/leGraphApp/index.html`);
+  appWindow.webContents.openDevTools();
   appWindow.show();
 
   appWindow.on('closed', function () {
