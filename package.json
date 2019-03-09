@@ -26,11 +26,14 @@
     "@angular/platform-browser-dynamic": "^7.0.1",
     "@angular/router": "^7.0.1",
     "@types/electron": "^1.6.10",
+    "@types/svg.js": "^2.3.1",
+    "@types/svgjs.draggable": "0.0.30",
     "core-js": "^2.5.4",
     "cytoscape": "^3.2.20",
     "fs": "0.0.1-security",
     "hammerjs": "^2.0.8",
     "rxjs": "~6.3.3",
+    "svg.js": "^2.7.1",
     "zone.js": "~0.8.26"
   },
   "devDependencies": {

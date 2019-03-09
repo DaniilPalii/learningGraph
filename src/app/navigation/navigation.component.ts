@@ -7,7 +7,7 @@ import { Component } from '@angular/core';
 })
 export class NavigationComponent {
   public navigationItems = new Array<string>('Lesson 1', 'Lesson 2 with long name', 'Lesson 3 with longer name. Some text and more text', 'Lesson 4');
-  public selectedItem: string;
+  public selectedItem: string = this.navigationItems[0]; // todo remove default value
 
   public switchSelection(item: string) {
     this.selectedItem = item;
