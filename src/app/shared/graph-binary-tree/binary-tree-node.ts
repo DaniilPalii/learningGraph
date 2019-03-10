@@ -1,21 +1,18 @@
 export class BinaryTreeNode {
-  public value: number;
-  public parent: BinaryTreeNode;
-  public leftChild: BinaryTreeNode;
-  public rightChild: BinaryTreeNode;
-  public level: number;
+  public value: number = null;
+  public parent: BinaryTreeNode = null;
+  public leftChild: BinaryTreeNode = null;
+  public rightChild: BinaryTreeNode = null;
+  public level: number = 0;
 
   constructor(
-    value: number,
-    parent: BinaryTreeNode,
-    leftChild: BinaryTreeNode,
-    rightChild: BinaryTreeNode
+    value?: number,
+    leftChild?: BinaryTreeNode,
+    rightChild?: BinaryTreeNode
   ) {
-    this.value = value;
-    this.parent = parent;
-    this.leftChild = leftChild;
-    this.rightChild = rightChild;
-    this.level = !!this.parent ? this.parent.level + 1 : 0;
+    if (value) this.value = value;
+    if (leftChild) this.appendLeftChild(leftChild);
+    if (rightChild) this.appendRightChild(rightChild);
   }
 
   public isRoot(): boolean {
@@ -28,5 +25,20 @@ export class BinaryTreeNode {
 
   public isInner(): boolean {
     return !this.isRoot() && !this.isLeaf();
+  }
+
+  private appendLeftChild(node: BinaryTreeNode) {
+    this.getNodeReadyToAppendingAsChild(node);
+    this.leftChild = node;
+  }
+
+  private appendRightChild(node: BinaryTreeNode) {
+    this.getNodeReadyToAppendingAsChild(node);
+    this.rightChild = node;
+  }
+
+  private getNodeReadyToAppendingAsChild(node: BinaryTreeNode) {
+    node.parent = this;
+    node.level = this.level + 1;
   }
 }
