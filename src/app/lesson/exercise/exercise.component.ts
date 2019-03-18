@@ -1,7 +1,5 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import { TreeNode } from 'src/app/shared/graph-binary-tree/tree-node';
-
-import {BinaryTreeNode} from '../../shared/graph-binary-tree/binary-tree-node';
+import { Component } from '@angular/core';
+import { BinaryTreeNode } from '../../shared/graph-binary-tree/binary-tree-node';
 
 @Component({
   selector: 'app-exercise',
@@ -11,8 +9,29 @@ import {BinaryTreeNode} from '../../shared/graph-binary-tree/binary-tree-node';
 export class ExerciseComponent {
   public binaryTreeData = new BinaryTreeNode(
     15,
-    new BinaryTreeNode(32, new BinaryTreeNode(8), new BinaryTreeNode(9)),
-    new BinaryTreeNode(99, new BinaryTreeNode(76)));
+    new BinaryTreeNode(
+      32,
+      new BinaryTreeNode(
+        8,
+        new BinaryTreeNode(10),
+        new BinaryTreeNode(11)
+      ),
+      new BinaryTreeNode(
+        9,
+        new BinaryTreeNode(8,
+          new BinaryTreeNode(837),
+          new BinaryTreeNode(3737)
+        ),
+        new BinaryTreeNode(77))),
+    new BinaryTreeNode(
+      99,
+      new BinaryTreeNode(
+        76,
+        new BinaryTreeNode(
+          11,
+          new BinaryTreeNode(14)
+        )),
+      new BinaryTreeNode(13)));
 
   // public graphBinaryTreeData: TreeNode;
   // public circleColor: string = 'yellow';
@@ -36,22 +55,4 @@ export class ExerciseComponent {
   //   this.temp.animate(200).move(50, 100);
   // }
   //
-  // public constructor() {
-  //   this.graphBinaryTreeData
-  //     = new TreeNode(1,
-  //         new TreeNode(2,
-  //           new TreeNode(3),
-  //           new TreeNode(4),
-  //         ),
-  //         new TreeNode(5)
-  //     );
-  // }
-  //
-  // public setCircleColor(color: string): void {
-  //   this.circleColor = color;
-  // }
-  //
-  // public createCircle(x: number, y: number): void {
-  //   // this.drawingPanel.nativeElement.innerHTML +=
-  // }
 }
