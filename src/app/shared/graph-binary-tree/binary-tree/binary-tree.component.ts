@@ -27,26 +27,28 @@ export class BinaryTreeComponent implements OnInit, DoCheck {
 
     this.svgDoc.clear();
 
-    // const rootNodeCircle = this.drawNodeG(this.svgDocWidth / 2, this.nodesSize / 2, this.binaryTree.value);
-    const rootNodeCircle = this.drawCircle(this.svgDocWidth / 2, this.nodesSize / 2);
-    this.drawChildrenFor(this.binaryTree, rootNodeCircle);
+    const rootNodeG = this.drawNodeG(this.svgDocWidth / 2, this.nodesSize / 2, this.binaryTree.value);
+    this.drawChildrenFor(this.binaryTree, rootNodeG, 1);
   }
 
-  private drawChildrenFor(node: BinaryTreeNode, nodeG: SvgJs.Circle): void {
+  private drawChildrenFor(node: BinaryTreeNode, nodeG: SvgJs.G, xIndex: number): void {
     const childrenCY = nodeG.cy() + this.nodesYInterval;
+    const possiblePointsOnLevelCount = Math.pow(2, (node.level + 1));
+    const widthBetweenPossiblePointsOnLevel = this.svgDocWidth / possiblePointsOnLevelCount;
+    const doubleXIndex = xIndex * 2;
 
     if (node.leftChild) {
-      const leftChildCX = nodeG.cx() * 2 / 3;
-      // const leftChildNodeG = this.drawNodeG(leftChildCX, childrenCY, node.leftChild.value);
-      const leftChildNodeG = this.drawCircle(leftChildCX, childrenCY);
-      this.drawChildrenFor(node.leftChild, leftChildNodeG);
+      const leftChildXIndex = doubleXIndex - 1;
+      const leftChildCX = leftChildXIndex * widthBetweenPossiblePointsOnLevel;
+      const leftChildNodeG = this.drawNodeG(leftChildCX, childrenCY, node.leftChild.value);
+      this.drawChildrenFor(node.leftChild, leftChildNodeG, leftChildXIndex);
     }
 
     if (node.rightChild) {
-      const rightChildCX = nodeG.cx() * 2 / 3 * 2;
-      // const rightChildNodeG = this.drawNodeG(rightChildCX, childrenCY, node.rightChild.value);
-      const rightChildNodeG = this.drawCircle(rightChildCX, childrenCY);
-      this.drawChildrenFor(node.rightChild, rightChildNodeG);
+      const rightChildXIndex = doubleXIndex + 1;
+      const rightChildCX = rightChildXIndex * widthBetweenPossiblePointsOnLevel;
+      const rightChildNodeG = this.drawNodeG(rightChildCX, childrenCY, node.rightChild.value);
+      this.drawChildrenFor(node.rightChild, rightChildNodeG, rightChildXIndex);
     }
   }
 
@@ -59,7 +61,8 @@ export class BinaryTreeComponent implements OnInit, DoCheck {
   }
 
   private drawNodeValue(cx: number, cy: number, value: number): SvgJs.Element {
-    return this.svgDoc.text(value.toString());
+    return this.svgDoc.text(value.toString())
+      .center(cx, cy);
   }
 
   private drawCircle(cx: number, cy: number): SvgJs.Circle {
@@ -69,7 +72,8 @@ export class BinaryTreeComponent implements OnInit, DoCheck {
   }
 
   private getComputedSvgElementWidth(): number {
-    const computedSvgElementWidthStyle = window.getComputedStyle(this.binaryTreeSvgElement.nativeElement, null)
+    const computedSvgElementWidthStyle = window
+      .getComputedStyle(this.binaryTreeSvgElement.nativeElement, null)
       .getPropertyValue('width');
 
     return parseFloat(computedSvgElementWidthStyle);

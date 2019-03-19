@@ -3,7 +3,7 @@ export class BinaryTreeNode {
   public parent: BinaryTreeNode = null;
   public leftChild: BinaryTreeNode = null;
   public rightChild: BinaryTreeNode = null;
-  public level: number = 0;
+  public level: number = 1;
 
   constructor(
     value?: number,
