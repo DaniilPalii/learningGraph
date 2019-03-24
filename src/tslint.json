@@ -15,6 +15,12 @@
     ],
     "no-input-rename": false,
     "curly": false,
-    "no-trailing-whitespace": false
+    "no-trailing-whitespace": false,
+    "comment-format": false,
+    "typedef": [
+      true,
+      "call-signature",
+      "property-declaration"
+    ]
   }
 }

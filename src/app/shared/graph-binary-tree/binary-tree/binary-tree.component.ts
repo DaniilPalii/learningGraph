@@ -27,11 +27,11 @@ export class BinaryTreeComponent implements OnInit, DoCheck {
 
     this.svgDoc.clear();
 
-    const rootNodeG = this.drawNodeG(this.svgDocWidth / 2, this.nodesSize / 2, this.binaryTree.value);
-    this.drawChildrenFor(this.binaryTree, rootNodeG, 1);
+    const rootNodeG = this.drawNodeG(this.svgDocWidth / 2, this.nodesSize / 2, this.binaryTree);
+    this.drawChildrenRecursively(this.binaryTree, rootNodeG, 1);
   }
 
-  private drawChildrenFor(node: BinaryTreeNode, nodeG: SvgJs.G, xIndex: number): void {
+  private drawChildrenRecursively(node: BinaryTreeNode, nodeG: SvgJs.G, xIndex: number): void {
     const childrenCY = nodeG.cy() + this.nodesYInterval;
     const possiblePointsOnLevelCount = Math.pow(2, (node.level + 1));
     const widthBetweenPossiblePointsOnLevel = this.svgDocWidth / possiblePointsOnLevelCount;
@@ -40,22 +40,23 @@ export class BinaryTreeComponent implements OnInit, DoCheck {
     if (node.leftChild) {
       const leftChildXIndex = doubleXIndex - 1;
       const leftChildCX = leftChildXIndex * widthBetweenPossiblePointsOnLevel;
-      const leftChildNodeG = this.drawNodeG(leftChildCX, childrenCY, node.leftChild.value);
-      this.drawChildrenFor(node.leftChild, leftChildNodeG, leftChildXIndex);
+      const leftChildNodeG = this.drawNodeG(leftChildCX, childrenCY, node.leftChild);
+      this.drawChildrenRecursively(node.leftChild, leftChildNodeG, leftChildXIndex);
     }
 
     if (node.rightChild) {
       const rightChildXIndex = doubleXIndex + 1;
       const rightChildCX = rightChildXIndex * widthBetweenPossiblePointsOnLevel;
-      const rightChildNodeG = this.drawNodeG(rightChildCX, childrenCY, node.rightChild.value);
-      this.drawChildrenFor(node.rightChild, rightChildNodeG, rightChildXIndex);
+      const rightChildNodeG = this.drawNodeG(rightChildCX, childrenCY, node.rightChild);
+      this.drawChildrenRecursively(node.rightChild, rightChildNodeG, rightChildXIndex);
     }
   }
 
-  private drawNodeG(cx: number, cy: number, value: number): SvgJs.G {
+  private drawNodeG(cx: number, cy: number, node: BinaryTreeNode): SvgJs.G {
     const nodeGroup = this.svgDoc.group();
     nodeGroup.add(this.drawCircle(cx, cy));
-    nodeGroup.add(this.drawNodeValue(cx, cy, value));
+    nodeGroup.add(this.drawNodeValue(cx, cy, node.value));
+    nodeGroup.on('click', () => console.log(node.getTextInfo()));
 
     return nodeGroup;
   }
