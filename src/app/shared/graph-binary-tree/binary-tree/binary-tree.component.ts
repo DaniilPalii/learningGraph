@@ -14,13 +14,16 @@ export class BinaryTreeComponent implements OnInit, DoCheck {
 
   private svgDocWidth: number;
 
-  private readonly nodeSize = 50;
-  private readonly nodeBorderWidth = 2;
-  private readonly nodeFillingSize = this.nodeSize - this.nodeBorderWidth * 2;
-  private readonly nodesYInterval = 70;
-  private readonly nodeColor = '#f06';
-  private readonly nodeBorderColor = '#fff';
-  private readonly nodeTextColor = '#fff';
+  private readonly nodeSize: number = 50;
+  private readonly nodeBorderWidth: number = 2;
+  private readonly nodeFillingSize: number = this.nodeSize - this.nodeBorderWidth * 2;
+  private readonly lineWidth: number = this.nodeBorderWidth;
+  private readonly nodesYInterval: number = 70;
+
+  private readonly nodeColor: string = '#f06';
+  private readonly nodeBorderColor: string = '#fff';
+  private readonly nodeTextColor: string = this.nodeBorderColor;
+  private readonly lineColor: string = this.nodeBorderColor;
 
   public ngOnInit(): void {
     this.svgDoc = SvgJs('binaryTreeSvg');
@@ -46,6 +49,7 @@ export class BinaryTreeComponent implements OnInit, DoCheck {
       const leftChildCX = leftChildXIndex * widthBetweenPossiblePointsOnLevel;
       const leftChildNodeG = this.drawNodeG(leftChildCX, childrenCY, node.leftChild);
       this.drawChildrenRecursively(node.leftChild, leftChildNodeG, leftChildXIndex);
+      this.drawLineBetween(nodeG, leftChildNodeG);
     }
 
     if (node.rightChild) {
@@ -53,6 +57,7 @@ export class BinaryTreeComponent implements OnInit, DoCheck {
       const rightChildCX = rightChildXIndex * widthBetweenPossiblePointsOnLevel;
       const rightChildNodeG = this.drawNodeG(rightChildCX, childrenCY, node.rightChild);
       this.drawChildrenRecursively(node.rightChild, rightChildNodeG, rightChildXIndex);
+      this.drawLineBetween(nodeG, rightChildNodeG);
     }
   }
 
@@ -82,6 +87,11 @@ export class BinaryTreeComponent implements OnInit, DoCheck {
     return this.svgDoc.circle(this.nodeFillingSize)
       .fill(this.nodeColor)
       .center(cx, cy);
+  }
+
+  private drawLineBetween(startElement: SvgJs.Element, endElement: SvgJs.Element): SvgJs.Line {
+    return this.svgDoc.line(startElement.cx(), startElement.cy(), endElement.cx(), endElement.cy())
+      .stroke({ width: this.lineWidth, color: this.lineColor }).back();
   }
 
   private getComputedSvgElementWidth(): number {

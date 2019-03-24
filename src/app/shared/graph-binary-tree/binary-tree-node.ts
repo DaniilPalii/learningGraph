@@ -2,7 +2,6 @@ export class BinaryTreeNode {
   public value: number = null;
   public parent: BinaryTreeNode = null;
   public children = new Array<BinaryTreeNode>();
-  // public childCount: number = 0;
   public leftChild: BinaryTreeNode = null;
   public rightChild: BinaryTreeNode = null;
   public level: number = 1;
@@ -29,16 +28,6 @@ export class BinaryTreeNode {
     return !this.isRoot() && !this.isLeaf();
   }
 
-  public getTextInfo(): string {
-    return `BinaryTreeNode:
-    value: ${this.value},
-    parent is ${this.parent ? 'present' : 'empty'},
-    leftChild is ${this.leftChild ? 'present' : 'empty'},
-    rightChild is ${this.rightChild ? 'present' : 'empty'},
-    level: ${this.level},
-    childCount: ${this.children.length}`;
-  }
-
   private appendLeftChild(child: BinaryTreeNode): void {
     this.leftChild = child;
     this.afterAppendingChild(child);
@@ -51,7 +40,6 @@ export class BinaryTreeNode {
 
   private afterAppendingChild(child: BinaryTreeNode): void {
     child.parent = this;
-    // this.childCount = futureChild.childCount + 1; //todo ?
     this.refreshChildrenList();
     this.updateChildrenLevelRecursively();
   }
