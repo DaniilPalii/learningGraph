@@ -14,9 +14,13 @@ export class BinaryTreeComponent implements OnInit, DoCheck {
 
   private svgDocWidth: number;
 
-  private readonly nodesSize = 50;
+  private readonly nodeSize = 50;
+  private readonly nodeBorderWidth = 2;
+  private readonly nodeFillingSize = this.nodeSize - this.nodeBorderWidth * 2;
   private readonly nodesYInterval = 70;
-  private readonly nodesColor = '#f06';
+  private readonly nodeColor = '#f06';
+  private readonly nodeBorderColor = '#fff';
+  private readonly nodeTextColor = '#fff';
 
   public ngOnInit(): void {
     this.svgDoc = SvgJs('binaryTreeSvg');
@@ -27,7 +31,7 @@ export class BinaryTreeComponent implements OnInit, DoCheck {
 
     this.svgDoc.clear();
 
-    const rootNodeG = this.drawNodeG(this.svgDocWidth / 2, this.nodesSize / 2, this.binaryTree);
+    const rootNodeG = this.drawNodeG(this.svgDocWidth / 2, this.nodeSize / 2, this.binaryTree);
     this.drawChildrenRecursively(this.binaryTree, rootNodeG, 1);
   }
 
@@ -54,21 +58,29 @@ export class BinaryTreeComponent implements OnInit, DoCheck {
 
   private drawNodeG(cx: number, cy: number, node: BinaryTreeNode): SvgJs.G {
     const nodeGroup = this.svgDoc.group();
-    nodeGroup.add(this.drawCircle(cx, cy));
+    nodeGroup.add(this.drawBorderCircle(cx, cy));
+    nodeGroup.add(this.drawFillerCircle(cx, cy));
     nodeGroup.add(this.drawNodeValue(cx, cy, node.value));
-    nodeGroup.on('click', () => console.log(node.getTextInfo()));
+    nodeGroup.on('click', () => console.log(node));
 
     return nodeGroup;
   }
 
   private drawNodeValue(cx: number, cy: number, value: number): SvgJs.Element {
     return this.svgDoc.text(value.toString())
+      .fill(this.nodeTextColor)
       .center(cx, cy);
   }
 
-  private drawCircle(cx: number, cy: number): SvgJs.Circle {
-    return this.svgDoc.circle(this.nodesSize)
-      .fill(this.nodesColor)
+  private drawBorderCircle(cx: number, cy: number): SvgJs.Circle {
+    return this.svgDoc.circle(this.nodeSize)
+      .fill(this.nodeBorderColor)
+      .center(cx, cy);
+  }
+
+  private drawFillerCircle(cx: number, cy: number): SvgJs.Circle {
+    return this.svgDoc.circle(this.nodeFillingSize)
+      .fill(this.nodeColor)
       .center(cx, cy);
   }
 

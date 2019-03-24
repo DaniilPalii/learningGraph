@@ -67,7 +67,6 @@ export class BinaryTreeNode {
 
   private refreshChildrenList(): void {
     const children = new Array<BinaryTreeNode>();
-
     if (this.leftChild) children.push(this.leftChild);
     if (this.rightChild) children.push(this.rightChild);
 
