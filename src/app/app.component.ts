@@ -7,11 +7,11 @@ import * as electron from 'electron';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent { 
-  public minimizeWindow() {
+  public minimizeWindow(): void {
     this.getElectronWindow().minimize();
   }
 
-  public toggleWindowMaximization() {
+  public toggleWindowMaximization(): void {
     const window = this.getElectronWindow();
     if (!window.isMaximized()) 
       window.maximize();
@@ -19,7 +19,7 @@ export class AppComponent {
       window.unmaximize();
   }
 
-  public closeWindow() {
+  public closeWindow(): void {
     this.getElectronWindow().close();
   }
 

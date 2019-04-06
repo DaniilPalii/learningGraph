@@ -1,16 +1,28 @@
-import { Component, DoCheck, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
-import { BinaryTreeNode } from '../binary-tree-node';
+import {
+  AfterViewInit,
+  Component,
+  DoCheck,
+  ElementRef,
+  Input,
+  OnDestroy,
+  ViewChild
+} from '@angular/core';
+import { BinaryTreeNodeModel } from './binary-tree-node.model';
 import * as SvgJs from 'svg.js';
 
 @Component({
-  selector: 'app-binary-tree',
+  selector: 'app-binary-tree[data]',
   templateUrl: './binary-tree.component.html',
   styleUrls: ['./binary-tree.component.css']
 })
-export class BinaryTreeComponent implements OnInit, DoCheck {
-  @Input('data') public binaryTree: BinaryTreeNode;
+export class BinaryTreeComponent implements AfterViewInit, DoCheck, OnDestroy {
+  @Input('data') public binaryTree: BinaryTreeNodeModel;
+  @Input('height') public height: number;
   @ViewChild('binaryTreeSvg') binaryTreeSvgElement: ElementRef;
+
   public svgDoc: SvgJs.Doc;
+
+  public readonly svgId: string = Math.random().toString(36).substr(2, 9);
 
   private svgDocWidth: number;
 
@@ -25,20 +37,30 @@ export class BinaryTreeComponent implements OnInit, DoCheck {
   private readonly nodeTextColor: string = this.nodeBorderColor;
   private readonly lineColor: string = this.nodeBorderColor;
 
-  public ngOnInit(): void {
-    this.svgDoc = SvgJs('binaryTreeSvg');
+  public ngAfterViewInit(): void {
+    this.svgDoc = SvgJs(this.svgId)
+      .height(this.calculateSvgHeight());
   }
 
   public ngDoCheck(): void {
-    this.svgDocWidth = this.getComputedSvgElementWidth();
+    setTimeout(() => {
+      this.fetchComputedSvgElementWidth();
+      this.redrawTree();
+    });
+  }
 
+  public ngOnDestroy(): void {
+    this.svgDoc.clear();
+  }
+
+  private redrawTree(): void {
     this.svgDoc.clear();
 
     const rootNodeG = this.drawNodeG(this.svgDocWidth / 2, this.nodeSize / 2, this.binaryTree);
     this.drawChildrenRecursively(this.binaryTree, rootNodeG, 1);
   }
 
-  private drawChildrenRecursively(node: BinaryTreeNode, nodeG: SvgJs.G, xIndex: number): void {
+  private drawChildrenRecursively(node: BinaryTreeNodeModel, nodeG: SvgJs.G, xIndex: number): void {
     const childrenCY = nodeG.cy() + this.nodesYInterval;
     const possiblePointsOnLevelCount = Math.pow(2, (node.level + 1));
     const widthBetweenPossiblePointsOnLevel = this.svgDocWidth / possiblePointsOnLevelCount;
@@ -61,7 +83,7 @@ export class BinaryTreeComponent implements OnInit, DoCheck {
     }
   }
 
-  private drawNodeG(cx: number, cy: number, node: BinaryTreeNode): SvgJs.G {
+  private drawNodeG(cx: number, cy: number, node: BinaryTreeNodeModel): SvgJs.G {
     const nodeGroup = this.svgDoc.group();
     nodeGroup.add(this.drawBorderCircle(cx, cy));
     nodeGroup.add(this.drawFillerCircle(cx, cy));
@@ -91,14 +113,21 @@ export class BinaryTreeComponent implements OnInit, DoCheck {
 
   private drawLineBetween(startElement: SvgJs.Element, endElement: SvgJs.Element): SvgJs.Line {
     return this.svgDoc.line(startElement.cx(), startElement.cy(), endElement.cx(), endElement.cy())
-      .stroke({ width: this.lineWidth, color: this.lineColor }).back();
+      .stroke({ width: this.lineWidth, color: this.lineColor })
+      .back();
   }
 
-  private getComputedSvgElementWidth(): number {
+  private fetchComputedSvgElementWidth(): void {
     const computedSvgElementWidthStyle = window
-      .getComputedStyle(this.binaryTreeSvgElement.nativeElement, null)
+      .getComputedStyle(this.binaryTreeSvgElement.nativeElement)
       .getPropertyValue('width');
 
-    return parseFloat(computedSvgElementWidthStyle);
+    this.svgDocWidth = parseFloat(computedSvgElementWidthStyle);
+  }
+
+  private calculateSvgHeight(): number {
+    return this.height
+      ? this.height - 4
+      : 500; //todo calculate basing on max nodes level
   }
 }

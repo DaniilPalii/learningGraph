@@ -1,8 +1,9 @@
+<!--todo to separate component-->
 <mat-toolbar [color]="'primary'">
   <button mat-button class="toolbar-button" (click)="sidenav.toggle()">
     <mat-icon>menu</mat-icon>
   </button>
-  <span>{{ navigator.selectedItem ? 'Le Graph - ' + navigator.selectedItem : 'Le Graph - Learn graph quick end easy!' }}</span>
+  <span>{{ navigator.selectedItem ? 'Le Graph - ' + navigator.selectedItem.title : 'Le Graph - Learn graph quick end easy!' }}</span>
   <span class="flex-spacer"></span>
   <span class="window-controls-buttons">
     <button mat-button class="toolbar-button" (click)="minimizeWindow()">
@@ -16,11 +17,14 @@
     </button>
   </span>
 </mat-toolbar>
+
 <mat-sidenav-container>
   <mat-sidenav #sidenav [mode]="'side'" [opened]="true">
     <app-navigation #navigator></app-navigation>
   </mat-sidenav>
-  <mat-sidenav-content>
-    <app-lesson [currentLesson]="navigator.selectedItem"></app-lesson>
+  <mat-sidenav-content [ngSwitch]="navigator.selectedItem.id">
+    <app-lesson-1 *ngSwitchCase="1"></app-lesson-1>
+    <app-lesson-2 *ngSwitchCase="2"></app-lesson-2>
+    <span *ngSwitchDefault>Lesson is in development, please wait...</span>
   </mat-sidenav-content>
 </mat-sidenav-container>

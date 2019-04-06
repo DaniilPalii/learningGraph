@@ -33,3 +33,7 @@ span.window-controls-buttons {
 span.flex-spacer {
   flex-grow: 1;
 }
+
+mat-sidenav-content {
+  padding: 0 21px;
+}

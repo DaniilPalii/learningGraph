@@ -1,4 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
+
+export interface NavigationItem {
+  id: number;
+  title: string;
+}
 
 @Component({
   selector: 'app-navigation',
@@ -6,10 +11,17 @@ import { Component } from '@angular/core';
   styleUrls: ['./navigation.component.css']
 })
 export class NavigationComponent {
-  public navigationItems = new Array<string>('Lesson 1', 'Lesson 2 with long name', 'Lesson 3 with longer name. Some text and more text', 'Lesson 4');
-  public selectedItem: string = this.navigationItems[0]; // todo remove default value
+  public navigationItems = new Array<NavigationItem>(
+    { id: 1, title: 'Lesson 1' },
+    { id: 2, title: 'Lesson 2 with long name' },
+    { id: 3, title: 'Lesson 3 with longer name. Some text and more text' },
+    { id: 4, title: 'Lesson 4'}
+  );
+  public selectedItem: NavigationItem = this.navigationItems[0];
+  @Output('selectionChange') public selectionChangeEventEmitter = new EventEmitter<NavigationItem>();
 
-  public switchSelection(item: string) {
+  public switchSelection(item: NavigationItem): void {
     this.selectedItem = item;
+    this.selectionChangeEventEmitter.emit(item);
   }
 }

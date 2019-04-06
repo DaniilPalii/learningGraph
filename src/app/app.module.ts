@@ -6,18 +6,16 @@ import { MaterialModule } from './material.module';
 
 import { AppComponent } from './app.component';
 import { NavigationComponent } from './navigation/navigation.component';
-import { LessonComponent } from './lesson/lesson.component';
-import { ExerciseComponent } from './lesson/exercise/exercise.component';
-import { GraphBinaryTreeComponent } from './shared/graph-binary-tree/graph-binary-tree.component';
-import { BinaryTreeComponent } from './shared/graph-binary-tree/binary-tree/binary-tree.component';
+import { Lesson1Component } from './lessons/lesson-1/lesson-1.component';
+import { Lesson2Component } from './lessons/lesson-2/lesson-2.component';
+import { BinaryTreeComponent } from './shared/graph/binary-tree/binary-tree.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavigationComponent,
-    LessonComponent,
-    ExerciseComponent,
-    GraphBinaryTreeComponent,
+    Lesson1Component,
+    Lesson2Component,
     BinaryTreeComponent,
   ],
   imports: [
