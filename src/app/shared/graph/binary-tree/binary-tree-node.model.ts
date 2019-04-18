@@ -5,15 +5,21 @@ export class BinaryTreeNodeModel {
   public leftChild: BinaryTreeNodeModel = null;
   public rightChild: BinaryTreeNodeModel = null;
   public level: number = 1;
+  public isSelected: boolean;
+  public isBranchSelected: boolean;
 
   constructor(
     value?: number,
     leftChild?: BinaryTreeNodeModel,
-    rightChild?: BinaryTreeNodeModel
+    rightChild?: BinaryTreeNodeModel,
+    isSelected?: boolean,
+    isBranchSelected?: boolean
   ) {
     if (value !== undefined) this.value = value;
     if (leftChild) this.appendLeftChild(leftChild);
     if (rightChild) this.appendRightChild(rightChild);
+    this.isSelected = isSelected;
+    this.isBranchSelected = isBranchSelected;
   }
 
   public isRoot(): boolean {

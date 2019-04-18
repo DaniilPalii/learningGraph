@@ -1,9 +1,8 @@
 import {
   AfterViewInit,
   Component,
-  DoCheck,
   ElementRef,
-  Input,
+  Input, OnChanges,
   OnDestroy,
   ViewChild
 } from '@angular/core';
@@ -11,13 +10,15 @@ import { BinaryTreeNodeModel } from './binary-tree-node.model';
 import * as SvgJs from 'svg.js';
 
 @Component({
-  selector: 'app-binary-tree[data]',
+  selector: 'app-binary-tree',
   templateUrl: './binary-tree.component.html',
   styleUrls: ['./binary-tree.component.css']
 })
-export class BinaryTreeComponent implements AfterViewInit, DoCheck, OnDestroy {
+export class BinaryTreeComponent implements AfterViewInit, OnChanges, OnDestroy {
   @Input('data') public binaryTree: BinaryTreeNodeModel;
   @Input('height') public height: number;
+  @Input('isSelectionEnabled') public isSelectionEnabled: boolean;
+
   @ViewChild('binaryTreeSvg') binaryTreeSvgElement: ElementRef;
 
   public svgDoc: SvgJs.Doc;
@@ -28,25 +29,19 @@ export class BinaryTreeComponent implements AfterViewInit, DoCheck, OnDestroy {
 
   private readonly nodeSize: number = 50;
   private readonly nodeBorderWidth: number = 2;
-  private readonly nodeFillingSize: number = this.nodeSize - this.nodeBorderWidth * 2;
   private readonly lineWidth: number = this.nodeBorderWidth;
   private readonly nodesYInterval: number = 70;
-
-  private readonly nodeColor: string = '#f06';
-  private readonly nodeBorderColor: string = '#fff';
-  private readonly nodeTextColor: string = this.nodeBorderColor;
-  private readonly lineColor: string = this.nodeBorderColor;
 
   public ngAfterViewInit(): void {
     this.svgDoc = SvgJs(this.svgId)
       .height(this.calculateSvgHeight());
   }
 
-  public ngDoCheck(): void {
+  public ngOnChanges(): void {
     setTimeout(() => {
       this.fetchComputedSvgElementWidth();
       this.redrawTree();
-    });
+    }, 300);
   }
 
   public ngOnDestroy(): void {
@@ -85,35 +80,29 @@ export class BinaryTreeComponent implements AfterViewInit, DoCheck, OnDestroy {
 
   private drawNodeG(cx: number, cy: number, node: BinaryTreeNodeModel): SvgJs.G {
     const nodeGroup = this.svgDoc.group();
-    nodeGroup.add(this.drawBorderCircle(cx, cy));
-    nodeGroup.add(this.drawFillerCircle(cx, cy));
+    nodeGroup.add(this.drawCircle(cx, cy));
     nodeGroup.add(this.drawNodeValue(cx, cy, node.value));
     nodeGroup.on('click', () => console.log(node));
 
     return nodeGroup;
   }
 
+  private drawCircle(cx: number, cy: number): SvgJs.Circle {
+    return this.svgDoc.circle(this.nodeSize)
+      .fill(Colors.accentBackground)
+      .addClass('tree-node')
+      .center(cx, cy);
+  }
+
   private drawNodeValue(cx: number, cy: number, value: number): SvgJs.Element {
     return this.svgDoc.text(value.toString())
-      .fill(this.nodeTextColor)
-      .center(cx, cy);
-  }
-
-  private drawBorderCircle(cx: number, cy: number): SvgJs.Circle {
-    return this.svgDoc.circle(this.nodeSize)
-      .fill(this.nodeBorderColor)
-      .center(cx, cy);
-  }
-
-  private drawFillerCircle(cx: number, cy: number): SvgJs.Circle {
-    return this.svgDoc.circle(this.nodeFillingSize)
-      .fill(this.nodeColor)
+      .fill(Colors.accentForeground)
       .center(cx, cy);
   }
 
   private drawLineBetween(startElement: SvgJs.Element, endElement: SvgJs.Element): SvgJs.Line {
     return this.svgDoc.line(startElement.cx(), startElement.cy(), endElement.cx(), endElement.cy())
-      .stroke({ width: this.lineWidth, color: this.lineColor })
+      .stroke({ width: this.lineWidth, color: Colors.accentForeground })
       .back();
   }
 
@@ -130,4 +119,11 @@ export class BinaryTreeComponent implements AfterViewInit, DoCheck, OnDestroy {
       ? this.height - 4
       : 500; //todo calculate basing on max nodes level
   }
+}
+
+class Colors {
+  public static readonly accentBackground: string = '#f06';
+  public static readonly accentForeground: string = '#fff';
+  public static readonly primaryBackground: string = '#b0bec5';
+  public static readonly primaryForeground: string = '#000';
 }
