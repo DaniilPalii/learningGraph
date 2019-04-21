@@ -11,6 +11,6 @@ export class Lesson1Component {
     // new BinaryTreeNodeModel(19991);
     new BinaryTreeNodeModel(0,
       new BinaryTreeNodeModel(1,
-        new BinaryTreeNodeModel(11)),
+        new BinaryTreeNodeModel(11, null, null, true)),
       new BinaryTreeNodeModel(2));
 }

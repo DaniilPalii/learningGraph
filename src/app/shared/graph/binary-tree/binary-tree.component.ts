@@ -80,23 +80,34 @@ export class BinaryTreeComponent implements AfterViewInit, OnChanges, OnDestroy 
 
   private drawNodeG(cx: number, cy: number, node: BinaryTreeNodeModel): SvgJs.G {
     const nodeGroup = this.svgDoc.group();
-    nodeGroup.add(this.drawCircle(cx, cy));
-    nodeGroup.add(this.drawNodeValue(cx, cy, node.value));
-    nodeGroup.on('click', () => console.log(node));
+    const circle = this.drawCircle(cx, cy, node);
+    nodeGroup.add(circle);
+    const nodeValue = this.drawNodeValue(cx, cy, node);
+    nodeGroup.add(nodeValue);
+
+    if (this.isSelectionEnabled) this.attachSelectionEvent(node, nodeGroup, circle, nodeValue);
 
     return nodeGroup;
   }
 
-  private drawCircle(cx: number, cy: number): SvgJs.Circle {
+  private attachSelectionEvent(node: BinaryTreeNodeModel, nodeGroup: SvgJs.G, circle, nodeValue): void {
+    nodeGroup.on('click', () => {
+      node.isSelected = !node.isSelected;
+
+      circle.fill(node.isSelected ? Colors.accentBackground : Colors.primaryBackground);
+      nodeValue.fill(node.isSelected ? Colors.accentForeground : Colors.primaryForeground);
+    });
+  }
+
+  private drawCircle(cx: number, cy: number, node: BinaryTreeNodeModel): SvgJs.Circle {
     return this.svgDoc.circle(this.nodeSize)
-      .fill(Colors.accentBackground)
-      .addClass('tree-node')
+      .fill(node.isSelected ? Colors.accentBackground : Colors.primaryBackground)
       .center(cx, cy);
   }
 
-  private drawNodeValue(cx: number, cy: number, value: number): SvgJs.Element {
-    return this.svgDoc.text(value.toString())
-      .fill(Colors.accentForeground)
+  private drawNodeValue(cx: number, cy: number, node: BinaryTreeNodeModel): SvgJs.Element {
+    return this.svgDoc.text(node.value.toString())
+      .fill(node.isSelected ? Colors.accentForeground : Colors.primaryForeground)
       .center(cx, cy);
   }
 
