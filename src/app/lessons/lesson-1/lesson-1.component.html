@@ -16,7 +16,8 @@
   Oto przykład drzewa binarnego w którym są przechowywane pewne liczby.
 </p>
 <app-binary-tree [data]="demonstrationTree"
-                 [isSelectionEnabled]="false">
+                 [isSelectionEnabled]="false"
+                 (nodeClicked)="log($event)">
 </app-binary-tree>
 <!--<span>-->
   <!--Prozę pokazać następne elementy:-->

@@ -73,7 +73,7 @@ export class BinaryTreeComponent implements AfterViewInit, OnChanges, OnDestroy 
   }
 
   private drawChildrenRecursively(node: BinaryTreeNodeModel, nodeG: SvgJs.G, xIndex: number): void {
-    const childrenCY = nodeG.cy() + Sizes.nodesYInterval;
+    const childrenCY = nodeG.cy() + Sizes.nodesCYInterval;
     const possiblePointsOnLevelCount = Math.pow(2, (node.level + 1));
     const widthBetweenPossiblePointsOnLevel = this.svgDocWidth / possiblePointsOnLevelCount;
     const doubleXIndex = xIndex * 2;
@@ -151,13 +151,11 @@ export class BinaryTreeComponent implements AfterViewInit, OnChanges, OnDestroy 
   }
 
   private calculateSvgHeight(): number {
-    let svgHeight = this.height
-      ? this.height
-      : this.binaryTree.level * Sizes.node
-        + (this.binaryTree.level - 1) * Sizes.nodesYInterval;
-    svgHeight -= 4;
-
-    return svgHeight;
+    return this.height
+      ? this.height - 4
+      : this.binaryTree.height * Sizes.node
+        + (this.binaryTree.height - 1) * Sizes.nodesYInterval
+        + Sizes.nodeClickDelta;
   }
 }
 
@@ -170,8 +168,10 @@ class Colors {
 
 class Sizes {
   public static readonly node: number = 50;
-  public static readonly nodeClicked: number = Sizes.node + 7;
+  public static readonly nodeClickDelta: number = 7;
+  public static readonly nodeClicked: number = Sizes.node + Sizes.nodeClickDelta;
   public static readonly nodeBorderWidth: number = 2;
   public static readonly lineWidth: number = Sizes.nodeBorderWidth;
-  public static readonly nodesYInterval: number = 70;
+  public static readonly nodesYInterval: number = 20;
+  public static readonly nodesCYInterval: number = Sizes.nodesYInterval + Sizes.node;
 }

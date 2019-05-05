@@ -9,6 +9,7 @@ import { Texts } from '../../texts.data';
 })
 export class Lesson1Component {
   public texts = Texts;
+  public log = console.log;
 
   public demonstrationTree =
     new Node(4,
