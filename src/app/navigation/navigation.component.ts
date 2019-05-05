@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
+import { Texts } from '../texts.data';
 
 export interface NavigationItem {
   id: number;
@@ -12,7 +13,7 @@ export interface NavigationItem {
 })
 export class NavigationComponent {
   public navigationItems = new Array<NavigationItem>(
-    { id: 1, title: 'Lesson 1' },
+    { id: 1, title: Texts.lesson1Title },
     { id: 2, title: 'Lesson 2 with long name' },
     { id: 3, title: 'Lesson 3 with longer name. Some text and more text' },
     { id: 4, title: 'Lesson 4'}
