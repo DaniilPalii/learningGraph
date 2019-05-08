@@ -64,9 +64,7 @@ export class BinaryTreeComponent implements AfterViewInit, OnChanges, OnDestroy 
 
   private enableRedrawingOnResize(): void {
     // tslint:disable-next-line:no-unused-expression
-    new ResizeSensor(
-      this.binaryTreeSvgElement.nativeElement,
-      () => this.redraw());
+    new ResizeSensor(this.binaryTreeSvgElement.nativeElement, () => this.redraw());
   }
 
   public redraw(): void {
@@ -124,12 +122,14 @@ export class BinaryTreeComponent implements AfterViewInit, OnChanges, OnDestroy 
   private drawCircle(cx: number, cy: number, node: BinaryTreeNodeModel): SvgJs.Circle {
     return this.svgDoc.circle(Sizes.node)
       .fill(node.isSelected ? Colors.accentBackground : Colors.primaryBackground)
+      .attr('cursor', 'pointer')
       .center(cx, cy);
   }
 
   private drawNodeValue(cx: number, cy: number, node: BinaryTreeNodeModel): SvgJs.Text {
     return this.svgDoc.text(node.value.toString())
       .fill(node.isSelected ? Colors.accentForeground : Colors.primaryForeground)
+      .attr('cursor', 'pointer')
       .center(cx, cy);
   }
 
