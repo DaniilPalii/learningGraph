@@ -29,6 +29,7 @@
     "@types/svg.js": "^2.3.1",
     "@types/svgjs.draggable": "0.0.30",
     "core-js": "^2.5.4",
+    "css-element-queries": "^1.1.1",
     "cytoscape": "^3.2.20",
     "fs": "0.0.1-security",
     "hammerjs": "^2.0.8",

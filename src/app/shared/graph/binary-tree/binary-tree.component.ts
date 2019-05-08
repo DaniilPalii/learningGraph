@@ -1,11 +1,5 @@
-import {
-  AfterViewInit,
-  Component,
-  ElementRef, EventEmitter,
-  Input, OnChanges,
-  OnDestroy, Output,
-  ViewChild
-} from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, Output, ViewChild } from '@angular/core';
+import ResizeSensor from 'css-element-queries/src/ResizeSensor';
 import { BinaryTreeNodeModel } from './binary-tree-node.model';
 import * as SvgJs from 'svg.js';
 
@@ -42,6 +36,7 @@ export class BinaryTreeComponent implements AfterViewInit, OnChanges, OnDestroy 
 
   private svgDoc: SvgJs.Doc;
   private svgDocWidth: number;
+  private redrawingTimer: NodeJS.Timer;
 
   private readonly animationDuration: number = 150;
 
@@ -50,19 +45,37 @@ export class BinaryTreeComponent implements AfterViewInit, OnChanges, OnDestroy 
   }
 
   public ngAfterViewInit(): void {
-    this.svgDoc = SvgJs(this.svgId)
-      .height(this.calculateSvgHeight());
+    this.createSvg();
+    this.enableRedrawingOnResize();
   }
 
   public ngOnChanges(): void {
-    setTimeout(() => {
-      this.fetchComputedSvgElementWidth();
-      this.redrawTree();
-    }, 300);
+    this.redraw();
   }
 
   public ngOnDestroy(): void {
     this.svgDoc.clear();
+  }
+
+  private createSvg(): void {
+    this.svgDoc = SvgJs(this.svgId)
+      .height(this.calculateSvgHeight());
+  }
+
+  private enableRedrawingOnResize(): void {
+    // tslint:disable-next-line:no-unused-expression
+    new ResizeSensor(
+      this.binaryTreeSvgElement.nativeElement,
+      () => this.redraw());
+  }
+
+  public redraw(): void {
+    clearTimeout(this.redrawingTimer);
+
+    this.redrawingTimer = setTimeout(() => {
+      this.fetchComputedSvgElementWidth();
+      this.redrawTree();
+    }, 250);
   }
 
   private redrawTree(): void {
