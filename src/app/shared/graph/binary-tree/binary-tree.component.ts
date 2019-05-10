@@ -23,6 +23,9 @@ export class BinaryTreeComponent implements AfterViewInit, OnChanges, OnDestroy 
   @Input('isSelectionEnabled')
   public isSelectionEnabled: boolean;
 
+  @Input('isClickEnabled')
+  public isClickEnabled: boolean;
+
   @Output('nodeClicked')
   public nodeClickedEvent = new EventEmitter<BinaryTreeNodeModel>();
 
@@ -113,8 +116,14 @@ export class BinaryTreeComponent implements AfterViewInit, OnChanges, OnDestroy 
     const nodeValue = this.drawNodeValue(cx, cy, node);
     nodeGroup.add(nodeValue);
 
-    if (this.isSelectionEnabled) this.attachSelectionEvent(node, nodeGroup, circle, nodeValue);
-    this.attachClickEvent(node, nodeGroup, circle);
+    if (this.isSelectionEnabled)
+      this.attachSelectionEvent(node, nodeGroup, circle, nodeValue);
+
+    if (this.isSelectionEnabled || this.isClickEnabled) {
+      this.attachClickEvent(node, nodeGroup, circle);
+      nodeGroup.attr('cursor', 'pointer');
+    } else
+      nodeGroup.attr('cursor', 'default');
 
     return nodeGroup;
   }
@@ -122,14 +131,12 @@ export class BinaryTreeComponent implements AfterViewInit, OnChanges, OnDestroy 
   private drawCircle(cx: number, cy: number, node: BinaryTreeNodeModel): SvgJs.Circle {
     return this.svgDoc.circle(Sizes.node)
       .fill(node.isSelected ? Colors.accentBackground : Colors.primaryBackground)
-      .attr('cursor', 'pointer')
       .center(cx, cy);
   }
 
   private drawNodeValue(cx: number, cy: number, node: BinaryTreeNodeModel): SvgJs.Text {
     return this.svgDoc.text(node.value.toString())
       .fill(node.isSelected ? Colors.accentForeground : Colors.primaryForeground)
-      .attr('cursor', 'pointer')
       .center(cx, cy);
   }
 
