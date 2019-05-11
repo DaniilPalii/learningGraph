@@ -15,12 +15,9 @@
 <p>
   Oto przykład drzewa binarnego w którym są przechowywane pewne liczby.
 </p>
-<app-binary-tree [data]="demonstrationTree"
-                 [isSelectionEnabled]="false"
-                 (nodeClicked)="log($event)">
-</app-binary-tree>
+<app-binary-tree [data]="firstDemonstrationTree"></app-binary-tree>
 <p>
-  Drzewo jest wysokości {{ demonstrationTree.height }}. Szare kółka nazywamy węzłami.
+  Drzewo jest wysokości {{ firstDemonstrationTree.height }}. Szare kółka nazywamy węzłami.
   Każdy węzeł może posiadać pewną wartość.
   Niekonicznie musi to być liczba. Pomiędzy dwoma dowolnymi węzłami prowadzi dokładnie jedna droga.
   Niektóre węzły mają dwie gałęzie, są takie co mają jedno, a jeszcze inni nie mają w ogóle.
@@ -38,6 +35,15 @@
     <!--<li>h. podać stopień węzła</li>-->
   <!--</ul>-->
 <!--</span>-->
+<div class="animator">
+  <button mat-icon-button [disabled]="true">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+  <app-binary-tree [data]="elementsDemonstrationTree"></app-binary-tree>
+  <button mat-icon-button>
+    <mat-icon>arrow_forward</mat-icon>
+  </button>
+</div>
 <h3>Exercise 1</h3>
 <app-binary-tree [data]="binaryTreeData"
                  [isSelectionEnabled]="true">

@@ -1,0 +1,8 @@
+.animator {
+  display: flex;
+  align-items: center;
+}
+
+.animator app-binary-tree {
+  flex-grow: 1;
+}
