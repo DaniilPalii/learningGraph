@@ -8,27 +8,27 @@ import { BinaryTreeNodeModel } from '../../shared/graph/binary-tree/binary-tree-
 })
 export class Lesson2Component {
   public binaryTreeData =
-    new BinaryTreeNodeModel(100,
-      new BinaryTreeNodeModel(1,
-        new BinaryTreeNodeModel(11,
-          new BinaryTreeNodeModel(111)
+    new BinaryTreeNodeModel(null, 100,
+      new BinaryTreeNodeModel(null, 1,
+        new BinaryTreeNodeModel(null, 11,
+          new BinaryTreeNodeModel(null, 111)
         ),
-        new BinaryTreeNodeModel(12,
-          new BinaryTreeNodeModel(121,
+        new BinaryTreeNodeModel(null, 12,
+          new BinaryTreeNodeModel(null, 121,
             null,
-            new BinaryTreeNodeModel(1212)
+            new BinaryTreeNodeModel(null, 1212)
           ),
-          new BinaryTreeNodeModel(122))),
-      new BinaryTreeNodeModel(2,
-        new BinaryTreeNodeModel(21,
-          new BinaryTreeNodeModel(211,
-            new BinaryTreeNodeModel(2111),
-            new BinaryTreeNodeModel(2112)
+          new BinaryTreeNodeModel(null, 122))),
+      new BinaryTreeNodeModel(null, 2,
+        new BinaryTreeNodeModel(null, 21,
+          new BinaryTreeNodeModel(null, 211,
+            new BinaryTreeNodeModel(null, 2111),
+            new BinaryTreeNodeModel(null, 2112)
           ),
-          new BinaryTreeNodeModel(212,
-            new BinaryTreeNodeModel(2121),
-            new BinaryTreeNodeModel(2122))),
-        new BinaryTreeNodeModel(22,
-          new BinaryTreeNodeModel(221),
-          new BinaryTreeNodeModel(222))));
+          new BinaryTreeNodeModel(null, 212,
+            new BinaryTreeNodeModel(null, 2121),
+            new BinaryTreeNodeModel(null, 2122))),
+        new BinaryTreeNodeModel(null, 22,
+          new BinaryTreeNodeModel(null, 221),
+          new BinaryTreeNodeModel(null, 222))));
 }

@@ -36,11 +36,19 @@
   <!--</ul>-->
 <!--</span>-->
 <div class="animator">
-  <button mat-icon-button [disabled]="true">
+  <button mat-icon-button
+          [disabled]="elementsDemonstrationTreeOrder === 1"
+          (click)="demonstratePreviousElement()">
     <mat-icon>arrow_back</mat-icon>
   </button>
-  <app-binary-tree [data]="elementsDemonstrationTree"></app-binary-tree>
-  <button mat-icon-button>
+  <app-binary-tree #elementsDemonstrationTreeElement
+                   [data]="elementsDemonstrationTree"
+                   [isClickEnabled]="true"
+                   (nodeClicked)="log($event)">
+  </app-binary-tree>
+  <button mat-icon-button
+          [disabled]="elementsDemonstrationTreeOrder === elementsDemonstrationTreeLastOrder"
+          (click)="demonstrateNextElement()">
     <mat-icon>arrow_forward</mat-icon>
   </button>
 </div>

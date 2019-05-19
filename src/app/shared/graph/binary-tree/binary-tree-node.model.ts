@@ -1,4 +1,5 @@
 export class BinaryTreeNodeModel {
+  public id: number = null;
   public value: number = null;
   public parent: BinaryTreeNodeModel = null;
   public children = new Array<BinaryTreeNodeModel>();
@@ -10,12 +11,14 @@ export class BinaryTreeNodeModel {
   public isBranchSelected: boolean;
 
   constructor(
+    id?: number,
     value?: number,
     leftChild?: BinaryTreeNodeModel,
     rightChild?: BinaryTreeNodeModel,
     isSelected?: boolean,
     isBranchSelected?: boolean
   ) {
+    if (id !== undefined) this.id = id;
     if (value !== undefined) this.value = value;
     if (leftChild) this.appendLeftChild(leftChild);
     if (rightChild) this.appendRightChild(rightChild);
@@ -41,6 +44,26 @@ export class BinaryTreeNodeModel {
       children = children.concat(child.getChildrenRecursively()));
 
     return children;
+  }
+
+  public getNodeByIdRecursively(id: number): BinaryTreeNodeModel {
+    if (this.id === id)
+      return this;
+
+    for (const child of this.children) {
+      const foundNode = child.getNodeByIdRecursively(id);
+      if (foundNode !== null)
+        return foundNode;
+    }
+
+    return null;
+  }
+
+  public getRootRecursively(): BinaryTreeNodeModel {
+    if (this.isRoot())
+      return this;
+
+    return this.parent.getRootRecursively();
   }
 
   private appendLeftChild(child: BinaryTreeNodeModel): void {
