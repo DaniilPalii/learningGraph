@@ -1,10 +1,10 @@
-export class BinaryTreeNodeModel {
+export class BinaryTreeNode {
   public id: number = null;
   public value: number = null;
-  public parent: BinaryTreeNodeModel = null;
-  public children = new Array<BinaryTreeNodeModel>();
-  public leftChild: BinaryTreeNodeModel = null;
-  public rightChild: BinaryTreeNodeModel = null;
+  public parent: BinaryTreeNode = null;
+  public children = new Array<BinaryTreeNode>();
+  public leftChild: BinaryTreeNode = null;
+  public rightChild: BinaryTreeNode = null;
   public level: number = 1;
   public height: number = 1;
   public isSelected: boolean;
@@ -13,8 +13,8 @@ export class BinaryTreeNodeModel {
   constructor(
     id?: number,
     value?: number,
-    leftChild?: BinaryTreeNodeModel,
-    rightChild?: BinaryTreeNodeModel,
+    leftChild?: BinaryTreeNode,
+    rightChild?: BinaryTreeNode,
     isSelected?: boolean,
     isBranchSelected?: boolean
   ) {
@@ -38,7 +38,7 @@ export class BinaryTreeNodeModel {
     return !this.isRoot() && !this.isLeaf();
   }
 
-  public getChildrenRecursively(): Array<BinaryTreeNodeModel> {
+  public getChildrenRecursively(): Array<BinaryTreeNode> {
     let children = this.children;
     this.children.forEach(child =>
       children = children.concat(child.getChildrenRecursively()));
@@ -46,7 +46,7 @@ export class BinaryTreeNodeModel {
     return children;
   }
 
-  public getNodeByIdRecursively(id: number): BinaryTreeNodeModel {
+  public getNodeByIdRecursively(id: number): BinaryTreeNode {
     if (this.id === id)
       return this;
 
@@ -59,24 +59,24 @@ export class BinaryTreeNodeModel {
     return null;
   }
 
-  public getRootRecursively(): BinaryTreeNodeModel {
+  public getRootRecursively(): BinaryTreeNode {
     if (this.isRoot())
       return this;
 
     return this.parent.getRootRecursively();
   }
 
-  private appendLeftChild(child: BinaryTreeNodeModel): void {
+  private appendLeftChild(child: BinaryTreeNode): void {
     this.leftChild = child;
     this.afterAppendingChild(child);
   }
 
-  private appendRightChild(child: BinaryTreeNodeModel): void {
+  private appendRightChild(child: BinaryTreeNode): void {
     this.rightChild = child;
     this.afterAppendingChild(child);
   }
 
-  private afterAppendingChild(child: BinaryTreeNodeModel): void {
+  private afterAppendingChild(child: BinaryTreeNode): void {
     child.parent = this;
     this.refreshChildrenList();
     this.updateChildrenLevelRecursively();
@@ -84,7 +84,7 @@ export class BinaryTreeNodeModel {
   }
 
   private refreshChildrenList(): void {
-    const children = new Array<BinaryTreeNodeModel>();
+    const children = new Array<BinaryTreeNode>();
     if (this.leftChild) children.push(this.leftChild);
     if (this.rightChild) children.push(this.rightChild);
 

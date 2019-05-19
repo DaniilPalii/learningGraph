@@ -37,7 +37,7 @@
 <!--</span>-->
 <div class="animator">
   <button mat-icon-button
-          [disabled]="elementsDemonstrationTreeOrder === 1"
+          [disabled]="elementsDemonstrationStateOrder === 0"
           (click)="demonstratePreviousElement()">
     <mat-icon>arrow_back</mat-icon>
   </button>
@@ -47,7 +47,7 @@
                    (nodeClicked)="log($event)">
   </app-binary-tree>
   <button mat-icon-button
-          [disabled]="elementsDemonstrationTreeOrder === elementsDemonstrationTreeLastOrder"
+          [disabled]="elementsDemonstrationStateOrder === elementsDemonstratorLastStateNumber"
           (click)="demonstrateNextElement()">
     <mat-icon>arrow_forward</mat-icon>
   </button>

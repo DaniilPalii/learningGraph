@@ -1,10 +1,10 @@
 import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, Output, ViewChild } from '@angular/core';
 import ResizeSensor from 'css-element-queries/src/ResizeSensor';
-import { BinaryTreeNodeModel } from '../binary-tree-node.model';
+import { BinaryTreeNode } from '../binary-tree-node';
 import * as SvgJs from 'svg.js';
 
 export interface NodeSelectionChangeEvent {
-  node: BinaryTreeNodeModel;
+  node: BinaryTreeNode;
   isSelected: boolean;
 }
 
@@ -15,7 +15,7 @@ export interface NodeSelectionChangeEvent {
 })
 export class BinaryTreeComponent implements AfterViewInit, OnChanges, OnDestroy {
   @Input('data')
-  public binaryTreeData: BinaryTreeNodeModel;
+  public binaryTreeData: BinaryTreeNode;
 
   @Input('height')
   public height: number;
@@ -27,7 +27,7 @@ export class BinaryTreeComponent implements AfterViewInit, OnChanges, OnDestroy 
   public isClickEnabled: boolean;
 
   @Output('nodeClicked')
-  public nodeClickedEvent = new EventEmitter<BinaryTreeNodeModel>();
+  public nodeClickedEvent = new EventEmitter<BinaryTreeNode>();
 
   @Output('selectionChange')
   public selectionChangeEvent = new EventEmitter<NodeSelectionChangeEvent>();
@@ -94,7 +94,7 @@ export class BinaryTreeComponent implements AfterViewInit, OnChanges, OnDestroy 
 
   public selectNodeBranch(nodeId: number): void {
     this.binaryTreeData.getNodeByIdRecursively(nodeId).isBranchSelected = true;
-    this.nodesDrawnElements[nodeId].branch.stroke(Colors.branchSelected);
+    this.nodesDrawnElements[nodeId].branch.stroke({ color: Colors.branchSelected });
   }
 
   public unselectNodeBranch(nodeId: number): void {
@@ -119,7 +119,7 @@ export class BinaryTreeComponent implements AfterViewInit, OnChanges, OnDestroy 
     this.drawChildrenRecursively(this.binaryTreeData, rootNodeG, 1);
   }
 
-  private drawChildrenRecursively(node: BinaryTreeNodeModel, nodeG: SvgJs.G, xIndex: number): void {
+  private drawChildrenRecursively(node: BinaryTreeNode, nodeG: SvgJs.G, xIndex: number): void {
     const childrenCY = nodeG.cy() + Sizes.nodesCYInterval;
     const possiblePointsOnLevelCount = Math.pow(2, (node.level + 1));
     const widthBetweenPossiblePointsOnLevel = this.svgDocWidth / possiblePointsOnLevelCount;
@@ -136,20 +136,15 @@ export class BinaryTreeComponent implements AfterViewInit, OnChanges, OnDestroy 
     }
   }
 
-  private drawChildAndHisChildrenRecursively(
-    childXIndex: number,
-    widthBetweenPossiblePointsOnLevel: number,
-    childrenCY: number,
-    child: BinaryTreeNodeModel,
-    parentNodeG: SvgJs.G
-  ): void {
+  private drawChildAndHisChildrenRecursively(childXIndex: number, widthBetweenPossiblePointsOnLevel: number, childrenCY: number,
+                                             child: BinaryTreeNode, parentNodeG: SvgJs.G): void {
     const leftChildCX = childXIndex * widthBetweenPossiblePointsOnLevel;
     const childNodeG = this.drawNodeG(leftChildCX, childrenCY, child);
     this.drawChildrenRecursively(child, childNodeG, childXIndex);
     this.drawBranchBetween(parentNodeG, childNodeG, child);
   }
 
-  private drawNodeG(cx: number, cy: number, node: BinaryTreeNodeModel): SvgJs.G {
+  private drawNodeG(cx: number, cy: number, node: BinaryTreeNode): SvgJs.G {
     const nodeGroup = this.svgDoc.group();
     this.nodesDrawnElements[node.id] = <any>{};
     const circle = this.drawCircle(cx, cy, node);
@@ -169,7 +164,7 @@ export class BinaryTreeComponent implements AfterViewInit, OnChanges, OnDestroy 
     return nodeGroup;
   }
 
-  private drawCircle(cx: number, cy: number, node: BinaryTreeNodeModel): SvgJs.Circle {
+  private drawCircle(cx: number, cy: number, node: BinaryTreeNode): SvgJs.Circle {
     const circle = this.svgDoc.circle(Sizes.node)
       .fill(node.isSelected ? Colors.nodeSelected : Colors.node)
       .center(cx, cy);
@@ -178,7 +173,7 @@ export class BinaryTreeComponent implements AfterViewInit, OnChanges, OnDestroy 
     return circle;
   }
 
-  private drawNodeValue(cx: number, cy: number, node: BinaryTreeNodeModel): SvgJs.Text {
+  private drawNodeValue(cx: number, cy: number, node: BinaryTreeNode): SvgJs.Text {
     const value = this.svgDoc.text(node.value.toString())
       .fill(node.isSelected ? Colors.nodeValueSelected : Colors.nodeValue)
       .center(cx, cy);
@@ -187,7 +182,7 @@ export class BinaryTreeComponent implements AfterViewInit, OnChanges, OnDestroy 
     return value;
   }
 
-  private attachSelectionEvent(node: BinaryTreeNodeModel, nodeGroup: SvgJs.G, circle: SvgJs.Circle, nodeValue: SvgJs.Text): void {
+  private attachSelectionEvent(node: BinaryTreeNode, nodeGroup: SvgJs.G, circle: SvgJs.Circle, nodeValue: SvgJs.Text): void {
     nodeGroup.on('click', () => {
       node.isSelected = !node.isSelected;
 
@@ -196,14 +191,14 @@ export class BinaryTreeComponent implements AfterViewInit, OnChanges, OnDestroy 
     });
   }
 
-  private attachClickEvent(node: BinaryTreeNodeModel, nodeGroup: SvgJs.G, circle: SvgJs.Circle): void {
+  private attachClickEvent(node: BinaryTreeNode, nodeGroup: SvgJs.G, circle: SvgJs.Circle): void {
     nodeGroup.on('click', () => {
       this.nodeClickedEvent.emit(node);
       this.animateCircleClick(circle);
     });
   }
 
-  private drawBranchBetween(startElement: SvgJs.Element, endElement: SvgJs.Element, node: BinaryTreeNodeModel): SvgJs.Line {
+  private drawBranchBetween(startElement: SvgJs.Element, endElement: SvgJs.Element, node: BinaryTreeNode): SvgJs.Line {
     const branch = this.svgDoc.line(startElement.cx(), startElement.cy(), endElement.cx(), endElement.cy())
       .stroke({
         width: Sizes.lineWidth,

@@ -1,5 +1,5 @@
 import { AfterContentInit, AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { BinaryTreeNodeModel as Node } from '../../shared/graph/binary-tree/binary-tree-node.model';
+import { BinaryTreeNode as Node } from '../../shared/graph/binary-tree/binary-tree-node';
 import { BinaryTreeComponent } from '../../shared/graph/binary-tree/component/binary-tree.component';
 import { Texts } from '../../texts.data';
 
@@ -28,8 +28,22 @@ export class Lesson1Component implements AfterContentInit {
         new Node(211, 21),
         new Node(212, 0, new Node(2121, 11), new Node(2122, 31))),
       new Node(22, 8, new Node(221, 2), new Node(222, 10)));
-  public elementsDemonstrationTreeOrder = 1;
-  public readonly elementsDemonstrationTreeLastOrder = 7;
+  public readonly elementsDemonstratorStates: Array<State> = [
+    new State(
+      () => this.elementsDemonstrationTreeElement.selectNode(2),
+      () => this.elementsDemonstrationTreeElement.unselectNode(2)
+    ),
+    new State(
+      () => this.elementsDemonstrationTreeElement.selectNodeBranch(21),
+      () => this.elementsDemonstrationTreeElement.unselectNodeBranch(21)
+    ),
+    new State(
+      () => {},
+      () => {}
+    ),
+  ];
+  public elementsDemonstrationStateOrder = 0;
+  public readonly elementsDemonstratorLastStateNumber = this.elementsDemonstratorStates.length - 1;
 
   public readonly binaryTreeData =
     new Node(null, 0,
@@ -38,45 +52,33 @@ export class Lesson1Component implements AfterContentInit {
       new Node(null, 2));
 
   public ngAfterContentInit(): void {
-    this.demonstrateElement();
+    setTimeout(
+      () => this.elementsDemonstratorStates[this.elementsDemonstrationStateOrder].setUp(),
+      300);
   }
 
   public demonstratePreviousElement(): void {
-    this.elementsDemonstrationTreeOrder--;
-    this.demonstrateElement();
+    setTimeout(() => {
+        this.elementsDemonstratorStates[this.elementsDemonstrationStateOrder].tearDown();
+        this.elementsDemonstratorStates[--this.elementsDemonstrationStateOrder].setUp();
+      },
+      300);
   }
 
   public demonstrateNextElement(): void {
-    this.elementsDemonstrationTreeOrder++;
-    this.demonstrateElement();
-  }
-
-  private demonstrateElement(): void {
     setTimeout(() => {
-      switch (this.elementsDemonstrationTreeOrder) {
-        case 1:
-          this.elementsDemonstrationTreeElement.selectNode(2);
-          break;
-        case 2:
-          this.elementsDemonstrationTreeElement.unselectNode(2);
-          this.elementsDemonstrationTreeElement.selectNodeBranch(2);
-          break;
-        case 3:
-          this.elementsDemonstrationTreeElement.unselectNodeBranch(2);
-          break;
-        case 4:
-          break;
-        case 5:
-          break;
-        case 6:
-          break;
-        case 7:
-          break;
-        default:
-          throw new Error(`elementsDemonstrationTreeOrder unexpected value: ${this.elementsDemonstrationTreeOrder}`);
-        }
-
+        this.elementsDemonstratorStates[this.elementsDemonstrationStateOrder].tearDown();
+        this.elementsDemonstratorStates[++this.elementsDemonstrationStateOrder].setUp();
       },
-    300);
+      300);
   }
 }
+
+class State {
+  constructor(
+    public setUp: () => void,
+    public tearDown: () => void
+  ) { }
+}
+
+
