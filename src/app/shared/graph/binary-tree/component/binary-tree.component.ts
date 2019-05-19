@@ -74,6 +74,10 @@ export class BinaryTreeComponent implements AfterViewInit, OnChanges, OnDestroy 
     this.animateCircleClick(this.nodesDrawnElements[nodeId].circle);
   }
 
+  public animateBranchClick(nodeId: number): void {
+    this.animateLineClick(this.nodesDrawnElements[nodeId].branch);
+  }
+
   public selectNode(nodeId: number): void {
     this.binaryTreeData.getNodeByIdRecursively(nodeId).isSelected = true;
 
@@ -95,6 +99,7 @@ export class BinaryTreeComponent implements AfterViewInit, OnChanges, OnDestroy 
   public selectNodeBranch(nodeId: number): void {
     this.binaryTreeData.getNodeByIdRecursively(nodeId).isBranchSelected = true;
     this.nodesDrawnElements[nodeId].branch.stroke({ color: Colors.branchSelected });
+    this.animateBranchClick(nodeId);
   }
 
   public unselectNodeBranch(nodeId: number): void {
@@ -201,7 +206,7 @@ export class BinaryTreeComponent implements AfterViewInit, OnChanges, OnDestroy 
   private drawBranchBetween(startElement: SvgJs.Element, endElement: SvgJs.Element, node: BinaryTreeNode): SvgJs.Line {
     const branch = this.svgDoc.line(startElement.cx(), startElement.cy(), endElement.cx(), endElement.cy())
       .stroke({
-        width: Sizes.lineWidth,
+        width: Sizes.branch,
         color: (node.isSelected ? Colors.branchSelected : Colors.branch)
       })
       .back(); // 'back' decrease z-index
@@ -226,22 +231,35 @@ export class BinaryTreeComponent implements AfterViewInit, OnChanges, OnDestroy 
   }
 
   private animateCircleClick(circle: SvgJs.Circle): void {
-    circle.animate(this.animationDuration).size(Sizes.node, Sizes.nodeClicked)
-      .after(() => circle.animate(this.animationDuration).size(Sizes.nodeClicked, Sizes.node));
+    circle.animate(this.animationDuration)
+      .size(Sizes.node, Sizes.nodeClicked)
+      .after(() => circle.animate(this.animationDuration)
+        .size(Sizes.nodeClicked, Sizes.node));
+  }
+
+  private animateLineClick(line: SvgJs.Line): void {
+    // line.attr({ width: Sizes.branchClicked }); //.attr('width',  Sizes.branchClicked);
+
+    line.animate(this.animationDuration)
+      .attr('stroke-width',  Sizes.branchClicked)
+      .after(() => line.animate(this.animationDuration)
+        .attr('stroke-width', Sizes.branch));
   }
 }
 
 class Colors {
   private static readonly accentBackground: string =        '#f06';
-  private static readonly accentBackgroundDarker: string =  '#dc0057';
+  private static readonly accentBackgroundDarker: string =  '#ca0055';
   private static readonly accentForeground: string =        '#fff';
   private static readonly primaryBackground: string =       '#b0bec5';
   private static readonly primaryForeground: string =       '#000';
 
   public static readonly node =               Colors.primaryBackground;
   public static readonly nodeSelected =       Colors.accentBackground;
+
   public static readonly nodeValue =          Colors.primaryForeground;
   public static readonly nodeValueSelected =  Colors.accentForeground;
+
   public static readonly branch =             Colors.accentForeground;
   public static readonly branchSelected =     Colors.accentBackgroundDarker;
 }
@@ -250,8 +268,11 @@ class Sizes {
   public static readonly node: number = 50;
   public static readonly nodeClickDelta: number = 7;
   public static readonly nodeClicked: number = Sizes.node + Sizes.nodeClickDelta;
-  public static readonly nodeBorderWidth: number = 2;
-  public static readonly lineWidth: number = Sizes.nodeBorderWidth;
+  public static readonly nodeBorder: number = 2;
   public static readonly nodesYInterval: number = 20;
   public static readonly nodesCYInterval: number = Sizes.nodesYInterval + Sizes.node;
+
+  public static readonly branch: number = Sizes.nodeBorder;
+  public static readonly branchClickDelta: number = 3;
+  public static readonly branchClicked: number = Sizes.branch + Sizes.branchClickDelta;
 }
