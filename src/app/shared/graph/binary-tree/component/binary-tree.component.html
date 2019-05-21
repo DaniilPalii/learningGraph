@@ -1,3 +1,9 @@
 <div #binaryTreeSvg
      [id]="svgId">
 </div>
+
+<app-tooltip *ngFor="let nodeTooltip of nodesTooltips | keyvalue"
+             [tooltipText]="nodeTooltip.value.tooltipText"
+             [startX]="nodeTooltip.value.startX"
+             [startY]="nodeTooltip.value.startY">
+</app-tooltip>

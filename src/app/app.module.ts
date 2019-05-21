@@ -9,6 +9,7 @@ import { NavigationComponent } from './navigation/navigation.component';
 import { Lesson1Component } from './lessons/lesson-1/lesson-1.component';
 import { Lesson2Component } from './lessons/lesson-2/lesson-2.component';
 import { BinaryTreeComponent } from './shared/graph/binary-tree/component/binary-tree.component';
+import { TooltipComponent } from './shared/graph/binary-tree/component/tooltip.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { BinaryTreeComponent } from './shared/graph/binary-tree/component/binary
     Lesson1Component,
     Lesson2Component,
     BinaryTreeComponent,
+    TooltipComponent,
   ],
   imports: [
     BrowserModule,

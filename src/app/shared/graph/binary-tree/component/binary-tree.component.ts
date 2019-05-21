@@ -2,10 +2,23 @@ import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnChanges, O
 import ResizeSensor from 'css-element-queries/src/ResizeSensor';
 import { BinaryTreeNode } from '../binary-tree-node';
 import * as SvgJs from 'svg.js';
+import { TooltipComponent } from './tooltip.component';
 
 export interface NodeSelectionChangeEvent {
   node: BinaryTreeNode;
   isSelected: boolean;
+}
+
+interface DrawnElementsData {
+  circle: SvgJs.Circle;
+  value: SvgJs.Text;
+  branch: SvgJs.Line;
+}
+
+interface TooltipData {
+  tooltipText: string;
+  startX: number;
+  startY: number;
 }
 
 @Component({
@@ -14,38 +27,34 @@ export interface NodeSelectionChangeEvent {
   styleUrls: ['./binary-tree.component.css']
 })
 export class BinaryTreeComponent implements AfterViewInit, OnChanges, OnDestroy {
-  @Input('data')
-  public binaryTreeData: BinaryTreeNode;
+  @Input('data') public binaryTreeData: BinaryTreeNode;
+  @Input() public height: number;
+  @Input() public isSelectionEnabled: boolean;
+  @Input() public isClickEnabled: boolean;
 
-  @Input('height')
-  public height: number;
-
-  @Input('isSelectionEnabled')
-  public isSelectionEnabled: boolean;
-
-  @Input('isClickEnabled')
-  public isClickEnabled: boolean;
-
-  @Output('nodeClicked')
-  public nodeClickedEvent = new EventEmitter<BinaryTreeNode>();
-
-  @Output('selectionChange')
-  public selectionChangeEvent = new EventEmitter<NodeSelectionChangeEvent>();
+  @Output('nodeClicked') public nodeClickedEvent = new EventEmitter<BinaryTreeNode>();
+  @Output('selectionChange') public selectionChangeEvent = new EventEmitter<NodeSelectionChangeEvent>();
 
   public readonly svgId: string = BinaryTreeComponent.getRandomId();
 
-  @ViewChild('binaryTreeSvg')
-  private binaryTreeSvgElement: ElementRef;
+  @ViewChild('binaryTreeSvg') private binaryTreeSvgElement: ElementRef;
 
   private svgDoc: SvgJs.Doc;
   private svgDocWidth: number;
   private redrawingTimer: NodeJS.Timer;
-  private nodesDrawnElements: { [nodeId: number]: { circle: SvgJs.Circle, value: SvgJs.Text, branch: SvgJs.Line } } = { };
+  private nodesDrawnElements: { [nodeId: number]: DrawnElementsData } = { };
+  private nodesTooltips: { [nodeId: number]: TooltipData } = { };
 
   private readonly animationDuration: number = 150;
 
   private static getRandomId(): string {
     return Math.random().toString(36).substr(2, 9);
+  }
+
+  public log(value: any): any {
+    console.log(value);
+
+    return value;
   }
 
   public ngAfterViewInit(): void {
@@ -105,6 +114,20 @@ export class BinaryTreeComponent implements AfterViewInit, OnChanges, OnDestroy 
   public unselectNodeBranch(nodeId: number): void {
     this.binaryTreeData.getNodeByIdRecursively(nodeId).isBranchSelected = false;
     this.nodesDrawnElements[nodeId].branch.stroke(Colors.branch);
+  }
+
+  public showTooltipForNode(nodeId: number, tooltipText: string): void {
+    const circle = this.nodesDrawnElements[nodeId].circle;
+
+    this.nodesTooltips[nodeId] = {
+      tooltipText: tooltipText,
+      startX: circle.cx() + Sizes.node,
+      startY: circle.y()
+    };
+  }
+
+  public hideTooltipForNode(nodeId: number): void {
+    delete this.nodesTooltips[nodeId];
   }
 
   private createSvg(): void {
@@ -238,8 +261,6 @@ export class BinaryTreeComponent implements AfterViewInit, OnChanges, OnDestroy 
   }
 
   private animateLineClick(line: SvgJs.Line): void {
-    // line.attr({ width: Sizes.branchClicked }); //.attr('width',  Sizes.branchClicked);
-
     line.animate(this.animationDuration)
       .attr('stroke-width',  Sizes.branchClicked)
       .after(() => line.animate(this.animationDuration)

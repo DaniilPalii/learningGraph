@@ -9,6 +9,7 @@ export class BinaryTreeNode {
   public height: number = 1;
   public isSelected: boolean;
   public isBranchSelected: boolean;
+  public tooltip: string;
 
   constructor(
     id?: number,
@@ -16,7 +17,8 @@ export class BinaryTreeNode {
     leftChild?: BinaryTreeNode,
     rightChild?: BinaryTreeNode,
     isSelected?: boolean,
-    isBranchSelected?: boolean
+    isBranchSelected?: boolean,
+    tooltip?: string
   ) {
     if (id !== undefined) this.id = id;
     if (value !== undefined) this.value = value;
@@ -24,6 +26,7 @@ export class BinaryTreeNode {
     if (rightChild) this.appendRightChild(rightChild);
     this.isSelected = isSelected;
     this.isBranchSelected = isBranchSelected;
+    this.tooltip = tooltip;
   }
 
   public isRoot(): boolean {

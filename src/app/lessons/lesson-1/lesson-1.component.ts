@@ -38,8 +38,8 @@ export class Lesson1Component implements AfterContentInit {
       () => this.elementsDemonstrationTreeElement.unselectNodeBranch(21)
     ),
     new State(
-      () => {},
-      () => {}
+      () => this.elementsDemonstrationTreeElement.showTooltipForNode(21, 'yeahhhh'),
+      () => this.elementsDemonstrationTreeElement.hideTooltipForNode(21)
     ),
   ];
   public elementsDemonstrationStateOrder = 0;
