@@ -2,7 +2,8 @@ import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnChanges, O
 import ResizeSensor from 'css-element-queries/src/ResizeSensor';
 import { BinaryTreeNode } from '../binary-tree-node';
 import * as SvgJs from 'svg.js';
-import { TooltipComponent } from './tooltip.component';
+import { Colors } from './colors';
+import { Sizes } from './sizes';
 
 export interface NodeSelectionChangeEvent {
   node: BinaryTreeNode;
@@ -37,13 +38,14 @@ export class BinaryTreeComponent implements AfterViewInit, OnChanges, OnDestroy 
 
   public readonly svgId: string = BinaryTreeComponent.getRandomId();
 
+  public nodesTooltips: { [nodeId: number]: TooltipData } = {};
+
   @ViewChild('binaryTreeSvg') private binaryTreeSvgElement: ElementRef;
 
   private svgDoc: SvgJs.Doc;
   private svgDocWidth: number;
   private redrawingTimer: NodeJS.Timer;
-  private nodesDrawnElements: { [nodeId: number]: DrawnElementsData } = { };
-  private nodesTooltips: { [nodeId: number]: TooltipData } = { };
+  private nodesDrawnElements: { [nodeId: number]: DrawnElementsData } = {};
 
   private readonly animationDuration: number = 150;
 
@@ -51,11 +53,11 @@ export class BinaryTreeComponent implements AfterViewInit, OnChanges, OnDestroy 
     return Math.random().toString(36).substr(2, 9);
   }
 
-  public log(value: any): any {
-    console.log(value);
-
-    return value;
-  }
+  // public log(value: any): any {
+  //   console.log(value);
+  //
+  //   return value;
+  // }
 
   public ngAfterViewInit(): void {
     this.createSvg();
@@ -121,8 +123,8 @@ export class BinaryTreeComponent implements AfterViewInit, OnChanges, OnDestroy 
 
     this.nodesTooltips[nodeId] = {
       tooltipText: tooltipText,
-      startX: circle.cx() + Sizes.node,
-      startY: circle.y()
+      startX: circle.x() + Sizes.node + 15,
+      startY: circle.y() + 2.5
     };
   }
 
@@ -180,14 +182,16 @@ export class BinaryTreeComponent implements AfterViewInit, OnChanges, OnDestroy 
     const nodeValue = this.drawNodeValue(cx, cy, node);
     nodeGroup.add(nodeValue);
 
-    if (this.isSelectionEnabled)
+    if (this.isSelectionEnabled) {
       this.attachSelectionEvent(node, nodeGroup, circle, nodeValue);
+    }
 
     if (this.isSelectionEnabled || this.isClickEnabled) {
       this.attachClickEvent(node, nodeGroup, circle);
       nodeGroup.attr('cursor', 'pointer');
-    } else
+    } else {
       nodeGroup.attr('cursor', 'default');
+    }
 
     return nodeGroup;
   }
@@ -232,7 +236,7 @@ export class BinaryTreeComponent implements AfterViewInit, OnChanges, OnDestroy 
         width: Sizes.branch,
         color: (node.isSelected ? Colors.branchSelected : Colors.branch)
       })
-      .back(); // 'back' decrease z-index
+      .back(); // decreasing z-index
     this.nodesDrawnElements[node.id].branch = branch;
 
     return branch;
@@ -249,8 +253,8 @@ export class BinaryTreeComponent implements AfterViewInit, OnChanges, OnDestroy 
     return this.height
       ? this.height - 4
       : this.binaryTreeData.height * Sizes.node
-        + (this.binaryTreeData.height - 1) * Sizes.nodesYInterval
-        + Sizes.nodeClickDelta;
+      + (this.binaryTreeData.height - 1) * Sizes.nodesYInterval
+      + Sizes.nodeClickDelta;
   }
 
   private animateCircleClick(circle: SvgJs.Circle): void {
@@ -262,38 +266,8 @@ export class BinaryTreeComponent implements AfterViewInit, OnChanges, OnDestroy 
 
   private animateLineClick(line: SvgJs.Line): void {
     line.animate(this.animationDuration)
-      .attr('stroke-width',  Sizes.branchClicked)
+      .attr('stroke-width', Sizes.branchClicked)
       .after(() => line.animate(this.animationDuration)
         .attr('stroke-width', Sizes.branch));
   }
-}
-
-class Colors {
-  private static readonly accentBackground: string =        '#f06';
-  private static readonly accentBackgroundDarker: string =  '#ca0055';
-  private static readonly accentForeground: string =        '#fff';
-  private static readonly primaryBackground: string =       '#b0bec5';
-  private static readonly primaryForeground: string =       '#000';
-
-  public static readonly node =               Colors.primaryBackground;
-  public static readonly nodeSelected =       Colors.accentBackground;
-
-  public static readonly nodeValue =          Colors.primaryForeground;
-  public static readonly nodeValueSelected =  Colors.accentForeground;
-
-  public static readonly branch =             Colors.accentForeground;
-  public static readonly branchSelected =     Colors.accentBackgroundDarker;
-}
-
-class Sizes {
-  public static readonly node: number = 50;
-  public static readonly nodeClickDelta: number = 7;
-  public static readonly nodeClicked: number = Sizes.node + Sizes.nodeClickDelta;
-  public static readonly nodeBorder: number = 2;
-  public static readonly nodesYInterval: number = 20;
-  public static readonly nodesCYInterval: number = Sizes.nodesYInterval + Sizes.node;
-
-  public static readonly branch: number = Sizes.nodeBorder;
-  public static readonly branchClickDelta: number = 3;
-  public static readonly branchClicked: number = Sizes.branch + Sizes.branchClickDelta;
 }

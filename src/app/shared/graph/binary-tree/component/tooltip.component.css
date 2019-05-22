@@ -1,0 +1,18 @@
+:host {
+  background: rgba(84, 84, 84, 0.95);
+  color: white;
+  position: absolute;
+  padding: 13px;
+  border-radius: 3px;
+  cursor: default;
+}
+
+:host:before {
+  content: "";
+  position: absolute;
+  left: -7px;
+  top: 15px;
+  border-right: 7px solid rgba(84, 84, 84, 0.95);
+  border-top: 7px solid transparent;
+  border-bottom: 7px solid transparent;
+}

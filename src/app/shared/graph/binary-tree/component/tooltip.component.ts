@@ -3,7 +3,7 @@ import { Component, HostBinding, Input } from '@angular/core';
 @Component({
   selector: 'app-tooltip',
   template: '{{ tooltipText }}',
-  styles: [':host { background: red; color: azure; position: absolute; }']
+  styleUrls: ['./tooltip.component.css']
 })
 export class TooltipComponent {
   @Input('tooltipText')
