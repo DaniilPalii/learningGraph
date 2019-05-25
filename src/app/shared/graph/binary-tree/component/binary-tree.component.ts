@@ -123,13 +123,27 @@ export class BinaryTreeComponent implements AfterViewInit, OnChanges, OnDestroy 
 
     this.nodesTooltips[nodeId] = {
       tooltipText: tooltipText,
-      startX: circle.x() + Sizes.node + 15,
+      startX: (circle.x() + Sizes.node) + 15,
       startY: circle.y() + 2.5
+    };
+  }
+
+  public showTooltipForNodeBranch(nodeId: number, tooltipText: string): void {
+    const branch = this.nodesDrawnElements[nodeId].branch;
+
+    this.nodesTooltips[nodeId] = {
+      tooltipText: tooltipText,
+      startX: branch.cx() + 17,
+      startY: branch.cy() - 22
     };
   }
 
   public hideTooltipForNode(nodeId: number): void {
     delete this.nodesTooltips[nodeId];
+  }
+
+  public hideTooltipForNodeBranch(nodeId: number): void {
+    this.hideTooltipForNode(nodeId);
   }
 
   private createSvg(): void {
@@ -201,6 +215,17 @@ export class BinaryTreeComponent implements AfterViewInit, OnChanges, OnDestroy 
       .fill(node.isSelected ? Colors.nodeSelected : Colors.node)
       .center(cx, cy);
     this.nodesDrawnElements[node.id].circle = circle;
+
+    const nodeTooltip = this.nodesTooltips[node.id];
+    if (nodeTooltip) {
+      nodeTooltip.startX = circle.x() + Sizes.node + 15;
+      nodeTooltip.startY = circle.y() + 2.5;
+    }
+
+    const a = this.nodesTooltips;
+
+    this.nodesTooltips = [];
+    this.nodesTooltips = a;
 
     return circle;
   }

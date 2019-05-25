@@ -22,7 +22,7 @@ export class Lesson1Component implements AfterContentInit {
         new Node(112, 0, new Node(1121, 11), new Node(1122, 31))),
       new Node(12, 8, new Node(121, 2), new Node(122, 10)));
 
-  private readonly elementsDemonstrationTree =
+  public readonly elementsDemonstrationTree =
     new Node(2, 4,
       new Node(21, 3,
         new Node(211, 21),
@@ -30,16 +30,34 @@ export class Lesson1Component implements AfterContentInit {
       new Node(22, 8, new Node(221, 2), new Node(222, 10)));
   public readonly elementsDemonstratorStates: Array<State> = [
     new State(
-      () => this.elementsDemonstrationTreeElement.selectNode(2),
-      () => this.elementsDemonstrationTreeElement.unselectNode(2)
+      () => {
+        this.elementsDemonstrationTreeElement.selectNode(2);
+        this.elementsDemonstrationTreeElement.showTooltipForNode(2, 'Korzeń');
+      },
+      () => {
+        this.elementsDemonstrationTreeElement.unselectNode(2);
+        this.elementsDemonstrationTreeElement.hideTooltipForNode(2);
+      },
     ),
     new State(
-      () => this.elementsDemonstrationTreeElement.selectNodeBranch(21),
-      () => this.elementsDemonstrationTreeElement.unselectNodeBranch(21)
+      () => {
+        this.elementsDemonstrationTreeElement.selectNode(21);
+        this.elementsDemonstrationTreeElement.showTooltipForNode(21, 'Wewnętrzny liść');
+      },
+      () => {
+        this.elementsDemonstrationTreeElement.unselectNode(21);
+        this.elementsDemonstrationTreeElement.hideTooltipForNode(21);
+      }
     ),
     new State(
-      () => this.elementsDemonstrationTreeElement.showTooltipForNode(21, 'yeahhhh'),
-      () => this.elementsDemonstrationTreeElement.hideTooltipForNode(21)
+      () => {
+        this.elementsDemonstrationTreeElement.selectNodeBranch(21);
+        this.elementsDemonstrationTreeElement.showTooltipForNodeBranch(21, 'Gałąź');
+      },
+      () => {
+        this.elementsDemonstrationTreeElement.unselectNodeBranch(21);
+        this.elementsDemonstrationTreeElement.hideTooltipForNodeBranch(21);
+      }
     ),
   ];
   public elementsDemonstrationStateOrder = 0;
