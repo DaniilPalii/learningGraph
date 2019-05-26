@@ -1,26 +1,10 @@
 import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, Output, ViewChild } from '@angular/core';
 import ResizeSensor from 'css-element-queries/src/ResizeSensor';
-import { BinaryTreeNode } from '../binary-tree-node';
 import * as SvgJs from 'svg.js';
+import { BinaryTreeNode } from '../binary-tree-node';
 import { Colors } from './colors';
 import { Sizes } from './sizes';
-
-export interface NodeSelectionChangeEvent {
-  node: BinaryTreeNode;
-  isSelected: boolean;
-}
-
-interface DrawnElementsData {
-  circle: SvgJs.Circle;
-  value: SvgJs.Text;
-  branch: SvgJs.Line;
-}
-
-interface TooltipData {
-  tooltipText: string;
-  startX: number;
-  startY: number;
-}
+import { TooltipData, TooltipTargetType } from './tooltip/tooltip-data';
 
 @Component({
   selector: 'app-binary-tree',
@@ -38,20 +22,17 @@ export class BinaryTreeComponent implements AfterViewInit, OnChanges, OnDestroy 
 
   public readonly svgId: string = BinaryTreeComponent.getRandomId();
 
+  public nodesDrawnElements: { [nodeId: number]: DrawnElementsData } = {};
   public nodesTooltips: { [nodeId: number]: TooltipData } = {};
+  public branchesTooltips: { [branchNodeId: number]: TooltipData } = {};
 
   @ViewChild('binaryTreeSvg') private binaryTreeSvgElement: ElementRef;
 
   private svgDoc: SvgJs.Doc;
   private svgDocWidth: number;
   private redrawingTimer: NodeJS.Timer;
-  private nodesDrawnElements: { [nodeId: number]: DrawnElementsData } = {};
 
   private readonly animationDuration: number = 150;
-
-  private static getRandomId(): string {
-    return Math.random().toString(36).substr(2, 9);
-  }
 
   // public log(value: any): any {
   //   console.log(value);
@@ -119,23 +100,11 @@ export class BinaryTreeComponent implements AfterViewInit, OnChanges, OnDestroy 
   }
 
   public showTooltipForNode(nodeId: number, tooltipText: string): void {
-    const circle = this.nodesDrawnElements[nodeId].circle;
-
-    this.nodesTooltips[nodeId] = {
-      tooltipText: tooltipText,
-      startX: (circle.x() + Sizes.node) + 15,
-      startY: circle.y() + 2.5
-    };
+    this.nodesTooltips[nodeId] = new TooltipData(tooltipText, nodeId, TooltipTargetType.node, this);
   }
 
-  public showTooltipForNodeBranch(nodeId: number, tooltipText: string): void {
-    const branch = this.nodesDrawnElements[nodeId].branch;
-
-    this.nodesTooltips[nodeId] = {
-      tooltipText: tooltipText,
-      startX: branch.cx() + 17,
-      startY: branch.cy() - 22
-    };
+  public showTooltipForNodeBranch(branchNodeId: number, tooltipText: string): void {
+    this.branchesTooltips[branchNodeId] = new TooltipData(tooltipText, branchNodeId, TooltipTargetType.branch, this);
   }
 
   public hideTooltipForNode(nodeId: number): void {
@@ -143,7 +112,7 @@ export class BinaryTreeComponent implements AfterViewInit, OnChanges, OnDestroy 
   }
 
   public hideTooltipForNodeBranch(nodeId: number): void {
-    this.hideTooltipForNode(nodeId);
+    delete this.branchesTooltips[nodeId];
   }
 
   private createSvg(): void {
@@ -215,17 +184,7 @@ export class BinaryTreeComponent implements AfterViewInit, OnChanges, OnDestroy 
       .fill(node.isSelected ? Colors.nodeSelected : Colors.node)
       .center(cx, cy);
     this.nodesDrawnElements[node.id].circle = circle;
-
-    const nodeTooltip = this.nodesTooltips[node.id];
-    if (nodeTooltip) {
-      nodeTooltip.startX = circle.x() + Sizes.node + 15;
-      nodeTooltip.startY = circle.y() + 2.5;
-    }
-
-    const a = this.nodesTooltips;
-
-    this.nodesTooltips = [];
-    this.nodesTooltips = a;
+    BinaryTreeComponent.calculateTooltipPositionIfExist(this.nodesTooltips[node.id]);
 
     return circle;
   }
@@ -263,6 +222,7 @@ export class BinaryTreeComponent implements AfterViewInit, OnChanges, OnDestroy 
       })
       .back(); // decreasing z-index
     this.nodesDrawnElements[node.id].branch = branch;
+    BinaryTreeComponent.calculateTooltipPositionIfExist(this.branchesTooltips[node.id]);
 
     return branch;
   }
@@ -295,4 +255,23 @@ export class BinaryTreeComponent implements AfterViewInit, OnChanges, OnDestroy 
       .after(() => line.animate(this.animationDuration)
         .attr('stroke-width', Sizes.branch));
   }
+
+  private static getRandomId(): string {
+    return Math.random().toString(36).substr(2, 9);
+  }
+
+  private static calculateTooltipPositionIfExist(tooltip: TooltipData): void {
+    if (tooltip) tooltip.calculatePosition();
+  }
+}
+
+export interface NodeSelectionChangeEvent {
+  node: BinaryTreeNode;
+  isSelected: boolean;
+}
+
+interface DrawnElementsData {
+  circle: SvgJs.Circle;
+  value: SvgJs.Text;
+  branch: SvgJs.Line;
 }

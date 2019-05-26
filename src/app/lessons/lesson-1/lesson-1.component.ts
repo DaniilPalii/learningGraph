@@ -1,4 +1,4 @@
-import { AfterContentInit, AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterContentInit, Component, ViewChild } from '@angular/core';
 import { BinaryTreeNode as Node } from '../../shared/graph/binary-tree/binary-tree-node';
 import { BinaryTreeComponent } from '../../shared/graph/binary-tree/component/binary-tree.component';
 import { Texts } from '../../texts.data';
@@ -72,7 +72,7 @@ export class Lesson1Component implements AfterContentInit {
   public ngAfterContentInit(): void {
     setTimeout(
       () => this.elementsDemonstratorStates[this.elementsDemonstrationStateOrder].setUp(),
-      300);
+      700);
   }
 
   public demonstratePreviousElement(): void {
