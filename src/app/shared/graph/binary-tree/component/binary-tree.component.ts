@@ -218,7 +218,7 @@ export class BinaryTreeComponent implements AfterViewInit, OnChanges, OnDestroy 
     const branch = this.svgDoc.line(startElement.cx(), startElement.cy(), endElement.cx(), endElement.cy())
       .stroke({
         width: Sizes.branch,
-        color: (node.isSelected ? Colors.branchSelected : Colors.branch)
+        color: (node.isBranchSelected ? Colors.branchSelected : Colors.branch)
       })
       .back(); // decreasing z-index
     this.nodesDrawnElements[node.id].branch = branch;
