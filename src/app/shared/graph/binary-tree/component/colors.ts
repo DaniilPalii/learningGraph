@@ -1,5 +1,5 @@
 export module Colors {
-  const accentBackground: string =        '#f06';
+  const accentBackground: string =        '#e91e63';
   const accentBackgroundDarker: string =  '#ca0055';
   const accentForeground: string =        '#fff';
   const primaryBackground: string =       '#b0bec5';
