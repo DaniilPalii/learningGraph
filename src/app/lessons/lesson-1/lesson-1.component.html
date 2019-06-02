@@ -25,10 +25,6 @@
 <!--<span>-->
   <!--Prozę pokazać następne elementy:-->
   <!--<ul>-->
-    <!--<li>a. korzeń</li>-->
-    <!--<li>b. gałęzie</li>-->
-    <!--<li>c. ścieżka</li>-->
-    <!--<li>d. liść</li>-->
     <!--<li>e. węzeł wewnętrzny</li>-->
     <!--<li>f. węzły potomne dla …</li>-->
     <!--<li>g. węzeł rodzicielski dla …</li>-->
@@ -37,7 +33,7 @@
 <!--</span>-->
 <div class="animator">
   <button mat-icon-button
-          [disabled]="elementsDemonstrationStateOrder === 0"
+          [disabled]="elementsDemonstrationStateNumber === 0"
           (click)="demonstratePreviousElement()">
     <mat-icon>arrow_back</mat-icon>
   </button>
@@ -47,7 +43,7 @@
                    (nodeClicked)="log($event)">
   </app-binary-tree>
   <button mat-icon-button
-          [disabled]="elementsDemonstrationStateOrder === elementsDemonstratorLastStateNumber"
+          [disabled]="elementsDemonstrationStateNumber === elementsDemonstratorLastStateNumber"
           (click)="demonstrateNextElement()">
     <mat-icon>arrow_forward</mat-icon>
   </button>

@@ -102,7 +102,7 @@ export class Lesson1Component implements AfterContentInit {
       }
     ),
   ];
-  public elementsDemonstrationStateOrder = 0;
+  public elementsDemonstrationStateNumber = 0;
   public readonly elementsDemonstratorLastStateNumber = this.elementsDemonstratorStates.length - 1;
 
   public readonly binaryTreeData =
@@ -113,24 +113,32 @@ export class Lesson1Component implements AfterContentInit {
 
   public ngAfterContentInit(): void {
     setTimeout(
-      () => this.elementsDemonstratorStates[this.elementsDemonstrationStateOrder].setUp(),
+      () => this.elementsDemonstratorStates[this.elementsDemonstrationStateNumber].setUp(),
       700);
   }
 
   public demonstratePreviousElement(): void {
-    setTimeout(() => {
-        this.elementsDemonstratorStates[this.elementsDemonstrationStateOrder].tearDown();
-        this.elementsDemonstratorStates[--this.elementsDemonstrationStateOrder].setUp();
+    if (this.elementsDemonstrationStateNumber > 0) {
+      const previousStateNumber = this.elementsDemonstrationStateNumber;
+      this.elementsDemonstrationStateNumber--;
+      setTimeout(() => {
+        this.elementsDemonstratorStates[previousStateNumber].tearDown();
+        this.elementsDemonstratorStates[this.elementsDemonstrationStateNumber].setUp();
       },
       300);
+    }
   }
 
   public demonstrateNextElement(): void {
-    setTimeout(() => {
-        this.elementsDemonstratorStates[this.elementsDemonstrationStateOrder].tearDown();
-        this.elementsDemonstratorStates[++this.elementsDemonstrationStateOrder].setUp();
+    if (this.elementsDemonstrationStateNumber < this.elementsDemonstratorLastStateNumber) {
+      const previousStateNumber = this.elementsDemonstrationStateNumber;
+      this.elementsDemonstrationStateNumber++;
+      setTimeout(() => {
+        this.elementsDemonstratorStates[previousStateNumber].tearDown();
+        this.elementsDemonstratorStates[this.elementsDemonstrationStateNumber].setUp();
       },
       300);
+    }
   }
 }
 
