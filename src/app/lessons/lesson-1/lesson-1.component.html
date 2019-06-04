@@ -1,6 +1,6 @@
 <h3>{{ texts.lesson1Title }}</h3>
 <p>
-  Drzewo binarne jest to struktura danych, która pozwala na przechowywanie danych w pewnej hierarchii.
+  <strong>Drzewo binarne</strong> jest to struktura danych, która pozwala na przechowywanie danych w pewnej hierarchii.
   Może zostać użyte nie tylko do przechowywania danych, ale również posortowania danych.
 </p>
 <p>
@@ -12,36 +12,54 @@
   W tym przypadku liść jest pewną informacją zapisaną w drzewie.
   W celu uporządkowania drzewa traktujemy, że każde rozgałęzienie ma liście.
 </p>
-<p>
-  Oto przykład drzewa binarnego w którym są przechowywane pewne liczby.
-</p>
-<app-binary-tree [data]="firstDemonstrationTree"></app-binary-tree>
-<p>
-  Drzewo jest wysokości {{ firstDemonstrationTree.height }}. Szare kółka nazywamy węzłami.
-  Każdy węzeł może posiadać pewną wartość.
-  Niekonicznie musi to być liczba. Pomiędzy dwoma dowolnymi węzłami prowadzi dokładnie jedna droga.
-  Niektóre węzły mają dwie gałęzie, są takie co mają jedno, a jeszcze inni nie mają w ogóle.
-</p>
-<!--<span>-->
-  <!--Prozę pokazać następne elementy:-->
-  <!--<ul>-->
-    <!--<li>e. węzeł wewnętrzny</li>-->
-    <!--<li>f. węzły potomne dla …</li>-->
-    <!--<li>g. węzeł rodzicielski dla …</li>-->
-    <!--<li>h. podać stopień węzła</li>-->
-  <!--</ul>-->
-<!--</span>-->
+<div class="dynamic-inliner">
+  <div>
+    <p>Oto przykład drzewa binarnego w którym są przechowywane pewne liczby.</p>
+    <p>
+      Szare kółka nazywamy <strong>węzłami</strong> (wierzchołkami).
+      Każdy węzeł może posiadać pewną wartość.
+      Niekonicznie musi to być liczba. Pomiędzy dwoma dowolnymi węzłami prowadzi dokładnie jedna <strong>droga</strong>.
+      Niektóre węzły mają dwie gałęzie, są takie co mają jedno, a jeszcze inni nie mają w ogóle.
+    </p>
+  </div>
+  <app-binary-tree [data]="firstDemonstrationTree"></app-binary-tree>
+</div>
 <div class="animator">
-  <button mat-icon-button
-          [disabled]="elementsDemonstrationStateNumber === 0"
-          (click)="demonstratePreviousElement()">
+  <button mat-icon-button [disabled]="elementsDemonstrationStateNumber === 0" (click)="demonstratePreviousElement()">
     <mat-icon>arrow_back</mat-icon>
   </button>
-  <app-binary-tree #elementsDemonstrationTreeElement
-                   [data]="elementsDemonstrationTree"
-                   [isClickEnabled]="true"
-                   (nodeClicked)="log($event)">
-  </app-binary-tree>
+  <div class="animated dynamic-inliner">
+    <app-binary-tree #elementsDemonstrationTreeElement [data]="elementsDemonstrationTree"></app-binary-tree>
+    <ng-container [ngSwitch]="elementsDemonstrationStateNumber">
+      <p *ngSwitchCase="0">
+        <strong>Korzeń</strong> - węzeł w drzewie binarnym który nie ma rodziców.
+      </p>
+      <p *ngSwitchCase="1">
+        Węzeł wewnętrzny - ma rodziców oraz dzieci.
+        Wierzchołek jest <strong>rodzicem</strong> dla każdego swojego <strong>dziecka</strong>.
+        Każdy węzeł ma dokładnie jednego rodzica, wyjątkiem jest korzeń drzewa.
+      </p>
+      <p *ngSwitchCase="2">
+        <strong>Droga</strong> - połączenie dwóch węzłów.
+      </p>
+      <p *ngSwitchCase="3">
+        Ciąg krawędzi łączących węzły nazywa się <strong>ścieżką</strong>.
+      </p>
+      <p *ngSwitchCase="4">
+        <strong>Liść</strong> - węzeł który nie ma dzieci.
+      </p>
+      <p *ngSwitchCase="5">
+        Liczba krawędzi w ścieżce od korzenia do węzła jest nazywana <strong>długością</strong>
+        – liczba ta określa <strong>poziom</strong> węzła.
+        <strong>Wysokością</strong> drzewa jest największy poziom istniejący w drzewie.
+        <strong>Rozmiar</strong> - ilość węzłów.
+        <br/><br/>
+        Np. korzeń znajduje się na 0 poziomie, pozostałe węzły odpowiednio wyżej.
+        Wysokość tego drzewa - {{ elementsDemonstrationTree.height }}.
+        Rozmiar - 9.
+      </p>
+    </ng-container>
+  </div>
   <button mat-icon-button
           [disabled]="elementsDemonstrationStateNumber === elementsDemonstratorLastStateNumber"
           (click)="demonstrateNextElement()">
@@ -49,6 +67,4 @@
   </button>
 </div>
 <h3>Exercise 1</h3>
-<app-binary-tree [data]="binaryTreeData"
-                 [isSelectionEnabled]="true">
-</app-binary-tree>
+<app-binary-tree [data]="binaryTreeData" [isSelectionEnabled]="true"></app-binary-tree>

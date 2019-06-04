@@ -237,9 +237,9 @@ export class BinaryTreeComponent implements AfterViewInit, OnChanges, OnDestroy 
   private calculateSvgHeight(): number {
     return this.height
       ? this.height - 4
-      : this.binaryTreeData.height * Sizes.node
-      + (this.binaryTreeData.height - 1) * Sizes.nodesYInterval
-      + Sizes.nodeClickDelta;
+      : (this.binaryTreeData.height + 1) * Sizes.node
+        + (this.binaryTreeData.height) * Sizes.nodesYInterval
+        + Sizes.nodeClickDelta;
   }
 
   private animateCircleClick(circle: SvgJs.Circle): void {

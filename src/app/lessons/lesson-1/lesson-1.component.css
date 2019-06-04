@@ -3,6 +3,23 @@
   align-items: center;
 }
 
-.animator app-binary-tree {
+.animator .animated {
   flex-grow: 1;
+}
+
+@media (min-width: 730px) {
+  .dynamic-inliner {
+    display: flex;
+  }
+
+  .dynamic-inliner > div,
+  .dynamic-inliner > p {
+    width: 50%;
+    min-width: 250px;
+  }
+
+  .dynamic-inliner app-binary-tree {
+    width: 50%;
+    min-width: 350px;
+  }
 }

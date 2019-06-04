@@ -6,7 +6,7 @@ export class BinaryTreeNode {
   public leftChild: BinaryTreeNode = null;
   public rightChild: BinaryTreeNode = null;
   public level: number = 1;
-  public height: number = 1;
+  public height: number = 0;
   public isSelected: boolean;
   public isBranchSelected: boolean;
   public tooltip: string;
@@ -105,7 +105,7 @@ export class BinaryTreeNode {
 
   private updateThisAndParentHeightRecursively(): void {
     const childLevels = this.getChildrenRecursively().map(c => c.level);
-    this.height = Math.max(...childLevels) - this.level + 1;
+    this.height = Math.max(...childLevels) - this.level;
 
     if (!this.isRoot())
       this.parent.updateThisAndParentHeightRecursively();

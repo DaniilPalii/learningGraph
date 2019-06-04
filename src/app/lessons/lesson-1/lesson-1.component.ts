@@ -52,7 +52,7 @@ export class Lesson1Component implements AfterContentInit {
     new State(
       () => {
         this.elementsDemonstrationTreeElement.selectNodeBranch(21);
-        this.elementsDemonstrationTreeElement.showTooltipForNodeBranch(21, 'Gałąź');
+        this.elementsDemonstrationTreeElement.showTooltipForNodeBranch(21, 'Droga');
       },
       () => {
         this.elementsDemonstrationTreeElement.unselectNodeBranch(21);
@@ -93,11 +93,15 @@ export class Lesson1Component implements AfterContentInit {
     ),
     new State(
       () => {
-        this.elementsDemonstrationTreeElement.selectNode(2122);
-        this.elementsDemonstrationTreeElement.showTooltipForNode(2122, 'Liść');
+        this.elementsDemonstrationTreeElement.showTooltipForNode(2, 'Poziom - 0');
+        this.elementsDemonstrationTreeElement.showTooltipForNode(21, 'Poziom - 1');
+        this.elementsDemonstrationTreeElement.showTooltipForNode(212, 'Poziom - 2');
+        this.elementsDemonstrationTreeElement.showTooltipForNode(2122, 'Poziom - 3');
       },
       () => {
-        this.elementsDemonstrationTreeElement.unselectNode(2122);
+        this.elementsDemonstrationTreeElement.hideTooltipForNode(2);
+        this.elementsDemonstrationTreeElement.hideTooltipForNode(21);
+        this.elementsDemonstrationTreeElement.hideTooltipForNode(212);
         this.elementsDemonstrationTreeElement.hideTooltipForNode(2122);
       }
     ),
