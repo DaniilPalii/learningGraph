@@ -4,10 +4,10 @@ import { BinaryTreeNode } from '../../shared/graph/binary-tree/binary-tree-node'
 @Component({
   selector: 'app-lesson-2',
   templateUrl: './lesson-2.component.html',
-  styleUrls: ['./lesson-2.component.css']
+  styleUrls: ['./lesson-2.component.css', './../lessons.css']
 })
 export class Lesson2Component {
-  public binaryTreeData =
+  binaryTreeData =
     new BinaryTreeNode(null, 100,
       new BinaryTreeNode(null, 1,
         new BinaryTreeNode(null, 11,

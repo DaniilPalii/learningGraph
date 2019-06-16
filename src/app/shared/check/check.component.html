@@ -1,0 +1,7 @@
+<ng-container *ngIf="checked; else notCheckedIcon">
+  <mat-icon>check_box</mat-icon>
+</ng-container>
+
+<ng-template #notCheckedIcon>
+  <mat-icon>check_box_outline_blank</mat-icon>
+</ng-template>

@@ -190,7 +190,8 @@ export class BinaryTreeComponent implements AfterViewInit, OnChanges, OnDestroy 
   }
 
   private drawNodeValue(cx: number, cy: number, node: BinaryTreeNode): SvgJs.Text {
-    const value = this.svgDoc.text(node.value.toString())
+    const valueText = node.value != null ? node.value.toString() : '';
+    const value = this.svgDoc.text(valueText)
       .fill(node.isSelected ? Colors.nodeValueSelected : Colors.nodeValue)
       .center(cx, cy);
     this.nodesDrawnElements[node.id].value = value;

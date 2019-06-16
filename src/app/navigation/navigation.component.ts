@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { Texts } from '../texts.data';
+import { Texts } from '../texts/texts.data';
 
 export interface NavigationItem {
   id: number;

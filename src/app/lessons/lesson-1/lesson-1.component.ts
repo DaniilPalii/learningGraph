@@ -1,34 +1,33 @@
 import { AfterContentInit, Component, ViewChild } from '@angular/core';
 import { BinaryTreeNode as Node } from '../../shared/graph/binary-tree/binary-tree-node';
 import { BinaryTreeComponent } from '../../shared/graph/binary-tree/component/binary-tree.component';
-import { Texts } from '../../texts.data';
+import { Texts } from '../../texts/texts.data';
 
 @Component({
   selector: 'app-lesson-1',
   templateUrl: './lesson-1.component.html',
-  styleUrls: ['./lesson-1.component.css']
+  styleUrls: ['./lesson-1.component.css', './../lessons.css']
 })
 export class Lesson1Component implements AfterContentInit {
   @ViewChild('elementsDemonstrationTreeElement')
-  public elementsDemonstrationTreeElement: BinaryTreeComponent;
+  elementsDemonstrationTreeElement: BinaryTreeComponent;
 
-  public readonly texts = Texts;
-  public readonly log = console.log;
+  readonly texts = Texts;
 
-  public readonly firstDemonstrationTree =
+  readonly demonstrationTree =
     new Node(1, 4,
       new Node(11, 3,
         new Node(111, 21),
         new Node(112, 0, new Node(1121, 11), new Node(1122, 31))),
       new Node(12, 8, new Node(121, 2), new Node(122, 10)));
 
-  public readonly elementsDemonstrationTree =
+  readonly elementsDemonstrationTree =
     new Node(2, 4,
       new Node(21, 3,
         new Node(211, 21),
         new Node(212, 0, new Node(2121, 11), new Node(2122, 31))),
       new Node(22, 8, new Node(221, 2), new Node(222, 10)));
-  public readonly elementsDemonstratorStates: Array<State> = [
+  readonly elementsDemonstratorStates: Array<State> = [
     new State(
       () => {
         this.elementsDemonstrationTreeElement.selectNode(2);
@@ -106,22 +105,16 @@ export class Lesson1Component implements AfterContentInit {
       }
     ),
   ];
-  public elementsDemonstrationStateNumber = 0;
-  public readonly elementsDemonstratorLastStateNumber = this.elementsDemonstratorStates.length - 1;
+  elementsDemonstrationStateNumber = 0;
+  readonly elementsDemonstratorLastStateNumber = this.elementsDemonstratorStates.length - 1;
 
-  public readonly binaryTreeData =
-    new Node(null, 0,
-      new Node(null, 1,
-        new Node(null, 11, null, null, true)),
-      new Node(null, 2));
-
-  public ngAfterContentInit(): void {
+  ngAfterContentInit(): void {
     setTimeout(
       () => this.elementsDemonstratorStates[this.elementsDemonstrationStateNumber].setUp(),
       700);
   }
 
-  public demonstratePreviousElement(): void {
+  demonstratePreviousElement(): void {
     if (this.elementsDemonstrationStateNumber > 0) {
       const previousStateNumber = this.elementsDemonstrationStateNumber;
       this.elementsDemonstrationStateNumber--;
@@ -133,15 +126,16 @@ export class Lesson1Component implements AfterContentInit {
     }
   }
 
-  public demonstrateNextElement(): void {
+  demonstrateNextElement(): void {
     if (this.elementsDemonstrationStateNumber < this.elementsDemonstratorLastStateNumber) {
       const previousStateNumber = this.elementsDemonstrationStateNumber;
       this.elementsDemonstrationStateNumber++;
-      setTimeout(() => {
-        this.elementsDemonstratorStates[previousStateNumber].tearDown();
-        this.elementsDemonstratorStates[this.elementsDemonstrationStateNumber].setUp();
-      },
-      300);
+      setTimeout(
+        () => {
+          this.elementsDemonstratorStates[previousStateNumber].tearDown();
+          this.elementsDemonstratorStates[this.elementsDemonstrationStateNumber].setUp();
+        },
+        300);
     }
   }
 }

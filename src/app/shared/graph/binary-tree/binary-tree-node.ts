@@ -1,6 +1,6 @@
 export class BinaryTreeNode {
-  public id: number = null;
-  public value: number = null;
+  public id: number;
+  public value: number | string = null;
   public parent: BinaryTreeNode = null;
   public children = new Array<BinaryTreeNode>();
   public leftChild: BinaryTreeNode = null;
@@ -13,14 +13,14 @@ export class BinaryTreeNode {
 
   constructor(
     id?: number,
-    value?: number,
+    value?: number | string,
     leftChild?: BinaryTreeNode,
     rightChild?: BinaryTreeNode,
     isSelected?: boolean,
     isBranchSelected?: boolean,
     tooltip?: string
   ) {
-    if (id !== undefined) this.id = id;
+    this.id = id != null ? id : BinaryTreeNode.createRandomId();
     if (value !== undefined) this.value = value;
     if (leftChild) this.appendLeftChild(leftChild);
     if (rightChild) this.appendRightChild(rightChild);
@@ -109,5 +109,9 @@ export class BinaryTreeNode {
 
     if (!this.isRoot())
       this.parent.updateThisAndParentHeightRecursively();
+  }
+
+  private static createRandomId(): number {
+    return Math.floor(Math.random() * 100000000);
   }
 }

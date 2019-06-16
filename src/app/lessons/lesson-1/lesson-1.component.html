@@ -22,7 +22,7 @@
       Niektóre węzły mają dwie gałęzie, są takie co mają jedno, a jeszcze inni nie mają w ogóle.
     </p>
   </div>
-  <app-binary-tree [data]="firstDemonstrationTree"></app-binary-tree>
+  <app-binary-tree [data]="demonstrationTree"></app-binary-tree>
 </div>
 <div class="animator">
   <button mat-icon-button [disabled]="elementsDemonstrationStateNumber === 0" (click)="demonstratePreviousElement()">
@@ -66,5 +66,4 @@
     <mat-icon>arrow_forward</mat-icon>
   </button>
 </div>
-<h3>Exercise 1</h3>
-<app-binary-tree [data]="binaryTreeData" [isSelectionEnabled]="true"></app-binary-tree>
+<app-exercise-1></app-exercise-1>

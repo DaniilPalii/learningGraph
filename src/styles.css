@@ -23,3 +23,11 @@ body {
 h1, h2, h3, h4, h5, h6, .marked-text, strong {
   color: #e91e63;
 }
+
+mat-checkbox {
+  margin-right: 6px;
+}
+
+.mat-checkbox-layout {
+  margin-bottom: 5px;
+}

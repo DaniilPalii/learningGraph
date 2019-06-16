@@ -1,0 +1,14 @@
+<h3>Ćwiczenie 1</h3>
+<div class="dynamic-inliner">
+  <div>
+    <div *ngFor="let goal of shownGoals" class="text-with-check">
+      <app-check [checked]="goal.isAchieved"></app-check>
+      <span>{{ goal.description }}</span>
+    </div>
+  </div>
+  <app-binary-tree #treeComponent
+                   [data]="tree"
+                   [isSelectionEnabled]="true"
+                   (nodeClicked)="handleNodeClick($event)">
+  </app-binary-tree>
+</div>
