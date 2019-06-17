@@ -2,7 +2,7 @@
 <div class="dynamic-inliner">
   <div>
     <div *ngFor="let goal of shownGoals" class="text-with-check">
-      <app-check [checked]="goal.isAchieved"></app-check>
+      <app-check mat-ripple [checked]="goal.isAchieved"></app-check>
       <span>{{ goal.description }}</span>
     </div>
   </div>
