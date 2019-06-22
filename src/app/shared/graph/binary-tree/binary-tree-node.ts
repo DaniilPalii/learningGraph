@@ -49,6 +49,10 @@ export class BinaryTreeNode {
     return children;
   }
 
+  public toArray(): Array<BinaryTreeNode> {
+    return [ this as BinaryTreeNode ].concat(this.getChildrenRecursively());
+  }
+
   public getNodeByIdRecursively(id: number): BinaryTreeNode {
     if (this.id === id)
       return this;
@@ -67,6 +71,22 @@ export class BinaryTreeNode {
       return this;
 
     return this.parent.getRootRecursively();
+  }
+
+  public getNeighbours(): Array<BinaryTreeNode> {
+    let neighbours = this.children;
+
+    if (!this.isRoot())
+      neighbours = neighbours.concat(this.parent);
+
+    return neighbours;
+  }
+
+  public unselectAllRecursively(): void {
+    this.toArray().forEach(node => {
+      node.isSelected = false;
+      node.isBranchSelected = false;
+    });
   }
 
   private appendLeftChild(child: BinaryTreeNode): void {

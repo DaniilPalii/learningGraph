@@ -2,7 +2,7 @@ import { Component, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { MatRipple } from '@angular/material';
 import { BinaryTreeNode as Node } from '../../../shared/graph/binary-tree/binary-tree-node';
 import { BinaryTreeComponent } from '../../../shared/graph/binary-tree/component/binary-tree.component';
-import { Goal } from '../goal';
+import { ExerciseGoal } from '../exercise-goal';
 
 @Component({
   selector: 'app-exercise-1',
@@ -13,7 +13,7 @@ export class Exercise1Component {
   @ViewChild('treeComponent') treeComponent: BinaryTreeComponent;
   @ViewChildren(MatRipple) checkElementsRipples: QueryList<MatRipple>;
 
-  shownGoals: Array<Goal>;
+  shownGoals: Array<ExerciseGoal>;
   isCompleted: boolean;
 
   readonly tree =
@@ -23,14 +23,24 @@ export class Exercise1Component {
       new Node(null, 2, new Node(null, 3)));
 
   private clickedNode: Node;
+  private isMultiselectionEnabled: boolean;
 
-  private readonly goals: Array<Goal> = [
-    new Goal('Proszę zaznaczyć korzeń', () => this.clickedNode.isRoot()),
-    new Goal('Proszę zaznaczyć liść', () => this.clickedNode.isLeaf())
+  private readonly goals: Array<ExerciseGoal> = [
+    new ExerciseGoal('Proszę zaznaczyć korzeń', () => this.clickedNode.isRoot()),
+    new ExerciseGoal('Proszę zaznaczyć liść', () => this.clickedNode.isLeaf()),
+    new ExerciseGoal('Proszę zaznaczyć węzeł wewnętrzny', () => this.clickedNode.isInner()),
+    new ExerciseGoal(
+      'Proszę zaznaczyć ścieżkę',
+      () => this.checkIsRoadClicked(),
+      () => this.isMultiselectionEnabled = true,
+      () => {
+        this.isMultiselectionEnabled = false;
+        this.treeComponent.unselectAll();
+      }),
   ];
 
   constructor() {
-    this.shownGoals = new Array<Goal>(this.goals[0]);
+    this.shownGoals = new Array<ExerciseGoal>(this.goals[0]);
   }
 
   checkExercise(): void {
@@ -40,6 +50,7 @@ export class Exercise1Component {
       currentGoal.check();
 
       if (currentGoal.isAchieved) {
+        currentGoal.tearDown();
         this.checkElementsRipples.last.launch({ radius: 15, centered: true });
         this.showNextGoalOrComplete();
       }
@@ -49,15 +60,41 @@ export class Exercise1Component {
   handleNodeClick(node: Node): void {
     this.clickedNode = node;
     setTimeout(() => this.checkExercise(), 300);
-    setTimeout(() => this.treeComponent.unselectNode(node.id), 600);
+
+    if (!this.isMultiselectionEnabled) {
+      setTimeout(() => this.treeComponent.unselectNode(node.id), 600);
+    }
   }
 
   private showNextGoalOrComplete(): void {
     const nextGoal = this.goals.find(g => !g.isAchieved);
 
-    if (nextGoal)
+    if (nextGoal) {
       this.shownGoals.push(nextGoal);
-    else
+      nextGoal.setUp();
+    } else {
       this.isCompleted = true;
+    }
+  }
+
+  private checkIsRoadClicked(): boolean {
+    const nodes = this.tree.toArray();
+    const selectedNodes = nodes.filter(n => n.isSelected);
+
+    if (selectedNodes.length < 2) {
+      return false;
+    }
+
+    const selectedBranches = nodes.filter(n => n.isBranchSelected);
+
+    if (selectedNodes.length !== selectedBranches.length + 1) {
+      return false;
+    }
+
+    const nodesWithTwoSelectedChildren = selectedNodes.filter(
+      node => node.children.length === 2
+        && node.children.every(c => c.isSelected));
+
+    return nodesWithTwoSelectedChildren.length <= 1;
   }
 }
