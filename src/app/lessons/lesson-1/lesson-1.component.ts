@@ -61,21 +61,15 @@ export class Lesson1Component implements AfterContentInit {
     new State(
       () => {
         this.elementsDemonstrationTreeElement.selectNode(2);
-        this.elementsDemonstrationTreeElement.selectNodeBranch(21);
         this.elementsDemonstrationTreeElement.selectNode(21);
-        this.elementsDemonstrationTreeElement.selectNodeBranch(212);
         this.elementsDemonstrationTreeElement.selectNode(212);
-        this.elementsDemonstrationTreeElement.selectNodeBranch(2122);
         this.elementsDemonstrationTreeElement.selectNode(2122);
         this.elementsDemonstrationTreeElement.showTooltipForNodeBranch(212, 'Ścieżka');
       },
       () => {
         this.elementsDemonstrationTreeElement.unselectNode(2);
-        this.elementsDemonstrationTreeElement.unselectNodeBranch(21);
         this.elementsDemonstrationTreeElement.unselectNode(21);
-        this.elementsDemonstrationTreeElement.unselectNodeBranch(212);
         this.elementsDemonstrationTreeElement.unselectNode(212);
-        this.elementsDemonstrationTreeElement.unselectNodeBranch(2122);
         this.elementsDemonstrationTreeElement.unselectNode(2122);
         this.elementsDemonstrationTreeElement.hideTooltipForNodeBranch(212);
       }

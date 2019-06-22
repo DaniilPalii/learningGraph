@@ -12,19 +12,19 @@ import { TooltipData, TooltipTargetType } from './tooltip/tooltip-data';
   styleUrls: ['./binary-tree.component.css']
 })
 export class BinaryTreeComponent implements AfterViewInit, OnChanges, OnDestroy {
-  @Input('data') public binaryTreeData: BinaryTreeNode;
-  @Input() public height: number;
-  @Input() public isSelectionEnabled: boolean;
-  @Input() public isClickEnabled: boolean;
+  @Input('data') binaryTreeData: BinaryTreeNode;
+  @Input() height: number;
+  @Input() isSelectionEnabled: boolean;
+  @Input() isClickEnabled: boolean;
 
-  @Output('nodeClicked') public nodeClickedEvent = new EventEmitter<BinaryTreeNode>();
-  @Output('selectionChange') public selectionChangeEvent = new EventEmitter<NodeSelectionChangeEvent>();
+  @Output('nodeClicked') nodeClickedEvent = new EventEmitter<BinaryTreeNode>();
+  @Output('selectionChange') selectionChangeEvent = new EventEmitter<NodeSelectionChangeEvent>();
 
-  public readonly svgId: string = BinaryTreeComponent.getRandomId();
+  readonly svgId: string = BinaryTreeComponent.getRandomId();
 
-  public nodesDrawnElements: { [nodeId: number]: DrawnElementsData } = {};
-  public nodesTooltips: { [nodeId: number]: TooltipData } = {};
-  public branchesTooltips: { [branchNodeId: number]: TooltipData } = {};
+  nodesDrawnElements: { [nodeId: number]: DrawnElementsData } = {};
+  nodesTooltips: { [nodeId: number]: TooltipData } = {};
+  branchesTooltips: { [branchNodeId: number]: TooltipData } = {};
 
   @ViewChild('binaryTreeSvg') private binaryTreeSvgElement: ElementRef;
 
@@ -34,26 +34,20 @@ export class BinaryTreeComponent implements AfterViewInit, OnChanges, OnDestroy 
 
   private readonly animationDuration: number = 150;
 
-  // public log(value: any): any {
-  //   console.log(value);
-  //
-  //   return value;
-  // }
-
-  public ngAfterViewInit(): void {
+  ngAfterViewInit(): void {
     this.createSvg();
     this.enableRedrawingOnResize();
   }
 
-  public ngOnChanges(): void {
+  ngOnChanges(): void {
     this.redraw();
   }
 
-  public ngOnDestroy(): void {
+  ngOnDestroy(): void {
     this.svgDoc.clear();
   }
 
-  public redraw(): void {
+  redraw(): void {
     clearTimeout(this.redrawingTimer);
 
     this.redrawingTimer = setTimeout(() => {
@@ -62,56 +56,58 @@ export class BinaryTreeComponent implements AfterViewInit, OnChanges, OnDestroy 
     }, 250);
   }
 
-  public animateNodeClick(nodeId: number): void {
+  animateNodeClick(nodeId: number): void {
     this.animateCircleClick(this.nodesDrawnElements[nodeId].circle);
   }
 
-  public animateBranchClick(nodeId: number): void {
+  animateBranchClick(nodeId: number): void {
     this.animateLineClick(this.nodesDrawnElements[nodeId].branch);
   }
 
-  public selectNode(nodeId: number): void {
-    this.binaryTreeData.getNodeByIdRecursively(nodeId).isSelected = true;
-
+  selectNode(nodeId: number): void {
+    const node = this.binaryTreeData.getNodeByIdRecursively(nodeId);
     const nodeDrawnElements = this.nodesDrawnElements[nodeId];
-    nodeDrawnElements.circle.fill(Colors.nodeSelected);
-    nodeDrawnElements.value.fill(Colors.nodeValueSelected);
-
+    BinaryTreeComponent.selectNodeAndColor(node, nodeDrawnElements.circle, nodeDrawnElements.value);
+    this.selectBranchesToNeighboursIfTheyAreSelected(node);
     this.animateNodeClick(nodeId);
   }
 
-  public unselectNode(nodeId: number): void {
-    this.binaryTreeData.getNodeByIdRecursively(nodeId).isSelected = false;
-
+  unselectNode(nodeId: number): void {
+    const node = this.binaryTreeData.getNodeByIdRecursively(nodeId);
     const nodeDrawnElements = this.nodesDrawnElements[nodeId];
-    nodeDrawnElements.circle.fill(Colors.node);
-    nodeDrawnElements.value.fill(Colors.nodeValue);
+    BinaryTreeComponent.unselectNodeAndColor(node, nodeDrawnElements.circle, nodeDrawnElements.value);
+    this.unselectBranchesToNeighboursIfTheyAreSelected(node);
   }
 
-  public selectNodeBranch(nodeId: number): void {
+  selectNodeBranch(nodeId: number): void {
     this.binaryTreeData.getNodeByIdRecursively(nodeId).isBranchSelected = true;
     this.nodesDrawnElements[nodeId].branch.stroke({ color: Colors.branchSelected });
     this.animateBranchClick(nodeId);
   }
 
-  public unselectNodeBranch(nodeId: number): void {
+  unselectNodeBranch(nodeId: number): void {
     this.binaryTreeData.getNodeByIdRecursively(nodeId).isBranchSelected = false;
     this.nodesDrawnElements[nodeId].branch.stroke(Colors.branch);
   }
 
-  public showTooltipForNode(nodeId: number, tooltipText: string): void {
+  unselectAll(): void {
+    this.binaryTreeData.unselectAllRecursively();
+    this.redraw();
+  }
+
+  showTooltipForNode(nodeId: number, tooltipText: string): void {
     this.nodesTooltips[nodeId] = new TooltipData(tooltipText, nodeId, TooltipTargetType.node, this);
   }
 
-  public showTooltipForNodeBranch(branchNodeId: number, tooltipText: string): void {
+  showTooltipForNodeBranch(branchNodeId: number, tooltipText: string): void {
     this.branchesTooltips[branchNodeId] = new TooltipData(tooltipText, branchNodeId, TooltipTargetType.branch, this);
   }
 
-  public hideTooltipForNode(nodeId: number): void {
+  hideTooltipForNode(nodeId: number): void {
     delete this.nodesTooltips[nodeId];
   }
 
-  public hideTooltipForNodeBranch(nodeId: number): void {
+  hideTooltipForNodeBranch(nodeId: number): void {
     delete this.branchesTooltips[nodeId];
   }
 
@@ -199,22 +195,6 @@ export class BinaryTreeComponent implements AfterViewInit, OnChanges, OnDestroy 
     return value;
   }
 
-  private attachSelectionEvent(node: BinaryTreeNode, nodeGroup: SvgJs.G, circle: SvgJs.Circle, nodeValue: SvgJs.Text): void {
-    nodeGroup.on('click', () => {
-      node.isSelected = !node.isSelected;
-
-      circle.fill(node.isSelected ? Colors.nodeSelected : Colors.node);
-      nodeValue.fill(node.isSelected ? Colors.nodeValueSelected : Colors.nodeValue);
-    });
-  }
-
-  private attachClickEvent(node: BinaryTreeNode, nodeGroup: SvgJs.G, circle: SvgJs.Circle): void {
-    nodeGroup.on('click', () => {
-      this.nodeClickedEvent.emit(node);
-      this.animateCircleClick(circle);
-    });
-  }
-
   private drawBranchBetween(startElement: SvgJs.Element, endElement: SvgJs.Element, node: BinaryTreeNode): SvgJs.Line {
     const branch = this.svgDoc.line(startElement.cx(), startElement.cy(), endElement.cx(), endElement.cy())
       .stroke({
@@ -226,6 +206,25 @@ export class BinaryTreeComponent implements AfterViewInit, OnChanges, OnDestroy 
     BinaryTreeComponent.calculateTooltipPositionIfExist(this.branchesTooltips[node.id]);
 
     return branch;
+  }
+
+  private attachSelectionEvent(node: BinaryTreeNode, nodeGroup: SvgJs.G, circle: SvgJs.Circle, nodeValue: SvgJs.Text): void {
+    nodeGroup.on('click', () => {
+      if (node.isSelected) {
+        BinaryTreeComponent.unselectNodeAndColor(node, circle, nodeValue);
+        this.unselectBranchesToNeighboursIfTheyAreSelected(node);
+      } else {
+        BinaryTreeComponent.selectNodeAndColor(node, circle, nodeValue);
+        this.selectBranchesToNeighboursIfTheyAreSelected(node);
+      }
+    });
+  }
+
+  private attachClickEvent(node: BinaryTreeNode, nodeGroup: SvgJs.G, circle: SvgJs.Circle): void {
+    nodeGroup.on('click', () => {
+      this.nodeClickedEvent.emit(node);
+      this.animateCircleClick(circle);
+    });
   }
 
   private fetchComputedSvgElementWidth(): void {
@@ -257,12 +256,40 @@ export class BinaryTreeComponent implements AfterViewInit, OnChanges, OnDestroy 
         .attr('stroke-width', Sizes.branch));
   }
 
+  private selectBranchesToNeighboursIfTheyAreSelected(node: BinaryTreeNode): void {
+    if (node.parent != null && node.parent.isSelected) {
+      this.selectNodeBranch(node.id);
+    }
+    node.children.filter(c => c.isSelected)
+      .forEach(c => this.selectNodeBranch(c.id));
+  }
+
+  private unselectBranchesToNeighboursIfTheyAreSelected(node: BinaryTreeNode): void {
+    if (node.parent != null && node.parent.isSelected && node.isBranchSelected) {
+      this.unselectNodeBranch(node.id);
+    }
+    node.children.filter(c => c.isSelected && c.isBranchSelected)
+      .forEach(c => this.unselectNodeBranch(c.id));
+  }
+
   private static getRandomId(): string {
     return Math.random().toString(36).substr(2, 9);
   }
 
   private static calculateTooltipPositionIfExist(tooltip: TooltipData): void {
     if (tooltip) tooltip.calculatePosition();
+  }
+
+  private static selectNodeAndColor(node: BinaryTreeNode, circle: SvgJs.Circle, value: SvgJs.Text): void {
+    node.isSelected = true;
+    circle.fill(Colors.nodeSelected);
+    value.fill(Colors.nodeValueSelected);
+  }
+
+  private static unselectNodeAndColor(node: BinaryTreeNode, circle: SvgJs.Circle, value: SvgJs.Text): void {
+    node.isSelected = false;
+    circle.fill(Colors.node);
+    value.fill(Colors.nodeValue);
   }
 }
 
