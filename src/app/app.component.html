@@ -1,23 +1,6 @@
-<!--todo to separate component-->
-<mat-toolbar [color]="'primary'">
-  <button mat-button class="toolbar-button" (click)="sidenav.toggle()">
-    <mat-icon>menu</mat-icon>
-  </button>
-  <span>{{ navigator.selectedItem ? 'Le Graph - ' + navigator.selectedItem.title : 'Le Graph - Learn graph quick end easy!' }}</span>
-  <span class="flex-spacer"></span>
-  <span class="window-controls-buttons">
-    <button mat-button class="toolbar-button" (click)="minimizeWindow()">
-      <mat-icon>minimize</mat-icon>
-    </button>
-    <button mat-button class="toolbar-button" (click)="toggleWindowMaximization()">
-      <mat-icon>settings_overscan</mat-icon>
-    </button>
-    <button mat-button class="toolbar-button" (click)="closeWindow()">
-      <mat-icon>close</mat-icon>
-    </button>
-  </span>
-</mat-toolbar>
-
+<app-toolbar [title]="navigator.selectedItem ? 'Le Graph - ' + navigator.selectedItem.title : 'Le Graph - Learn graph quick end easy!'"
+             (menuButtonClick)="sidenav.toggle()">
+</app-toolbar>
 <mat-sidenav-container>
   <mat-sidenav #sidenav [mode]="'side'" [opened]="true">
     <app-navigation #navigator></app-navigation>

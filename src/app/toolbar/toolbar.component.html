@@ -1,0 +1,18 @@
+<mat-toolbar [color]="'primary'">
+  <button mat-button class="toolbar-button" (click)="menuButtonClick.emit()">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <span>{{ title }}</span>
+  <span class="flex-spacer"></span>
+  <span class="window-controls-buttons">
+    <button mat-button class="toolbar-button" (click)="minimizeWindow()">
+      <mat-icon>minimize</mat-icon>
+    </button>
+    <button mat-button class="toolbar-button" (click)="toggleWindowMaximization()">
+      <mat-icon>settings_overscan</mat-icon>
+    </button>
+    <button mat-button class="toolbar-button" (click)="closeWindow()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </span>
+</mat-toolbar>

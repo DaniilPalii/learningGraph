@@ -13,6 +13,7 @@ import { TooltipComponent } from './shared/graph/binary-tree/component/tooltip/t
 import { LessonsSourcesComponent } from './lessons/lessons-sources/lessons-sources.component';
 import { Exercise1Component } from './lessons/exercises/exercise-1/exercise-1.component';
 import { CheckComponent } from './shared/check/check.component';
+import { ToolbarComponent } from './toolbar/toolbar.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { CheckComponent } from './shared/check/check.component';
     LessonsSourcesComponent,
     Exercise1Component,
     CheckComponent,
+    ToolbarComponent,
   ],
   imports: [
     BrowserModule,
