@@ -1,4 +1,6 @@
 const { app, BrowserWindow } = require('electron');
+const path = require("path");
+const url = require("url");
 
 let appWindow;
 
@@ -7,32 +9,42 @@ function createWindow () {
     show: false,
     backgroundColor: '#303030',
     darkTheme: true,
-    icon: `file://${__dirname}/dist/assets/logo.png`,
+    icon: url.format({
+      pathname: path.join(__dirname, `/dist/assets/logo.png`),
+      protocol: "file:",
+      slashes: true
+    }),
     minWidth: 600,
     minHeight: 400,
     frame: false
   });
   appWindow.maximize();
   // appWindow.setMenu(null);
-  appWindow.loadURL(`file://${__dirname}/dist/leGraphApp/index.html`);
-  appWindow.webContents.openDevTools();
+  appWindow.loadURL(
+    url.format({
+      pathname: path.join(__dirname, `/dist/index.html`),
+      protocol: "file:",
+      slashes: true
+    })
+  );
+  // appWindow.webContents.openDevTools();
   appWindow.show();
 
-  appWindow.on('closed', function () {
+  appWindow.on('closed', () => {
     appWindow = null;
   });
 }
 
 app.on('ready', createWindow);
 
-app.on('window-all-closed', function () {
+app.on('window-all-closed', () => {
   // On macOS specific close process
   if (process.platform !== 'darwin') {
     app.quit();
   }
 });
 
-app.on('activate', function () {
+app.on('activate', () => {
   // macOS specific close process
   if (appWindow === null) {
     createWindow();

@@ -7,11 +7,11 @@ fs.readFile(f_angular, 'utf8', (err, data) => {
   }
 
   let result = data.replace(/target: "electron-renderer",/g, '');
-  result = result.replace(/return \{/g, 'return {target: "electron-renderer",');
-  
+  result = result.replace(/return {/g, 'return {target: "electron-renderer",');
+
   fs.writeFile(f_angular, result, 'utf8', err => {
     if (err) {
       return console.log(err);
     }
   });
-}); 
+});

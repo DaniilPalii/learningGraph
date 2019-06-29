@@ -1,7 +1,14 @@
 {
-  "name": "le-graph-app",
-  "version": "0.0.0",
+  "name": "le-graph",
+  "version": "0.1.0",
+  "description": "Le Graph - Learn graph quick end easy!",
+  "author": {
+    "name": "Daniil Palii",
+    "email": "daniil.palii@gmail.com"
+  },
   "main": "electron-window.js",
+  "license": "MIT",
+  "private": false,
   "scripts": {
     "ng": "ng",
     "start": "electron .",
@@ -10,9 +17,21 @@
     "build-watch": "npm run prebuild && ng build --watch",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "dist": "electron-builder"
   },
-  "private": true,
+  "build": {
+    "appId": "com.daniilpalii.legraph",
+    "files": ["**/*", "dist/**/*"],
+    "directories": {
+      "output": "release",
+      "buildResources": "dist"
+    },
+    "asar": false,
+    "win": {
+      "target": "portable"
+    }
+  },
   "dependencies": {
     "@angular/animations": "^7.2.15",
     "@angular/cdk": "^7.3.7",
@@ -47,6 +66,8 @@
     "@types/node": "^8.10.48",
     "codelyzer": "~4.3.0",
     "electron": "^2.0.18",
+    "electron-builder": "^20.44.4",
+    "electron-packager": "^14.0.0",
     "jasmine-core": "~2.99.1",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "~3.0.0",

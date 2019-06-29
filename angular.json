@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/leGraphApp",
+            "outputPath": "dist",
             "index": "src/index.html",
             "main": "src/angular-app.ts",
             "polyfills": "src/polyfills.ts",
