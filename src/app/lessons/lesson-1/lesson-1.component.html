@@ -1,4 +1,4 @@
-<h3>{{ texts.lesson1Title }}</h3>
+<h3>{{ lessonTitleWithNumber }}</h3>
 <p>
   <strong>Drzewo binarne</strong> jest to struktura danych, która pozwala na przechowywanie danych w pewnej hierarchii.
   Może zostać użyte nie tylko do przechowywania danych, ale również posortowania danych.
@@ -22,14 +22,14 @@
       Niektóre węzły mają dwie gałęzie, są takie co mają jedno, a jeszcze inni nie mają w ogóle.
     </p>
   </div>
-  <app-binary-tree [data]="demonstrationTree"></app-binary-tree>
+  <lgr-binary-tree [data]="demonstrationTree"></lgr-binary-tree>
 </div>
 <div class="animator">
   <button mat-icon-button [disabled]="elementsDemonstrationStateNumber === 0" (click)="demonstratePreviousElement()">
     <mat-icon>arrow_back</mat-icon>
   </button>
   <div class="animated dynamic-inliner">
-    <app-binary-tree #elementsDemonstrationTreeElement [data]="elementsDemonstrationTree"></app-binary-tree>
+    <lgr-binary-tree #elementsDemonstrationTreeElement [data]="elementsDemonstrationTree"></lgr-binary-tree>
     <ng-container [ngSwitch]="elementsDemonstrationStateNumber">
       <p *ngSwitchCase="0">
         <strong>Korzeń</strong> - węzeł w drzewie binarnym który nie ma rodziców.
@@ -66,4 +66,4 @@
     <mat-icon>arrow_forward</mat-icon>
   </button>
 </div>
-<app-exercise-1></app-exercise-1>
+<lgr-exercise-1></lgr-exercise-1>

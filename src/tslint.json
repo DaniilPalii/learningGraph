@@ -4,13 +4,13 @@
     "directive-selector": [
         true,
         "attribute",
-        "app",
+        "lgr",
         "camelCase"
     ],
     "component-selector": [
         true,
         "element",
-        "app",
+        "lgr",
         "kebab-case"
     ],
     "no-input-rename": false,

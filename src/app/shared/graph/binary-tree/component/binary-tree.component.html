@@ -1,12 +1,12 @@
 <div #binaryTreeSvg [id]="svgId"></div>
 
-<app-tooltip *ngFor="let nodeTooltip of nodesTooltips | keyvalue"
+<lgr-tooltip *ngFor="let nodeTooltip of nodesTooltips | keyvalue"
              [tooltipText]="nodeTooltip.value.tooltipText"
              [startX]="nodeTooltip.value.startX"
              [startY]="nodeTooltip.value.startY">
-</app-tooltip>
-<app-tooltip *ngFor="let branchTooltip of branchesTooltips | keyvalue"
+</lgr-tooltip>
+<lgr-tooltip *ngFor="let branchTooltip of branchesTooltips | keyvalue"
              [tooltipText]="branchTooltip.value.tooltipText"
              [startX]="branchTooltip.value.startX"
              [startY]="branchTooltip.value.startY">
-</app-tooltip>
+</lgr-tooltip>

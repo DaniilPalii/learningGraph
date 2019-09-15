@@ -1,18 +1,17 @@
 import { AfterContentInit, Component, ViewChild } from '@angular/core';
 import { BinaryTreeNode as Node } from '../../shared/graph/binary-tree/binary-tree-node';
 import { BinaryTreeComponent } from '../../shared/graph/binary-tree/component/binary-tree.component';
-import { Texts } from '../../texts/texts.data';
+import { TextService } from '../../services/text.service';
+import { BaseLesson } from '../baseLesson';
 
 @Component({
-  selector: 'app-lesson-1',
+  selector: 'lgr-lesson-1',
   templateUrl: './lesson-1.component.html',
   styleUrls: ['./lesson-1.component.css', './../lessons.css']
 })
-export class Lesson1Component implements AfterContentInit {
+export class Lesson1Component extends BaseLesson implements AfterContentInit {
   @ViewChild('elementsDemonstrationTreeElement')
   elementsDemonstrationTreeElement: BinaryTreeComponent;
-
-  readonly texts = Texts;
 
   readonly demonstrationTree =
     new Node(1, 4,
@@ -101,6 +100,10 @@ export class Lesson1Component implements AfterContentInit {
   ];
   elementsDemonstrationStateNumber = 0;
   readonly elementsDemonstratorLastStateNumber = this.elementsDemonstratorStates.length - 1;
+
+  constructor(textService: TextService) {
+    super(textService.binaryTree, textService);
+  }
 
   ngAfterContentInit(): void {
     setTimeout(

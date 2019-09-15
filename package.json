@@ -22,7 +22,10 @@
   },
   "build": {
     "appId": "com.daniilpalii.legraph",
-    "files": ["**/*", "dist/**/*"],
+    "files": [
+      "**/*",
+      "dist/**/*"
+    ],
     "directories": {
       "output": "release",
       "buildResources": "dist"

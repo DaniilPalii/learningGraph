@@ -5,7 +5,7 @@ import { BinaryTreeComponent } from '../../../shared/graph/binary-tree/component
 import { ExerciseGoal } from '../exercise-goal';
 
 @Component({
-  selector: 'app-exercise-1',
+  selector: 'lgr-exercise-1',
   templateUrl: './exercise-1.component.html',
   styleUrls: ['./exercise-1.component.scss', './../../lessons.css']
 })

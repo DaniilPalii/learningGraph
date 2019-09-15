@@ -1,13 +1,14 @@
-<app-toolbar [title]="navigator.selectedItem ? 'Le Graph - ' + navigator.selectedItem.title : 'Le Graph - Learn graph quick end easy!'"
-             (menuButtonClick)="sidenav.toggle()">
-</app-toolbar>
+<lgr-toolbar [title]="toolbarTitle" (menuButtonClick)="sidenav.toggle()"></lgr-toolbar>
 <mat-sidenav-container>
   <mat-sidenav #sidenav [mode]="'side'" [opened]="true">
-    <app-navigation #navigator></app-navigation>
+    <lgr-navigation [navigationItems]="navigationItems"
+                    (selectionChange)="handleNavigatorSelectionChange($event)">
+    </lgr-navigation>
   </mat-sidenav>
-  <mat-sidenav-content [ngSwitch]="navigator.selectedItem.id">
-    <app-lesson-1 *ngSwitchCase="1"></app-lesson-1>
-    <app-lesson-2 *ngSwitchCase="2"></app-lesson-2>
-    <span *ngSwitchDefault>Lesson is in development, please wait...</span>
+  <mat-sidenav-content [ngSwitch]="selectedNavigationItem?.id">
+    <lgr-lesson-1 *ngSwitchCase="1" [lessonNumber]="1"></lgr-lesson-1>
+    <lgr-lesson-tree-traversal *ngSwitchCase="2" [lessonNumber]="2"></lgr-lesson-tree-traversal>
+    <lgr-lesson-2 *ngSwitchCase="3" [lessonNumber]="3"></lgr-lesson-2>
+    <span *ngSwitchDefault>Lesson isn't implemented yet...</span>
   </mat-sidenav-content>
 </mat-sidenav-container>

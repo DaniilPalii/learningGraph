@@ -1,7 +1,7 @@
 import { Component, HostBinding, Input } from '@angular/core';
 
 @Component({
-  selector: 'app-tooltip',
+  selector: 'lgr-tooltip',
   template: '{{ tooltipText }}',
   styleUrls: ['./tooltip.component.css']
 })

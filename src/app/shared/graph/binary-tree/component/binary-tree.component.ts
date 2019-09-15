@@ -7,7 +7,7 @@ import { Sizes } from './sizes';
 import { TooltipData, TooltipTargetType } from './tooltip/tooltip-data';
 
 @Component({
-  selector: 'app-binary-tree',
+  selector: 'lgr-binary-tree',
   templateUrl: './binary-tree.component.html',
   styleUrls: ['./binary-tree.component.css']
 })

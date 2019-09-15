@@ -4,9 +4,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { MaterialModule } from './material/material.module';
 
+import { TextService } from './services/text.service';
+
 import { AppComponent } from './app.component';
 import { NavigationComponent } from './navigation/navigation.component';
 import { Lesson1Component } from './lessons/lesson-1/lesson-1.component';
+import { LessonTreeTraversalComponent } from './lessons/lesson-tree-traversal/lesson-tree-traversal.component';
 import { Lesson2Component } from './lessons/lesson-2/lesson-2.component';
 import { BinaryTreeComponent } from './shared/graph/binary-tree/component/binary-tree.component';
 import { TooltipComponent } from './shared/graph/binary-tree/component/tooltip/tooltip.component';
@@ -20,6 +23,7 @@ import { ToolbarComponent } from './toolbar/toolbar.component';
     AppComponent,
     NavigationComponent,
     Lesson1Component,
+    LessonTreeTraversalComponent,
     Lesson2Component,
     BinaryTreeComponent,
     TooltipComponent,
@@ -33,7 +37,7 @@ import { ToolbarComponent } from './toolbar/toolbar.component';
     BrowserAnimationsModule,
     MaterialModule,
   ],
-  providers: [],
+  providers: [TextService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

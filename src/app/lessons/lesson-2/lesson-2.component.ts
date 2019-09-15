@@ -1,12 +1,14 @@
 import { Component } from '@angular/core';
+import { TextService } from '../../services/text.service';
 import { BinaryTreeNode } from '../../shared/graph/binary-tree/binary-tree-node';
+import { BaseLesson } from '../baseLesson';
 
 @Component({
-  selector: 'app-lesson-2',
+  selector: 'lgr-lesson-2',
   templateUrl: './lesson-2.component.html',
   styleUrls: ['./lesson-2.component.css', './../lessons.css']
 })
-export class Lesson2Component {
+export class Lesson2Component extends BaseLesson {
   binaryTreeData =
     new BinaryTreeNode(null, 100,
       new BinaryTreeNode(null, 1,
@@ -31,4 +33,8 @@ export class Lesson2Component {
         new BinaryTreeNode(null, 22,
           new BinaryTreeNode(null, 221),
           new BinaryTreeNode(null, 222))));
+
+  constructor(textService: TextService) {
+    super('Long name', textService);
+  }
 }

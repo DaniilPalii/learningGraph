@@ -2,13 +2,13 @@
 <div class="dynamic-inliner">
   <div>
     <div *ngFor="let goal of shownGoals" class="text-with-check">
-      <app-check mat-ripple [checked]="goal.isAchieved"></app-check>
+      <lgr-check mat-ripple [checked]="goal.isAchieved"></lgr-check>
       <span [ngClass]="{ 'checked-text': goal.isAchieved }">{{ goal.description }}</span>
     </div>
   </div>
-  <app-binary-tree #treeComponent
+  <lgr-binary-tree #treeComponent
                    [data]="tree"
                    [isSelectionEnabled]="true"
                    (nodeClicked)="handleNodeClick($event)">
-  </app-binary-tree>
+  </lgr-binary-tree>
 </div>

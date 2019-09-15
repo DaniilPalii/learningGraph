@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'app-check',
+  selector: 'lgr-check',
   templateUrl: './check.component.html',
   styleUrls: ['./check.component.css']
 })

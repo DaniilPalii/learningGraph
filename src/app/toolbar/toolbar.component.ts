@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import * as electron from 'electron';
 
 @Component({
-  selector: 'app-toolbar',
+  selector: 'lgr-toolbar',
   templateUrl: './toolbar.component.html',
   styleUrls: ['./toolbar.component.css']
 })
