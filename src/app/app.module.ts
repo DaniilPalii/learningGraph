@@ -8,7 +8,7 @@ import { TextService } from './services/text.service';
 
 import { AppComponent } from './app.component';
 import { NavigationComponent } from './navigation/navigation.component';
-import { Lesson1Component } from './lessons/lesson-1/lesson-1.component';
+import { LessonBinaryTreeComponent } from './lessons/lesson-binary-tree/lesson-binary-tree.component';
 import { LessonTreeTraversalComponent } from './lessons/lesson-tree-traversal/lesson-tree-traversal.component';
 import { Lesson2Component } from './lessons/lesson-2/lesson-2.component';
 import { BinaryTreeComponent } from './shared/graph/binary-tree/component/binary-tree.component';
@@ -22,7 +22,7 @@ import { ToolbarComponent } from './toolbar/toolbar.component';
   declarations: [
     AppComponent,
     NavigationComponent,
-    Lesson1Component,
+    LessonBinaryTreeComponent,
     LessonTreeTraversalComponent,
     Lesson2Component,
     BinaryTreeComponent,

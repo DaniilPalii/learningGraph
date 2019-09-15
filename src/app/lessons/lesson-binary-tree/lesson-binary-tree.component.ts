@@ -5,11 +5,11 @@ import { TextService } from '../../services/text.service';
 import { BaseLesson } from '../baseLesson';
 
 @Component({
-  selector: 'lgr-lesson-1',
-  templateUrl: './lesson-1.component.html',
-  styleUrls: ['./lesson-1.component.css', './../lessons.css']
+  selector: 'lgr-lesson-binary-tree',
+  templateUrl: './lesson-binary-tree.component.html',
+  styleUrls: ['./lesson-binary-tree.component.css', './../lessons.css']
 })
-export class Lesson1Component extends BaseLesson implements AfterContentInit {
+export class LessonBinaryTreeComponent extends BaseLesson implements AfterContentInit {
   @ViewChild('elementsDemonstrationTreeElement')
   elementsDemonstrationTreeElement: BinaryTreeComponent;
 

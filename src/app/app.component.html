@@ -6,7 +6,7 @@
     </lgr-navigation>
   </mat-sidenav>
   <mat-sidenav-content [ngSwitch]="selectedNavigationItem?.id">
-    <lgr-lesson-1 *ngSwitchCase="1" [lessonNumber]="1"></lgr-lesson-1>
+    <lgr-lesson-binary-tree *ngSwitchCase="1" [lessonNumber]="1"></lgr-lesson-binary-tree>
     <lgr-lesson-tree-traversal *ngSwitchCase="2" [lessonNumber]="2"></lgr-lesson-tree-traversal>
     <lgr-lesson-2 *ngSwitchCase="3" [lessonNumber]="3"></lgr-lesson-2>
     <span *ngSwitchDefault>Lesson isn't implemented yet...</span>
