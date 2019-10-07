@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TextService } from '../../services/text.service';
-import { BinaryTreeNode } from '../../shared/graph/binary-tree/binary-tree-node';
+import { BinaryTreeNode } from '../../shared/components/graph/binary-tree/binary-tree-node';
 import { BaseLesson } from '../baseLesson';
 
 @Component({

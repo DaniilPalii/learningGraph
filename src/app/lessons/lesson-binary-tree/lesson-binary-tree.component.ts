@@ -1,6 +1,6 @@
 import { AfterContentInit, Component, ViewChild } from '@angular/core';
-import { BinaryTreeNode as Node } from '../../shared/graph/binary-tree/binary-tree-node';
-import { BinaryTreeComponent } from '../../shared/graph/binary-tree/component/binary-tree.component';
+import { BinaryTreeNode as Node } from '../../shared/components/graph/binary-tree/binary-tree-node';
+import { BinaryTreeComponent } from '../../shared/components/graph/binary-tree/component/binary-tree.component';
 import { TextService } from '../../services/text.service';
 import { BaseLesson } from '../baseLesson';
 

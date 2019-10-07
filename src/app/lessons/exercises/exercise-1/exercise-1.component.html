@@ -8,7 +8,7 @@
   </div>
   <lgr-binary-tree #treeComponent
                    [data]="tree"
-                   [isSelectionEnabled]="true"
+                   [interactivityMode]="BinaryTreeComponentMode.selectable"
                    (nodeClicked)="handleNodeClick($event)">
   </lgr-binary-tree>
 </div>

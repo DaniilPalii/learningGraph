@@ -1,7 +1,7 @@
 import { Component, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { MatRipple } from '@angular/material';
-import { BinaryTreeNode as Node } from '../../../shared/graph/binary-tree/binary-tree-node';
-import { BinaryTreeComponent } from '../../../shared/graph/binary-tree/component/binary-tree.component';
+import { BinaryTreeNode as Node } from '../../../shared/components/graph/binary-tree/binary-tree-node';
+import { BinaryTreeComponent, InteractivityMode } from '../../../shared/components/graph/binary-tree/component/binary-tree.component';
 import { ExerciseGoal } from '../exercise-goal';
 
 @Component({
@@ -15,6 +15,8 @@ export class Exercise1Component {
 
   shownGoals: Array<ExerciseGoal>;
   isCompleted: boolean;
+
+  readonly BinaryTreeComponentMode = InteractivityMode;
 
   readonly tree =
     new Node(null, 83,

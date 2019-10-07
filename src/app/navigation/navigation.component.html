@@ -4,7 +4,7 @@
     <button *ngFor="let item of navigationItems"
             mat-list-item
             class="navigation-button"
-            (click)="switchSelection(item)">
+            (click)="changeSelection(item)">
       {{ item.title }}
     </button>
   </mat-action-list>

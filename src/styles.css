@@ -12,7 +12,8 @@ html {
   box-sizing: inherit;
 }
 
-html, body {
+html,
+body {
   height: 100%; margin: 0;
 }
 
@@ -20,7 +21,14 @@ body {
   background: #303030; color: rgb(204, 204, 204);
 }
 
-h1, h2, h3, h4, h5, h6, .marked-text, strong {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.marked-text,
+strong {
   color: #e91e63;
 }
 

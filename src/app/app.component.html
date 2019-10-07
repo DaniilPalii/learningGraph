@@ -2,7 +2,7 @@
 <mat-sidenav-container>
   <mat-sidenav #sidenav [mode]="'side'" [opened]="true">
     <lgr-navigation [navigationItems]="navigationItems"
-                    (selectionChange)="handleNavigatorSelectionChange($event)">
+                    (selectionChanged)="handleNavigatorSelectionChange($event)">
     </lgr-navigation>
   </mat-sidenav>
   <mat-sidenav-content [ngSwitch]="selectedNavigationItem?.id">

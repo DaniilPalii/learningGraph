@@ -15,11 +15,11 @@ export class NavigationItem {
 })
 export class NavigationComponent {
   @Input() navigationItems: Array<NavigationItem> = [];
-  @Output('selectionChange') selectionChangeEventEmitter = new EventEmitter<NavigationItem>();
+  @Output() selectionChanged = new EventEmitter<NavigationItem>();
 
   constructor(public readonly textService: TextService) { }
 
-  switchSelection(item: NavigationItem): void {
-    this.selectionChangeEventEmitter.emit(item);
+  changeSelection(item: NavigationItem): void {
+    this.selectionChanged.emit(item);
   }
 }

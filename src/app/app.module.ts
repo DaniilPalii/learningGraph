@@ -11,11 +11,11 @@ import { NavigationComponent } from './navigation/navigation.component';
 import { LessonBinaryTreeComponent } from './lessons/lesson-binary-tree/lesson-binary-tree.component';
 import { LessonTreeTraversalComponent } from './lessons/lesson-tree-traversal/lesson-tree-traversal.component';
 import { Lesson2Component } from './lessons/lesson-2/lesson-2.component';
-import { BinaryTreeComponent } from './shared/graph/binary-tree/component/binary-tree.component';
-import { TooltipComponent } from './shared/graph/binary-tree/component/tooltip/tooltip.component';
+import { BinaryTreeComponent } from './shared/components/graph/binary-tree/component/binary-tree.component';
+import { TooltipComponent } from './shared/components/graph/binary-tree/component/tooltip/tooltip.component';
 import { LessonsSourcesComponent } from './lessons/lessons-sources/lessons-sources.component';
 import { Exercise1Component } from './lessons/exercises/exercise-1/exercise-1.component';
-import { CheckComponent } from './shared/check/check.component';
+import { CheckComponent } from './shared/components/check/check.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
 
 @NgModule({

@@ -1,4 +1,28 @@
 <h3>{{ lessonTitleWithNumber }}</h3>
 <p>
-  Ok
+  <strong>Przechodzenie drzewa</strong> – proces odwiedzania wszystkich węzłów drzewa.
 </p>
+<p>Wyróżnia się 3 sposoby rekursywnego przejścia drzewa binarnego:</p>
+<li>VLR – pre-order, przejście wzdłużne,</li>
+<li>LVR – in-order, przejście poprzeczne,</li>
+<li>LRV – post-order, przejście wsteczne,</li>
+<p>
+  <small>gdzie: Visit – „odwiedź” węzeł, Left – przejdź lewe poddrzewo, Right – przejdź prawe poddrzewo.</small>
+</p>
+<mat-tab-group mat-align-tabs="center" (selectedTabChange)="handleSelectedTabChange($event.index)">
+  <mat-tab label="Pre-order">
+    <ng-template matTabContent>
+      <lgr-binary-tree [data]="preOrderTree"></lgr-binary-tree>
+    </ng-template>
+  </mat-tab>
+  <mat-tab label="In-order">
+    <ng-template matTabContent>
+      <lgr-binary-tree [data]="inOrderTree"></lgr-binary-tree>
+    </ng-template>
+  </mat-tab>
+  <mat-tab label="Post-order">
+    <ng-template matTabContent>
+      <lgr-binary-tree [data]="postOrderTree"></lgr-binary-tree>
+    </ng-template>
+  </mat-tab>
+</mat-tab-group>

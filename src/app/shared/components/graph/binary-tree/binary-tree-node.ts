@@ -89,6 +89,22 @@ export class BinaryTreeNode {
     });
   }
 
+  public forEachPreOrder(action: (node: BinaryTreeNode) => void): void {
+    action(this);
+    this.children.forEach(n => n.forEachPreOrder(action));
+  }
+
+  public forEachInOrder(action: (node: BinaryTreeNode) => void): void {
+    if (this.leftChild) this.leftChild.forEachInOrder(action);
+    action(this);
+    if (this.rightChild) this.rightChild.forEachInOrder(action);
+  }
+
+  public forEachPostOrder(action: (node: BinaryTreeNode) => void): void {
+    this.children.forEach(n => n.forEachPostOrder(action));
+    action(this);
+  }
+
   private appendLeftChild(child: BinaryTreeNode): void {
     this.leftChild = child;
     this.afterAppendingChild(child);

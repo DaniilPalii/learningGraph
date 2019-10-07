@@ -1,6 +1,8 @@
 import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, Output, ViewChild } from '@angular/core';
 import ResizeSensor from 'css-element-queries/src/ResizeSensor';
 import * as SvgJs from 'svg.js';
+import { generateRandomId } from '../../../../functions/generate-random.id';
+import { ifHasValue } from '../../../../functions/if-has-value';
 import { BinaryTreeNode } from '../binary-tree-node';
 import { Colors } from './colors';
 import { Sizes } from './sizes';
@@ -12,15 +14,14 @@ import { TooltipData, TooltipTargetType } from './tooltip/tooltip-data';
   styleUrls: ['./binary-tree.component.css']
 })
 export class BinaryTreeComponent implements AfterViewInit, OnChanges, OnDestroy {
-  @Input('data') binaryTreeData: BinaryTreeNode;
+  @Input() data: BinaryTreeNode;
   @Input() height: number;
-  @Input() isSelectionEnabled: boolean;
-  @Input() isClickEnabled: boolean;
+  @Input() interactivityMode = InteractivityMode.none;
 
-  @Output('nodeClicked') nodeClickedEvent = new EventEmitter<BinaryTreeNode>();
-  @Output('selectionChange') selectionChangeEvent = new EventEmitter<NodeSelectionChangeEvent>();
+  @Output() nodeClicked = new EventEmitter<BinaryTreeNode>();
+  @Output() selectionChanged = new EventEmitter<NodeSelectionChangeEvent>();
 
-  readonly svgId: string = BinaryTreeComponent.getRandomId();
+  readonly svgId: string = generateRandomId();
 
   nodesDrawnElements: { [nodeId: number]: DrawnElementsData } = {};
   nodesTooltips: { [nodeId: number]: TooltipData } = {};
@@ -49,11 +50,15 @@ export class BinaryTreeComponent implements AfterViewInit, OnChanges, OnDestroy 
 
   redraw(): void {
     clearTimeout(this.redrawingTimer);
-
     this.redrawingTimer = setTimeout(() => {
       this.fetchComputedSvgElementWidth();
-      this.redrawTree();
-    }, 250);
+
+      this.svgDoc.clear();
+
+      const rootNodeG = this.drawNodeG(this.svgDocWidth / 2, Sizes.nodeClicked / 2, this.data);
+      this.drawChildrenRecursively(this.data, rootNodeG, 1);
+    },
+    250);
   }
 
   animateNodeClick(nodeId: number): void {
@@ -65,33 +70,33 @@ export class BinaryTreeComponent implements AfterViewInit, OnChanges, OnDestroy 
   }
 
   selectNode(nodeId: number): void {
-    const node = this.binaryTreeData.getNodeByIdRecursively(nodeId);
+    const node = this.data.getNodeByIdRecursively(nodeId);
     const nodeDrawnElements = this.nodesDrawnElements[nodeId];
     BinaryTreeComponent.selectNodeAndColor(node, nodeDrawnElements.circle, nodeDrawnElements.value);
-    this.selectBranchesToNeighboursIfTheyAreSelected(node);
+    /* if (withBranches) */ this.selectBranchesToNeighboursIfTheyAreSelected(node);
     this.animateNodeClick(nodeId);
   }
 
-  unselectNode(nodeId: number): void {
-    const node = this.binaryTreeData.getNodeByIdRecursively(nodeId);
+  unselectNode(nodeId: number, withBranches = true): void {
+    const node = this.data.getNodeByIdRecursively(nodeId);
     const nodeDrawnElements = this.nodesDrawnElements[nodeId];
     BinaryTreeComponent.unselectNodeAndColor(node, nodeDrawnElements.circle, nodeDrawnElements.value);
-    this.unselectBranchesToNeighboursIfTheyAreSelected(node);
+    if (withBranches) this.unselectBranchesToNeighboursIfTheyAreSelected(node);
   }
 
   selectNodeBranch(nodeId: number): void {
-    this.binaryTreeData.getNodeByIdRecursively(nodeId).isBranchSelected = true;
+    this.data.getNodeByIdRecursively(nodeId).isBranchSelected = true;
     this.nodesDrawnElements[nodeId].branch.stroke({ color: Colors.branchSelected });
     this.animateBranchClick(nodeId);
   }
 
   unselectNodeBranch(nodeId: number): void {
-    this.binaryTreeData.getNodeByIdRecursively(nodeId).isBranchSelected = false;
+    this.data.getNodeByIdRecursively(nodeId).isBranchSelected = false;
     this.nodesDrawnElements[nodeId].branch.stroke(Colors.branch);
   }
 
   unselectAll(): void {
-    this.binaryTreeData.unselectAllRecursively();
+    this.data.unselectAllRecursively();
     this.redraw();
   }
 
@@ -112,20 +117,18 @@ export class BinaryTreeComponent implements AfterViewInit, OnChanges, OnDestroy 
   }
 
   private createSvg(): void {
-    this.svgDoc = SvgJs(this.svgId)
-      .height(this.calculateSvgHeight());
+    const svgHeight = this.height
+      ? this.height - 4
+      : (this.data.height + 1) * Sizes.node
+        + (this.data.height) * Sizes.nodesYInterval
+        + Sizes.nodeClickDelta;
+
+    this.svgDoc = SvgJs(this.svgId).height(svgHeight);
   }
 
   private enableRedrawingOnResize(): void {
     // tslint:disable-next-line:no-unused-expression
     new ResizeSensor(this.binaryTreeSvgElement.nativeElement, () => this.redraw());
-  }
-
-  private redrawTree(): void {
-    this.svgDoc.clear();
-
-    const rootNodeG = this.drawNodeG(this.svgDocWidth / 2, Sizes.nodeClicked / 2, this.binaryTreeData);
-    this.drawChildrenRecursively(this.binaryTreeData, rootNodeG, 1);
   }
 
   private drawChildrenRecursively(node: BinaryTreeNode, nodeG: SvgJs.G, xIndex: number): void {
@@ -155,21 +158,22 @@ export class BinaryTreeComponent implements AfterViewInit, OnChanges, OnDestroy 
 
   private drawNodeG(cx: number, cy: number, node: BinaryTreeNode): SvgJs.G {
     const nodeGroup = this.svgDoc.group();
-    this.nodesDrawnElements[node.id] = <any>{};
+    this.nodesDrawnElements[node.id] = <DrawnElementsData>{}; // TODO: initialize with values
     const circle = this.drawCircle(cx, cy, node);
     nodeGroup.add(circle);
     const nodeValue = this.drawNodeValue(cx, cy, node);
     nodeGroup.add(nodeValue);
 
-    if (this.isSelectionEnabled) {
-      this.attachSelectionEvent(node, nodeGroup, circle, nodeValue);
-    }
-
-    if (this.isSelectionEnabled || this.isClickEnabled) {
-      this.attachClickEvent(node, nodeGroup, circle);
-      nodeGroup.attr('cursor', 'pointer');
-    } else {
-      nodeGroup.attr('cursor', 'default');
+    switch (this.interactivityMode) {
+      case InteractivityMode.selectable:
+        this.attachSelectionEvent(node, nodeGroup, circle, nodeValue);
+      // tslint:disable-next-line:no-switch-case-fall-through
+      case InteractivityMode.clickable:
+        this.attachClickEvent(node, nodeGroup, circle);
+        nodeGroup.attr('cursor', 'pointer');
+        break;
+      case InteractivityMode.none:
+        nodeGroup.attr('cursor', 'default');
     }
 
     return nodeGroup;
@@ -180,7 +184,7 @@ export class BinaryTreeComponent implements AfterViewInit, OnChanges, OnDestroy 
       .fill(node.isSelected ? Colors.nodeSelected : Colors.node)
       .center(cx, cy);
     this.nodesDrawnElements[node.id].circle = circle;
-    BinaryTreeComponent.calculateTooltipPositionIfExist(this.nodesTooltips[node.id]);
+    ifHasValue(this.nodesTooltips[node.id], t => t.calculatePosition());
 
     return circle;
   }
@@ -203,26 +207,26 @@ export class BinaryTreeComponent implements AfterViewInit, OnChanges, OnDestroy 
       })
       .back(); // decreasing z-index
     this.nodesDrawnElements[node.id].branch = branch;
-    BinaryTreeComponent.calculateTooltipPositionIfExist(this.branchesTooltips[node.id]);
+    ifHasValue(this.nodesTooltips[node.id], t => t.calculatePosition());
 
     return branch;
   }
 
   private attachSelectionEvent(node: BinaryTreeNode, nodeGroup: SvgJs.G, circle: SvgJs.Circle, nodeValue: SvgJs.Text): void {
     nodeGroup.on('click', () => {
-      if (node.isSelected) {
-        BinaryTreeComponent.unselectNodeAndColor(node, circle, nodeValue);
-        this.unselectBranchesToNeighboursIfTheyAreSelected(node);
-      } else {
+      if (!node.isSelected) {
         BinaryTreeComponent.selectNodeAndColor(node, circle, nodeValue);
         this.selectBranchesToNeighboursIfTheyAreSelected(node);
+      } else {
+        BinaryTreeComponent.unselectNodeAndColor(node, circle, nodeValue);
+        this.unselectBranchesToNeighboursIfTheyAreSelected(node);
       }
     });
   }
 
   private attachClickEvent(node: BinaryTreeNode, nodeGroup: SvgJs.G, circle: SvgJs.Circle): void {
     nodeGroup.on('click', () => {
-      this.nodeClickedEvent.emit(node);
+      this.nodeClicked.emit(node);
       this.animateCircleClick(circle);
     });
   }
@@ -232,14 +236,6 @@ export class BinaryTreeComponent implements AfterViewInit, OnChanges, OnDestroy 
       .getPropertyValue('width');
 
     this.svgDocWidth = parseFloat(computedSvgElementWidthStyle);
-  }
-
-  private calculateSvgHeight(): number {
-    return this.height
-      ? this.height - 4
-      : (this.binaryTreeData.height + 1) * Sizes.node
-        + (this.binaryTreeData.height) * Sizes.nodesYInterval
-        + Sizes.nodeClickDelta;
   }
 
   private animateCircleClick(circle: SvgJs.Circle): void {
@@ -272,14 +268,6 @@ export class BinaryTreeComponent implements AfterViewInit, OnChanges, OnDestroy 
       .forEach(c => this.unselectNodeBranch(c.id));
   }
 
-  private static getRandomId(): string {
-    return Math.random().toString(36).substr(2, 9);
-  }
-
-  private static calculateTooltipPositionIfExist(tooltip: TooltipData): void {
-    if (tooltip) tooltip.calculatePosition();
-  }
-
   private static selectNodeAndColor(node: BinaryTreeNode, circle: SvgJs.Circle, value: SvgJs.Text): void {
     node.isSelected = true;
     circle.fill(Colors.nodeSelected);
@@ -291,6 +279,12 @@ export class BinaryTreeComponent implements AfterViewInit, OnChanges, OnDestroy 
     circle.fill(Colors.node);
     value.fill(Colors.nodeValue);
   }
+}
+
+export enum InteractivityMode {
+  none,
+  clickable,
+  selectable
 }
 
 export interface NodeSelectionChangeEvent {
