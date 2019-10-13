@@ -82,7 +82,7 @@ export class BinaryTreeNode {
     return neighbours;
   }
 
-  public unselectAllRecursively(): void {
+  public unselectAllNodesAndBranches(): void {
     this.toArray().forEach(node => {
       node.isSelected = false;
       node.isBranchSelected = false;

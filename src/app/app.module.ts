@@ -17,6 +17,7 @@ import { LessonsSourcesComponent } from './lessons/lessons-sources/lessons-sourc
 import { Exercise1Component } from './lessons/exercises/exercise-1/exercise-1.component';
 import { CheckComponent } from './shared/components/check/check.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
+import { TreeAnimationRunnerComponent } from './lessons/lesson-tree-traversal/tree-animation-runner/tree-animation-runner/tree-animation-runner.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { ToolbarComponent } from './toolbar/toolbar.component';
     Exercise1Component,
     CheckComponent,
     ToolbarComponent,
+    TreeAnimationRunnerComponent,
   ],
   imports: [
     BrowserModule,

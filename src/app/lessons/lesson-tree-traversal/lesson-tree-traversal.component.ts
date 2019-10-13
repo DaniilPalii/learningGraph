@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { TextService } from '../../services/text.service';
 import { BinaryTreeNode as Node } from '../../shared/components/graph/binary-tree/binary-tree-node';
 import { BaseLesson } from '../baseLesson';
+import { TreeAnimationRunnerComponent } from './tree-animation-runner/tree-animation-runner/tree-animation-runner.component';
 
 @Component({
   selector: 'lgr-lesson-tree-traversal',
@@ -9,61 +10,41 @@ import { BaseLesson } from '../baseLesson';
   styleUrls: ['./lesson-tree-traversal.component.css', './../lessons.css']
 })
 export class LessonTreeTraversalComponent extends BaseLesson {
-  preOrderTree = LessonTreeTraversalComponent.createTree();
-  inOrderTree = LessonTreeTraversalComponent.createTree();
-  postOrderTree = LessonTreeTraversalComponent.createTree();
+  orderTree = LessonTreeTraversalComponent.createTree();
+
+  @ViewChild('animationRunner')
+  animationRunner: TreeAnimationRunnerComponent;
 
   private selectedTabI = 0;
-  private selectionNodeQueue: Node[] = [];
+  private orderedNodes: Array<Node>;
 
   constructor(textService: TextService) {
     super(textService.treeTraversal, textService);
-
-    let counter = 1;
-    this.preOrderTree.forEachPreOrder(n => n.value = counter++);
-    counter = 1;
-    this.inOrderTree.forEachInOrder(n => n.value = counter++);
-    counter = 1;
-    this.postOrderTree.forEachPostOrder(n => n.value = counter++);
+    this.prepareTreeForTab(this.selectedTabI);
   }
 
-  public handleSelectedTabChange(tabI: number): void {
-    if (tabI === this.selectedTabI) return;
-
+  public prepareTreeForTab(tabI: number): void {
     this.selectedTabI = tabI;
-    this.selectionNodeQueue = [];
-    this.clearSelection();
+    this.orderTree = LessonTreeTraversalComponent.createTree();
+    let nodeValue = 1;
+    this.orderedNodes = [];
+    this.forEachTreeNode(n => {
+      n.value = nodeValue++;
+      this.orderedNodes.push(n);
+    });
+  }
 
-    switch (tabI) {
-      case 0:
-        this.preOrderTree.forEachPreOrder(n => this.selectionNodeQueue.push(n));
-        break;
-      case 1:
-        this.inOrderTree.forEachInOrder(n => this.selectionNodeQueue.push(n));
-        break;
-      case 2:
-        this.postOrderTree.forEachPostOrder(n => this.selectionNodeQueue.push(n));
-        break;
-      default:
-        throw Error(`Unexpected tab index - ${tabI}`);
+  public runTreeOrderAnimation(): void {
+    this.animationRunner.treeComponent.selectNodes(this.orderedNodes);
+  }
 
-      this.startSelection();
+  private forEachTreeNode(action: (node: Node) => void): void {
+    switch (this.selectedTabI) {
+      case 0: this.orderTree.forEachPreOrder(n => action(n)); break;
+      case 1: this.orderTree.forEachInOrder(n => action(n)); break;
+      case 2: this.orderTree.forEachPostOrder(n => action(n)); break;
+      default: throw Error(`Unexpected tab index - ${this.selectedTabI}`);
     }
-  }
-
-  private startSelection(): void {
-    // for (let i = 0; i < this.selectionNodeQueue.length; i++) {
-    //   let closureI = i;
-    //   setTimeout(() => {
-    //     this.selectionNodeQueue[closureI].
-    //   }, 3000 * (closureI + 1));
-    // }
-  }
-
-  private clearSelection(): void {
-    this.preOrderTree.forEachPreOrder(n => n.isSelected = false);
-    this.inOrderTree.forEachInOrder(n => n.isSelected = false);
-    this.postOrderTree.forEachPostOrder(n => n.isSelected = false);
   }
 
   private static createTree(): Node {

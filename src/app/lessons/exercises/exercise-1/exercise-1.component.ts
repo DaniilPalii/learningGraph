@@ -37,7 +37,7 @@ export class Exercise1Component {
       () => this.isMultiselectionEnabled = true,
       () => {
         this.isMultiselectionEnabled = false;
-        this.treeComponent.unselectAll();
+        this.treeComponent.unselectAllNodesAndBranches();
       }),
   ];
 

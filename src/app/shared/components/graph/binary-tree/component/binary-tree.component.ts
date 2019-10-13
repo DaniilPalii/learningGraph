@@ -61,27 +61,29 @@ export class BinaryTreeComponent implements AfterViewInit, OnChanges, OnDestroy 
     250);
   }
 
-  animateNodeClick(nodeId: number): void {
-    this.animateCircleClick(this.nodesDrawnElements[nodeId].circle);
-  }
-
-  animateBranchClick(nodeId: number): void {
-    this.animateLineClick(this.nodesDrawnElements[nodeId].branch);
-  }
-
   selectNode(nodeId: number): void {
     const node = this.data.getNodeByIdRecursively(nodeId);
     const nodeDrawnElements = this.nodesDrawnElements[nodeId];
-    BinaryTreeComponent.selectNodeAndColor(node, nodeDrawnElements.circle, nodeDrawnElements.value);
-    /* if (withBranches) */ this.selectBranchesToNeighboursIfTheyAreSelected(node);
-    this.animateNodeClick(nodeId);
+    BinaryTreeComponent.markAndColorNodeAsSelected(node, nodeDrawnElements.circle, nodeDrawnElements.value);
+    this.selectBranchesToSelectedNeighbours(node);
+    this.animateCircleClick(nodeDrawnElements.circle);
   }
 
-  unselectNode(nodeId: number, withBranches = true): void {
+  unselectNode(nodeId: number): void {
     const node = this.data.getNodeByIdRecursively(nodeId);
     const nodeDrawnElements = this.nodesDrawnElements[nodeId];
-    BinaryTreeComponent.unselectNodeAndColor(node, nodeDrawnElements.circle, nodeDrawnElements.value);
-    if (withBranches) this.unselectBranchesToNeighboursIfTheyAreSelected(node);
+    BinaryTreeComponent.markAndColorNodeAsUnselected(node, nodeDrawnElements.circle, nodeDrawnElements.value);
+    this.unselectBranchesToSelectedNeighbours(node);
+  }
+
+  selectNodes(nodes: Array<BinaryTreeNode>): void {
+    const node = nodes[0];
+    const nodeDrawnElements = this.nodesDrawnElements[node.id];
+    this.animateCircleClick(nodeDrawnElements.circle)
+      .during(() => BinaryTreeComponent.markAndColorNodeAsSelected(node, nodeDrawnElements.circle, nodeDrawnElements.value))
+      .during(() => this.selectBranchesToSelectedNeighbours(node))
+      .delay(300)
+      .after(() => this.selectNodes(nodes.slice(1)));
   }
 
   selectNodeBranch(nodeId: number): void {
@@ -95,8 +97,8 @@ export class BinaryTreeComponent implements AfterViewInit, OnChanges, OnDestroy 
     this.nodesDrawnElements[nodeId].branch.stroke(Colors.branch);
   }
 
-  unselectAll(): void {
-    this.data.unselectAllRecursively();
+  unselectAllNodesAndBranches(): void {
+    this.data.unselectAllNodesAndBranches();
     this.redraw();
   }
 
@@ -114,6 +116,9 @@ export class BinaryTreeComponent implements AfterViewInit, OnChanges, OnDestroy 
 
   hideTooltipForNodeBranch(nodeId: number): void {
     delete this.branchesTooltips[nodeId];
+  }
+  animateBranchClick(nodeId: number): void {
+    this.animateLineClick(this.nodesDrawnElements[nodeId].branch);
   }
 
   private createSvg(): void {
@@ -215,11 +220,11 @@ export class BinaryTreeComponent implements AfterViewInit, OnChanges, OnDestroy 
   private attachSelectionEvent(node: BinaryTreeNode, nodeGroup: SvgJs.G, circle: SvgJs.Circle, nodeValue: SvgJs.Text): void {
     nodeGroup.on('click', () => {
       if (!node.isSelected) {
-        BinaryTreeComponent.selectNodeAndColor(node, circle, nodeValue);
-        this.selectBranchesToNeighboursIfTheyAreSelected(node);
+        BinaryTreeComponent.markAndColorNodeAsSelected(node, circle, nodeValue);
+        this.selectBranchesToSelectedNeighbours(node);
       } else {
-        BinaryTreeComponent.unselectNodeAndColor(node, circle, nodeValue);
-        this.unselectBranchesToNeighboursIfTheyAreSelected(node);
+        BinaryTreeComponent.markAndColorNodeAsUnselected(node, circle, nodeValue);
+        this.unselectBranchesToSelectedNeighbours(node);
       }
     });
   }
@@ -238,21 +243,21 @@ export class BinaryTreeComponent implements AfterViewInit, OnChanges, OnDestroy 
     this.svgDocWidth = parseFloat(computedSvgElementWidthStyle);
   }
 
-  private animateCircleClick(circle: SvgJs.Circle): void {
-    circle.animate(this.animationDuration)
+  private animateCircleClick(circle: SvgJs.Circle): SvgJs.Animation {
+    return circle.animate(this.animationDuration)
       .size(Sizes.node, Sizes.nodeClicked)
       .after(() => circle.animate(this.animationDuration)
         .size(Sizes.nodeClicked, Sizes.node));
   }
 
-  private animateLineClick(line: SvgJs.Line): void {
-    line.animate(this.animationDuration)
+  private animateLineClick(line: SvgJs.Line): SvgJs.Animation {
+    return line.animate(this.animationDuration)
       .attr('stroke-width', Sizes.branchClicked)
       .after(() => line.animate(this.animationDuration)
         .attr('stroke-width', Sizes.branch));
   }
 
-  private selectBranchesToNeighboursIfTheyAreSelected(node: BinaryTreeNode): void {
+  private selectBranchesToSelectedNeighbours(node: BinaryTreeNode): void {
     if (node.parent != null && node.parent.isSelected) {
       this.selectNodeBranch(node.id);
     }
@@ -260,7 +265,7 @@ export class BinaryTreeComponent implements AfterViewInit, OnChanges, OnDestroy 
       .forEach(c => this.selectNodeBranch(c.id));
   }
 
-  private unselectBranchesToNeighboursIfTheyAreSelected(node: BinaryTreeNode): void {
+  private unselectBranchesToSelectedNeighbours(node: BinaryTreeNode): void {
     if (node.parent != null && node.parent.isSelected && node.isBranchSelected) {
       this.unselectNodeBranch(node.id);
     }
@@ -268,13 +273,21 @@ export class BinaryTreeComponent implements AfterViewInit, OnChanges, OnDestroy 
       .forEach(c => this.unselectNodeBranch(c.id));
   }
 
-  private static selectNodeAndColor(node: BinaryTreeNode, circle: SvgJs.Circle, value: SvgJs.Text): void {
+  private static markAndColorNodeAsSelected(
+    node: BinaryTreeNode,
+    circle: SvgJs.Circle,
+    value: SvgJs.Text
+  ): void {
     node.isSelected = true;
     circle.fill(Colors.nodeSelected);
     value.fill(Colors.nodeValueSelected);
   }
 
-  private static unselectNodeAndColor(node: BinaryTreeNode, circle: SvgJs.Circle, value: SvgJs.Text): void {
+  private static markAndColorNodeAsUnselected(
+    node: BinaryTreeNode,
+    circle: SvgJs.Circle,
+    value: SvgJs.Text
+  ): void {
     node.isSelected = false;
     circle.fill(Colors.node);
     value.fill(Colors.nodeValue);
