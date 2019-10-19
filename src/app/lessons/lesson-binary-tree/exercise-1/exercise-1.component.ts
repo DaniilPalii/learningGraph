@@ -2,12 +2,12 @@ import { Component, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { MatRipple } from '@angular/material';
 import { BinaryTreeNode as Node } from '../../../shared/components/graph/binary-tree/binary-tree-node';
 import { BinaryTreeComponent, InteractivityMode } from '../../../shared/components/graph/binary-tree/component/binary-tree.component';
-import { ExerciseGoal } from '../exercise-goal';
+import { ExerciseGoal } from '../../exercise-goal';
 
 @Component({
   selector: 'lgr-exercise-1',
   templateUrl: './exercise-1.component.html',
-  styleUrls: ['./exercise-1.component.scss', './../../lessons.css']
+  styleUrls: ['./exercise-1.component.scss', '../../lessons.css']
 })
 export class Exercise1Component {
   @ViewChild('treeComponent') treeComponent: BinaryTreeComponent;

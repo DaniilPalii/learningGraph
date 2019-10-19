@@ -14,7 +14,7 @@ import { Lesson2Component } from './lessons/lesson-2/lesson-2.component';
 import { BinaryTreeComponent } from './shared/components/graph/binary-tree/component/binary-tree.component';
 import { TooltipComponent } from './shared/components/graph/binary-tree/component/tooltip/tooltip.component';
 import { LessonsSourcesComponent } from './lessons/lessons-sources/lessons-sources.component';
-import { Exercise1Component } from './lessons/exercises/exercise-1/exercise-1.component';
+import { Exercise1Component } from './lessons/lesson-binary-tree/exercise-1/exercise-1.component';
 import { CheckComponent } from './shared/components/check/check.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { TreeAnimationRunnerComponent } from './lessons/lesson-tree-traversal/tree-animation-runner/tree-animation-runner/tree-animation-runner.component';
