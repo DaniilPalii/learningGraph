@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { TextService } from '../../services/text.service';
 import { BinaryTreeNode as Node } from '../../shared/components/graph/binary-tree/binary-tree-node';
-import { BaseLesson } from '../baseLesson';
+import { LessonBaseComponent } from '../lesson.base.component';
 import { TreeAnimationRunnerComponent } from './tree-animation-runner/tree-animation-runner/tree-animation-runner.component';
 
 @Component({
@@ -9,7 +9,7 @@ import { TreeAnimationRunnerComponent } from './tree-animation-runner/tree-anima
   templateUrl: './lesson-tree-traversal.component.html',
   styleUrls: ['./lesson-tree-traversal.component.css', './../lessons.css']
 })
-export class LessonTreeTraversalComponent extends BaseLesson {
+export class LessonTreeTraversalComponent extends LessonBaseComponent {
   orderTree = LessonTreeTraversalComponent.createTree();
 
   @ViewChild('animationRunner')

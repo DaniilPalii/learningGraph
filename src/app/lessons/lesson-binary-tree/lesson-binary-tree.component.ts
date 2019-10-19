@@ -2,14 +2,14 @@ import { AfterContentInit, Component, ViewChild } from '@angular/core';
 import { BinaryTreeNode as Node } from '../../shared/components/graph/binary-tree/binary-tree-node';
 import { BinaryTreeComponent } from '../../shared/components/graph/binary-tree/component/binary-tree.component';
 import { TextService } from '../../services/text.service';
-import { BaseLesson } from '../baseLesson';
+import { LessonBaseComponent } from '../lesson.base.component';
 
 @Component({
   selector: 'lgr-lesson-binary-tree',
   templateUrl: './lesson-binary-tree.component.html',
   styleUrls: ['./lesson-binary-tree.component.css', './../lessons.css']
 })
-export class LessonBinaryTreeComponent extends BaseLesson implements AfterContentInit {
+export class LessonBinaryTreeComponent extends LessonBaseComponent implements AfterContentInit {
   @ViewChild('elementsDemonstrationTreeElement')
   elementsDemonstrationTreeElement: BinaryTreeComponent;
 
