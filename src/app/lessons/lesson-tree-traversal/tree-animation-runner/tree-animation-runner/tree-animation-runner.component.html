@@ -1,3 +1,12 @@
-<div class="backdrop"></div>
-<button (click)="emitStart()">Start</button>
-<lgr-binary-tree #tree [data]="data"></lgr-binary-tree>
+<div>
+  <div>
+    <button mat-icon-button
+            class="start-button"
+            (click)="emitStart()">
+      <mat-icon>play_circle_filled</mat-icon>
+    </button>
+  </div>
+</div>
+<div class="wide">
+  <lgr-binary-tree #tree [data]="data"></lgr-binary-tree>
+</div>

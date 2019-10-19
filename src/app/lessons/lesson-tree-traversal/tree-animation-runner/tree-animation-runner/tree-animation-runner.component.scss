@@ -1,0 +1,22 @@
+:host {
+  padding: 10px;
+  display: flex;
+}
+
+$start-button-size: 64px;
+.mat-icon-button.start-button {
+  width: $start-button-size;
+  height: $start-button-size;
+  line-height: $start-button-size;
+
+  .mat-icon {
+    font-size: $start-button-size;
+    width: $start-button-size;
+    height: $start-button-size;
+    line-height: $start-button-size;
+  }
+}
+
+.wide {
+  flex-grow: 1;
+}

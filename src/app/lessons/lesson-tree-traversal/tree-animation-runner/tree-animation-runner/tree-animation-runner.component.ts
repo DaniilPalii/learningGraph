@@ -5,7 +5,7 @@ import { BinaryTreeComponent } from '../../../../shared/components/graph/binary-
 @Component({
   selector: 'lgr-tree-animation-runner',
   templateUrl: './tree-animation-runner.component.html',
-  styleUrls: ['./tree-animation-runner.component.css']
+  styleUrls: ['./tree-animation-runner.component.scss']
 })
 export class TreeAnimationRunnerComponent {
   @Input() data: BinaryTreeNode;
