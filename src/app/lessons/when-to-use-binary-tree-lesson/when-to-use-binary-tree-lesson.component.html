@@ -1,0 +1,62 @@
+<h3>{{ lessonTitleWithNumber }}</h3>
+<p>
+  Spieranie się o wydajność drzew binarnych nie ma znaczenia - nie są one strukturą danych,
+  ale rodziną struktur danych, wszystkie o różnych charakterystykach wydajności.
+</p>
+<p>
+  Zastosowanie drzew binarnych:
+</p>
+<p>
+  <strong>Binarne drzewo poszukiwań</strong> - używa się w wielu aplikacjach dla wyszukiwania w dynamicznych danych.
+  Zaimplementowane w niektórych językach programowania jako typy <strong>map</strong> i/lub <strong>set</strong>
+</p>
+https://stackoverflow.com/questions/2130416/what-are-the-applications-of-binary-trees
+<p>
+  <strong>Partycja przestrzeni binarnej</strong> - używana w prawie każdej grze wideo 3D w celu określenia, które obiekty należy renderować.
+</p>
+<p>
+  <strong>Binary Tries</strong> - Używany w prawie każdym routerze o dużej przepustowości do przechowywania tabel routerów.
+</p>
+<p>
+  <strong>Hash Trees</strong> - używany w programach p2p i specjalistycznych podpisach obrazów, w których hash musi zostać zweryfikowany,
+  ale cały plik nie jest dostępny.
+</p>
+<p>
+  <strong>Sterty</strong> - Stosowane przy wdrażaniu wydajnych kolejek priorytetowych,
+  które z kolei są wykorzystywane do planowania procesów w wielu systemach operacyjnych,
+  jakości usług w routerach i A * (algorytm ustalania ścieżki wykorzystywany w aplikacjach AI,
+  w tym w robotyce i grach wideo).
+  Używany również w sortowaniu stosów.
+</p>
+<p>
+  <strong>Drzewo kodowania Huffmana</strong> (Chip Uni) - stosowane w algorytmach kompresji,
+  takich jak te stosowane w formatach plików .jpeg i .mp3.
+</p>
+<p>
+  <strong>Drzewa GGM</strong> - używane w aplikacjach kryptograficznych do generowania drzewa liczb pseudolosowych.
+</p>
+<p>
+  <strong>Drzewo składniowe</strong> - zbudowane przez kompilatory i (domyślnie) kalkulatory do analizowania wyrażeń.
+</p>
+<p>
+  <strong>Treap</strong> - Randomizowana struktura danych wykorzystywana w sieciach bezprzewodowych i przydziale pamięci.
+</p>
+<p>
+  <strong>T-drzewo</strong> - chociaż większość baz danych używa jakiejś formy B-drzewa do przechowywania danych na dysku,
+  bazy danych, które przechowują wszystkie (większość) swoich danych w pamięci, często używają do tego T-drzew.
+</p>
+<p>
+  Powodem, dla którego drzewa binarne są używane częściej niż drzewa n-arne, jest to,
+  że drzewa n-ary są bardziej złożone, ale zwykle nie zapewniają żadnej rzeczywistej przewagi prędkości.
+  W (zrównoważonym) drzewie binarnym z węzłami m przejście z jednego poziomu na następny wymaga jednego porównania,
+  a istnieją poziomy log_2 (m), co daje łącznie porównania log_2 (m).
+  Natomiast drzewo n-ary będzie wymagało porównań log_2 (n) (przy użyciu wyszukiwania binarnego),
+  aby przejść do następnego poziomu.
+  Ponieważ istnieją poziomy całkowite log_n (m), wyszukiwanie będzie wymagało log_2 (n) * log_n (m) = log_2 (m) suma porównań.
+  Tak więc, chociaż drzewa n-ary są bardziej złożone, nie zapewniają żadnej przewagi pod względem koniecznych całkowitych porównań.
+  (Jednak drzewa n-ary są nadal przydatne w niszowych sytuacjach.
+  Przykładami, które przychodzą mi na myśl, są drzewa czworokątne i inne drzewa dzielące przestrzeń,
+  w których dzielenie przestrzeni za pomocą tylko dwóch węzłów na poziom uczyniłoby logikę niepotrzebnie złożoną;
+  oraz B-drzewa używane w wielu bazach danych, gdzie czynnikiem ograniczającym nie jest to,
+  ile porównań wykonuje się na każdym poziomie, ale ile węzłów można załadować jednocześnie z dysku twardego)
+</p>

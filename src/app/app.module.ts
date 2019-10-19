@@ -10,7 +10,7 @@ import { AppComponent } from './app.component';
 import { NavigationComponent } from './navigation/navigation.component';
 import { LessonBinaryTreeComponent } from './lessons/lesson-binary-tree/lesson-binary-tree.component';
 import { LessonTreeTraversalComponent } from './lessons/lesson-tree-traversal/lesson-tree-traversal.component';
-import { Lesson2Component } from './lessons/lesson-2/lesson-2.component';
+import { WhenToUseBinaryTreeLessonComponent } from './lessons/when-to-use-binary-tree-lesson/when-to-use-binary-tree-lesson.component';
 import { BinaryTreeComponent } from './shared/components/graph/binary-tree/component/binary-tree.component';
 import { TooltipComponent } from './shared/components/graph/binary-tree/component/tooltip/tooltip.component';
 import { LessonsSourcesComponent } from './lessons/lessons-sources/lessons-sources.component';
@@ -25,7 +25,7 @@ import { TreeAnimationRunnerComponent } from './lessons/lesson-tree-traversal/tr
     NavigationComponent,
     LessonBinaryTreeComponent,
     LessonTreeTraversalComponent,
-    Lesson2Component,
+    WhenToUseBinaryTreeLessonComponent,
     BinaryTreeComponent,
     TooltipComponent,
     LessonsSourcesComponent,
